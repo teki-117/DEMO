@@ -16,9 +16,16 @@ public class Constants : MonoBehaviour
     public static string IMAGE_LOAD_FAILED = "Failed to load image: ";
 
     //øÿ÷∆
-    public static string AUTO_ON = "1";
-    public static string AUTO_OFF = "1";
+    public static float DEFAULT_TYPING_SPEED = 0.05f;
+    public static float SKIP_MODE_TYPING_SPEED = 0.01f;
 
+    public static string AUTO_ON = "Auto";
+    public static string AUTO_OFF = "Auto";
+    public static float DEFAULT_AUTO_WATITING_SECONDS = 0.1f;
+
+    public static string SKIP_ON = "Skip";
+    public static string SKIP_OFF = "Skip";
+    public static float DEFAULT_SPIK_WATITING_SECONDS = 0.02f;
     //…˘“Ù
     public static string VOCAL_PATH = "audio/vocal/";
     public static string MUSIC_PATH = "audio/music/";

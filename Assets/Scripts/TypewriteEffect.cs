@@ -9,6 +9,7 @@ public class TypewriteEffect : MonoBehaviour
 
     private Coroutine typingCoroutine;
     private bool isTyping;
+    internal float typingSpeed;
 
     public void StartTyping(string text)
     {

@@ -994,7 +994,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -258, y: 180}
+  m_AnchoredPosition: {x: -258.00006, y: 180}
   m_SizeDelta: {x: 0, y: 100}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &651822562
@@ -2625,7 +2625,8 @@ MonoBehaviour:
   choiceButton1: {fileID: 1691081927}
   choiceButton2: {fileID: 1856903042}
   bottomButtons: {fileID: 651822560}
-  autoButtons: {fileID: 882509333}
+  autoButton: {fileID: 882509333}
+  skipButton: {fileID: 759337970}
 --- !u!1 &1856903041
 GameObject:
   m_ObjectHideFlags: 0
