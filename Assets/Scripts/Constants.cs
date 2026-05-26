@@ -21,7 +21,7 @@ public class Constants : MonoBehaviour
 
     public static string AUTO_ON = "Auto";
     public static string AUTO_OFF = "Auto";
-    public static float DEFAULT_AUTO_WATITING_SECONDS = 0.1f;
+    public static float DEFAULT_AUTO_WATITING_SECONDS = 0.5f;
 
     public static string SKIP_ON = "Skip";
     public static string SKIP_OFF = "Skip";
@@ -43,4 +43,12 @@ public class Constants : MonoBehaviour
     public static string MOVE_TO = "moveTo";
     public static int    DURATION_TIME = 1;
     public static string COORDINATE_MISSING = "Coordinate missing";
+
+    public static int DEFAULT_START_INDEX = 0;
+    public static int SLOTS_PER_PAGE = 8;
+    public static int TOTAL_SLOTS = 40;
+    public static string COLON = "£º";
+    public static string SAVE_GAME = "save_game";
+    public static string LOAD_GAME = "load_game";
+    public static string EMPTY_SLOT = "empty_slot";
 }

@@ -7,10 +7,13 @@ using UnityEngine.EventSystems;
 using UnityEngine.U2D;
 using UnityEngine.UI;
 using DG.Tweening;
+using DG.Tweening.Core.Easing;
 
 
-public class VN : MonoBehaviour
+public class VNManager : MonoBehaviour
 {
+    public GameObject gamePanel;
+    public GameObject dialogueBox;
     public TextMeshProUGUI speakerName;
     public TextMeshProUGUI speakingContent;
     public TypewriteEffect typewriteEffect;
@@ -28,6 +31,12 @@ public class VN : MonoBehaviour
     public GameObject bottomButtons;
     public Button autoButton;
     public Button skipButton;
+    public Button saveButton;
+    public Button loadButton;
+    public Button historyButton;
+    public Button settingsButton;
+    public Button homeButton;
+    public Button closeButton;
 
     private string storyPath = Constants.STORY_PATH;
     private string defaultStoryFileName = Constants.DEFAULT_STORY_FILE_NAME;
@@ -40,24 +49,40 @@ public class VN : MonoBehaviour
     private bool isSkip = false;
     private int maxReachedLineIndex = 0;
     private Dictionary<string, int> globalMaxReachedLineIndices = new Dictionary<string, int>();
-   
+    public static VNManager Instance { get; private set; }
 
+    private void Awake()
+    {
+        if(Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
     void Start()
     {
         bottomButtonsAddListener();
-        InitializeAndLoadStory(defaultStoryFileName);
+        gamePanel.SetActive(false);
     }
-   
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (gamePanel.activeSelf && Input.GetMouseButtonDown(0))
         {
-           if (!IsHittingBottomButtons())
+            if (!dialogueBox.activeSelf)
             {
-                DisplayNextLine();
+                OpenUI();
             }
-               
+            else if (!IsHittingBottomButtons())
+            {
+                if (!SaveLoadManager.Instance.saveLoadPanel.activeSelf)
+                {
+                    DisplayNextLine();
+                }
+            }
         }
     }
 
@@ -65,6 +90,16 @@ public class VN : MonoBehaviour
     {
         autoButton.onClick.AddListener(OnAutoButtonClick);
         skipButton.onClick.AddListener(OnSkipButtonClick);
+        saveButton.onClick.AddListener(OnSaveButtonClick);
+        loadButton.onClick.AddListener(OnLoadButtonClick);
+
+        homeButton.onClick.AddListener(OnHomeButtonClick);
+        closeButton.onClick.AddListener(OnCloseButtonClick);
+    }
+
+    public void StartGame()
+    {
+        InitializeAndLoadStory(defaultStoryFileName);
     }
     void InitializeAndLoadStory(string fileName)
     {
@@ -316,6 +351,15 @@ public class VN : MonoBehaviour
         }
     }
 
+    void OnSaveButtonClick()
+    {
+        SaveLoadManager.Instance.ShowSaveLoadUI(true);
+    }
+    void OnLoadButtonClick()
+    {
+        SaveLoadManager.Instance.ShowSaveLoadUI(false);
+    }
+
     bool CanSkip()
     {
         return currentLine < maxReachedLineIndex;
@@ -368,6 +412,29 @@ public class VN : MonoBehaviour
         //UpdateButtonImage(Constants.SKIP_OFF, skipButton);
 
       }
-    
+
+    void OnHomeButtonClick()
+    {
+        gamePanel.SetActive(false);
+        MenuManager.Instance.menuPanel.SetActive(true);
+    }
+
+    void OnCloseButtonClick()
+    {
+        CloseUI();
+    }
+
+    void OpenUI()
+    {
+        dialogueBox.SetActive(true);
+        bottomButtons.SetActive(true);
+    }
+
+    void CloseUI()
+    {
+        dialogueBox.SetActive(false);
+        bottomButtons.SetActive(false);
+    }
+
 }
 
