@@ -5,20 +5,19 @@ using TMPro;
 public class TypewriteEffect : MonoBehaviour
 {
     public TextMeshProUGUI textDisplay;
-    public float waitingSeconds = Constants.DEFAULT_WAITING_SECONDS;
 
+    private float typingSpeed;
     private Coroutine typingCoroutine;
     private bool isTyping;
-    internal float typingSpeed;
-
-    public void StartTyping(string text)
+    
+    public void StartTyping(string text,float speed)
     {
+        typingSpeed = speed;
         if (typingCoroutine != null)
         {
             StopCoroutine(typingCoroutine);
         }
         typingCoroutine = StartCoroutine(TypeLine(text));
-
     }
     
     private IEnumerator TypeLine(string text)
@@ -29,11 +28,11 @@ public class TypewriteEffect : MonoBehaviour
 
         for (int i = 0; i < text.Length; i++)
         {
-            textDisplay.maxVisibleCharacters = i+1;
-            yield return new WaitForSeconds(waitingSeconds);
+            textDisplay.maxVisibleCharacters = i;
+            yield return new WaitForSeconds(typingSpeed);
 
         }
-
+ 
         isTyping = false;
     }
 
@@ -48,10 +47,6 @@ public class TypewriteEffect : MonoBehaviour
         isTyping = false;
     }
 
-    public bool IsTyping()
-    {
-        return isTyping;
-    }
-
+    public bool IsTyping() => isTyping;
 
 }

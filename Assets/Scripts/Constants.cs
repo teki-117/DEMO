@@ -17,15 +17,15 @@ public class Constants : MonoBehaviour
 
     //øÿ÷∆
     public static float DEFAULT_TYPING_SPEED = 0.05f;
-    public static float SKIP_MODE_TYPING_SPEED = 0.01f;
+    public static float SKIP_MODE_TYPING_SPEED = 0.03f;
 
     public static string AUTO_ON = "Auto";
     public static string AUTO_OFF = "Auto";
-    public static float DEFAULT_AUTO_WATITING_SECONDS = 0.5f;
+    public static float DEFAULT_AUTO_WATITING_SECONDS = 1f;
 
     public static string SKIP_ON = "Skip";
     public static string SKIP_OFF = "Skip";
-    public static float DEFAULT_SPIK_WATITING_SECONDS = 0.02f;
+    public static float DEFAULT_SKIP_WAITING_SECONDS = 0.04f;
     //…˘“Ù
     public static string VOCAL_PATH = "audio/vocal/";
     public static string MUSIC_PATH = "audio/music/";
@@ -51,4 +51,12 @@ public class Constants : MonoBehaviour
     public static string SAVE_GAME = "save_game";
     public static string LOAD_GAME = "load_game";
     public static string EMPTY_SLOT = "empty_slot";
+
+    public static string CAMERA_NOT_FOUND = "Main Camera not found!";
+    public static string SAVE_FILE_PATH = "saves";
+    public static string SAVE_FILE_EXTENSION = ".json";
+
+    public static string X = "x";
+
+    public static int MAX_LENGTH = 50;
 }
