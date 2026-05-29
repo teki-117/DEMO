@@ -37,7 +37,7 @@ public class VNManager : MonoBehaviour
     public Button saveButton;
     public Button loadButton;
     public Button historyButton;
-    public Button settingsButton;
+    public Button settingButton;
     public Button homeButton;
     public Button closeButton;
 
@@ -60,7 +60,8 @@ public class VNManager : MonoBehaviour
     private bool isLoad = false;
     private int maxReachedLineIndex = 0;
     private Dictionary<string, int> globalMaxReachedLineIndices = new Dictionary<string, int>();
-    private LinkedList<string> historyRecords = new LinkedList<string>();
+    private LinkedList<string> historyRecords = new LinkedList<string>();//保存历史记录
+    public HashSet<string> unlockedBackgrounds = new HashSet<string>();//保存解锁的背景
     public static VNManager Instance { get; private set; }
     #endregion
     #region Lifecyle
@@ -86,6 +87,7 @@ public class VNManager : MonoBehaviour
         if (!MenuManager.Instance.menuPanel.activeSelf &&
             !SaveLoadManager.Instance.saveLoadPanel.activeSelf &&
             !HistoryManager.Instance.historyScrollView.activeSelf &&
+            !SettingManager.Instance.settingPanel.activeSelf &&
             gamePanel.activeSelf)
         {
             if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space))
@@ -134,6 +136,7 @@ public class VNManager : MonoBehaviour
         saveButton.onClick.AddListener(OnSaveButtonClick);
         loadButton.onClick.AddListener(OnLoadButtonClick);
         historyButton.onClick.AddListener(OnHistoryButtonClick);
+        settingButton.onClick.AddListener(OnSettingButtonClick);
         homeButton.onClick.AddListener(OnHomeButtonClick);
         closeButton.onClick.AddListener(OnCloseButtonClick);
     }
@@ -358,6 +361,10 @@ public class VNManager : MonoBehaviour
     {
         string imagePath = Constants.BACKGROUND_PATH + imageFileName;
         UpdateImage(imagePath, backgroundImage);
+        if(!unlockedBackgrounds.Contains(imageFileName))
+        {
+            unlockedBackgrounds.Add(imageFileName);
+        }
     }
     void UpdateCharacterImage(string action, string imageFileName, Image characterImage, string x)
     {
@@ -567,6 +574,10 @@ public class VNManager : MonoBehaviour
     }
     #endregion
     #region Setting
+    void OnSettingButtonClick()
+    {
+        SettingManager.Instance.ShowSettingPanel();
+    }
     #endregion
     #region Home
     void OnHomeButtonClick()

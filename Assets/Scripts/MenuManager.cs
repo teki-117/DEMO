@@ -8,6 +8,7 @@ public class MenuManager : MonoBehaviour
     public Button startButton;
     public Button continueButton;
     public Button loadButton;
+    public Button galleryButton;
     public Button settingsButton;
     public Button quitButton;
 
@@ -36,6 +37,9 @@ public class MenuManager : MonoBehaviour
         startButton.onClick.AddListener(StartGame);
         continueButton.onClick.AddListener(ContinueGame);
         loadButton.onClick.AddListener(LoadGame);
+        galleryButton.onClick.AddListener(ShowGalleryPanel);
+        settingsButton.onClick.AddListener(ShowSettingPanel);
+        quitButton.onClick.AddListener(QuitGame);
     }
 
     private void StartGame()
@@ -60,5 +64,17 @@ public class MenuManager : MonoBehaviour
     {
         menuPanel.SetActive(false);
         VNManager.Instance.gamePanel.SetActive(true);
+    }
+    private void ShowGalleryPanel()
+    {
+        GalleryManager.Instance.ShowGalleryPanel();
+    }
+    private void ShowSettingPanel()
+    {
+        SettingManager.Instance.ShowSettingPanel();
+    }
+    private void QuitGame()
+    {
+        Application.Quit();
     }
 }
