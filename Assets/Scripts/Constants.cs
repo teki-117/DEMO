@@ -3,7 +3,7 @@ using UnityEngine;
 public class Constants : MonoBehaviour
 {
     //文本
-    public static string STORY_PATH = "Assets/Resources/story/";
+    //public static string STORY_PATH = "Assets/Resources/story/";
     public static string DEFAULT_STORY_FILE_NAME = "1";
     public static string EXCEL_FILE_EXTENSION = ".xlsx";
     public static int DEFAULT_START_LINE = 1;
@@ -66,4 +66,17 @@ public class Constants : MonoBehaviour
     public static string GALLERY_PLACEHOLDER = "0";
     public static readonly string[] ALL_BACKGROUNDS = { "1", "2", "3","4" };
     public static string UNLOCKED = "unlocked";
+
+    public static string GOTO = "goto";
+
+    public static string DEFAULT_LANGUAGE = "zh";
+    public static string LANGUAGE_PATH = "languages";
+    public static string JSON_FILE_EXTENSION = ".json";
+    public static string LOCALIZATION_LOAD_FAILED = "Failed to load localization file: ";
+    public static int DEFAULT_LANGUAGE_INDEX = 0;
+
+    public static string CHINESE = "中文";
+    public static string ENGLISH = "English";
+    public static string JAPANESE = "日本語";
+    public static string[] LANGUAGES = { "zh", "en", "jp" };
 }

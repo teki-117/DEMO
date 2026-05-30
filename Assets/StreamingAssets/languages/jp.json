@@ -1,0 +1,14 @@
+{
+  "start_game": "ゲームを始める",
+  "continue_game": "続きから",
+  "settings": "設定",
+  "gallery": "ギャラリー",
+  "exit_game": "ゲームを終了する",
+  "language": "言語",
+  "save_game": "ゲームを保存",
+  "load_game": "ゲームを読み込む",
+  "empty_slot": "なし",
+  "previous_page": "前のページ",
+  "next_page": "次のページ",
+  "back": "戻る"
+}

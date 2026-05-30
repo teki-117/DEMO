@@ -41,7 +41,7 @@ public class VNManager : MonoBehaviour
     public Button homeButton;
     public Button closeButton;
 
-    private string storyPath = Constants.STORY_PATH;
+ 
     private readonly string defaultStoryFileName = Constants.DEFAULT_STORY_FILE_NAME;
     private readonly int defaultStartLine = Constants.DEFAULT_START_LINE;
     private string excelFileExtension = Constants.EXCEL_FILE_EXTENSION;
@@ -141,9 +141,9 @@ public class VNManager : MonoBehaviour
         closeButton.onClick.AddListener(OnCloseButtonClick);
     }
 
-    public void StartGame()
-    {
-        InitializeAndLoadStory(defaultStoryFileName,defaultStartLine);
+    public void StartGame(string fileName, int startLine)
+    { 
+        InitializeAndLoadStory(fileName, startLine); 
     }
     void InitializeAndLoadStory(string fileName,int lineNumber)
     {
@@ -174,8 +174,12 @@ public class VNManager : MonoBehaviour
     void LoadStoryFromFile(string fileName)
     {
         currentStoryFileName = fileName;
-        var path = storyPath + fileName + excelFileExtension;
-        storyData = ExcelReader.ReadExcel(path);
+        string filePath = Path.Combine(Application.streamingAssetsPath,
+                                         Constants.LANGUAGE_PATH,
+                                         LocalizationManager.Instance.currentLanguage,
+                                         fileName + excelFileExtension
+);
+        storyData = ExcelReader.ReadExcel(filePath);
         if (storyData == null || storyData.Count == 0)
         {
             Debug.LogError(Constants.NO_LOAD_FOUND);
@@ -189,6 +193,16 @@ public class VNManager : MonoBehaviour
             maxReachedLineIndex = 0;
             globalMaxReachedLineIndices[currentStoryFileName] = maxReachedLineIndex;
         }
+    }
+    public void SetLanguage()
+    {
+        LoadStoryFromFile(currentStoryFileName);
+    }
+
+    public void ReloadStoryLine()
+    {
+        currentLine--;
+        DisplayNextLine();
     }
     #endregion
     #region Display
@@ -209,13 +223,19 @@ public class VNManager : MonoBehaviour
             if (storyData[currentLine].speakerName == Constants.END_OF_STORY)
             {
                 Debug.Log(Constants.END_OF_STORY);
-
             }
             if (storyData[currentLine].speakerName == Constants.CHOICE)
             {
-                ShowChoices();
-               
+                ShowChoices();        
             }
+            if (storyData[currentLine].speakerName == Constants.GOTO)
+            {
+                InitializeAndLoadStory(storyData[currentLine].speakingContent,defaultStartLine);
+            }
+            //if (storyData[currentLine].speakerName ==Constants.GAME)
+            //{
+            //    LoadMiniGame();
+            //}
             return;
         }
         if (typewriteEffect.IsTyping())
@@ -377,7 +397,7 @@ public class VNManager : MonoBehaviour
                 UpdateImage(imagePath, characterImage);
                 var newPosition = new Vector2(float.Parse(x), characterImage.rectTransform.anchoredPosition.y);
                 characterImage.rectTransform.anchoredPosition = newPosition;
-                characterImage.DOFade(1,(isLoad ? 0 : Constants.DURATION_TIME)).From(0);
+                characterImage.DOFade(1, ((isLoad || action == Constants.APPEAR_AT) ? 0 : Constants.DURATION_TIME)).From(0);
             }
             else
             {

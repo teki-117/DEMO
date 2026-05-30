@@ -26,7 +26,7 @@ public class TypewriteEffect : MonoBehaviour
         textDisplay.text = text;
         textDisplay.maxVisibleCharacters = 0;
 
-        for (int i = 0; i < text.Length; i++)
+        for (int i = 0; i <= text.Length; i++)
         {
             textDisplay.maxVisibleCharacters = i;
             yield return new WaitForSeconds(typingSpeed);

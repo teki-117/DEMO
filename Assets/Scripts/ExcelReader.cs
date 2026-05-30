@@ -39,7 +39,7 @@ public class ExcelReader : MonoBehaviour
                     while (reader.Read())
                     {
                         ExcelData data = new ExcelData();
-                        data.speakerName = reader.IsDBNull(0)? string.Empty : reader.GetValue(0)?.ToString();
+                        data.speakerName = reader.IsDBNull(0) ? string.Empty : reader.GetValue(0)?.ToString();
                         data.speakingContent = reader.IsDBNull(1) ? string.Empty : reader.GetValue(1)?.ToString();
                         data.avatarImageFileName = reader.IsDBNull(2) ? string.Empty : reader.GetValue(2)?.ToString();
                         data.vocalAudioFileName = reader.IsDBNull(3) ? string.Empty : reader.GetValue(3)?.ToString();
@@ -51,16 +51,16 @@ public class ExcelReader : MonoBehaviour
                         data.character2Action = reader.IsDBNull(9) ? string.Empty : reader.GetValue(9)?.ToString();
                         data.coordinateX2 = reader.IsDBNull(10) ? string.Empty : reader.GetValue(10)?.ToString();
                         data.character2ImageFileName = reader.IsDBNull(11) ? string.Empty : reader.GetValue(11)?.ToString();
-                        data.lastBackgroundImage = reader.IsDBNull(12)?string.Empty : reader.GetValue(12)?.ToString();
-                        data.lastBackgroundMusic = reader.IsDBNull(13)?string.Empty : reader.GetValue(13)?.ToString();
-                        data.lastCoordinateX1=reader.IsDBNull(14)?string.Empty : reader.GetValue(14)?.ToString();
-                        data.lastCoordinateX2=reader.IsDBNull(15)?string.Empty :reader.GetValue(15)?.ToString();
+                        data.lastBackgroundImage = reader.IsDBNull(12) ? string.Empty : reader.GetValue(12)?.ToString();
+                        data.lastBackgroundMusic = reader.IsDBNull(13) ? string.Empty : reader.GetValue(13)?.ToString();
+                        data.lastCoordinateX1 = reader.IsDBNull(14) ? string.Empty : reader.GetValue(14)?.ToString();
+                        data.lastCoordinateX2 = reader.IsDBNull(15) ? string.Empty : reader.GetValue(15)?.ToString();
                         excelData.Add(data);
                     }
 
                 } while (reader.NextResult());
             }
-            
+
         }
         return excelData;
     }
