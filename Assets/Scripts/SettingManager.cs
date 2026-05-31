@@ -47,6 +47,9 @@ public class SettingManager : MonoBehaviour
 
     public void ShowSettingPanel()
     {
+        closeButton.GetComponentInChildren<TextMeshProUGUI>().text = GetLocalized(Constants.CLOSE);
+        defaultButton.GetComponentInChildren<TextMeshProUGUI>().text = GetLocalized(Constants.RESET);
+        UpdateToggleLabel(fullscreenToggle.isOn);
         settingPanel.SetActive(true);
     }
     void InitializeResolutions()
@@ -88,7 +91,7 @@ public class SettingManager : MonoBehaviour
 
     void UpdateToggleLabel(bool isFullscreen)
     {
-        toggleLabel.text = isFullscreen ? "Fullscreen" : "Windowed";
+        toggleLabel.text = isFullscreen ? GetLocalized(Constants.FULLSCREEN) : GetLocalized(Constants.WINDOWED);
     }
 
     void SetResolution(int index)
@@ -117,5 +120,9 @@ public class SettingManager : MonoBehaviour
             option => option.text == $"{defaultResolution.width}x{defaultResolution.height}");
 
         fullscreenToggle.isOn = true;
+    }
+    string GetLocalized(string key)
+    {
+        return LocalizationManager.Instance.GetLocalizedValue(key);
     }
 }

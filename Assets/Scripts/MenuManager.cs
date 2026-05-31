@@ -16,7 +16,7 @@ public class MenuManager : MonoBehaviour
 
     public TextMeshProUGUI languageButtonText;
     private int lastLanguageIndex = Constants.DEFAULT_LANGUAGE_INDEX;
-    private int currentLanguageIndex = Constants.DEFAULT_LANGUAGE_INDEX;
+    public int currentLanguageIndex = Constants.DEFAULT_LANGUAGE_INDEX;
     private string currentLanguage;
     private bool hasStarted = false;
 
@@ -41,7 +41,8 @@ public class MenuManager : MonoBehaviour
     }
     void MenuButtonsAddListener()
     {
-        startButton.onClick.AddListener(StartGame);
+        //startButton.onClick.AddListener(StartGame);
+        startButton.onClick.AddListener(ShowInputPanel);
         continueButton.onClick.AddListener(ContinueGame);
         loadButton.onClick.AddListener(LoadGame);
         galleryButton.onClick.AddListener(ShowGalleryPanel);
@@ -52,11 +53,7 @@ public class MenuManager : MonoBehaviour
     public void StartGame()
     {
         hasStarted = true;
-        if (lastLanguageIndex != currentLanguageIndex)
-        {
-            SetLanguage();
-        }
-        VNManager.Instance.StartGame(Constants.DEFAULT_STORY_FILE_NAME,Constants.DEFAULT_START_LINE);
+        VNManager.Instance.StartGame(Constants.DEFAULT_STORY_FILE_NAME, Constants.DEFAULT_START_LINE);
         ShowGamePanel();
     }
     private void ContinueGame()
@@ -65,7 +62,6 @@ public class MenuManager : MonoBehaviour
         {
             if (lastLanguageIndex != currentLanguageIndex)
             {
-                SetLanguage();
                 VNManager.Instance.ReloadStoryLine();
             }
             ShowGamePanel();
@@ -73,18 +69,12 @@ public class MenuManager : MonoBehaviour
     }
     private void LoadGame()
     {
-        if (lastLanguageIndex != currentLanguageIndex)
-        {
-            SetLanguage();
-        }
-
         VNManager.Instance.ShowLoadPanel(ShowGamePanel);
     }
-    private void SetLanguage()
+    private void ShowInputPanel()
     {
-        lastLanguageIndex = currentLanguageIndex;
-        VNManager.Instance.SetLanguage();
-    }
+        InputManager.Instance.ShowInputPanel();
+    }    
     private void ShowGamePanel()
     {
         menuPanel.SetActive(false);

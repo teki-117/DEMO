@@ -3,7 +3,7 @@ using UnityEngine;
 public class Constants : MonoBehaviour
 {
     //文本
-    //public static string STORY_PATH = "Assets/Resources/story/";
+    public static string STORY_PATH = "story";
     public static string DEFAULT_STORY_FILE_NAME = "1";
     public static string EXCEL_FILE_EXTENSION = ".xlsx";
     public static int DEFAULT_START_LINE = 1;
@@ -49,7 +49,7 @@ public class Constants : MonoBehaviour
     public static int DEFAULT_START_INDEX = 0;
     public static int SLOTS_PER_PAGE = 8;
     public static int TOTAL_SLOTS = 40;
-    public static string COLON = "：";
+    public static string COLON = "colon";
     public static string SAVE_GAME = "save_game";
     public static string LOAD_GAME = "load_game";
     public static string EMPTY_SLOT = "empty_slot";
@@ -67,6 +67,11 @@ public class Constants : MonoBehaviour
     public static readonly string[] ALL_BACKGROUNDS = { "1", "2", "3","4" };
     public static string UNLOCKED = "unlocked";
 
+    //输入系统
+    public static string CONFIRM = "confirm";
+    public static string PROMPT_TEXT = "enter_Name";
+    public static string NAME_PLACEHOLDER = "[Name]";
+
     public static string GOTO = "goto";
 
     public static string DEFAULT_LANGUAGE = "zh";
@@ -79,4 +84,13 @@ public class Constants : MonoBehaviour
     public static string ENGLISH = "English";
     public static string JAPANESE = "日本語";
     public static string[] LANGUAGES = { "zh", "en", "jp" };
+
+    public static string PREV_PAGE = "previous_page";
+    public static string NEXT_PAGE = "next_page";
+    public static string BACK = "back";
+    public static string CLOSE = "close";
+
+    public static string FULLSCREEN = "fullscreen";
+    public static string WINDOWED = "windowed";
+    public static string RESET = "reset";
 }

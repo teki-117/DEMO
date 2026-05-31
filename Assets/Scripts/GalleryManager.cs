@@ -34,22 +34,24 @@ public class GalleryManager : MonoBehaviour
         prevPageButton.onClick.AddListener(PrevPage);
         nextPageButton.onClick.AddListener(NextPage);
         backButton.onClick.AddListener(GoBack);
-        galleryPanel.SetActive(false);
-        panelTitle.text = Constants.GALLERY;
 
+        galleryPanel.SetActive(false);
         bigImagePanel.SetActive(false);
+
         Button bigImageButton = bigImagePanel.GetComponent<Button>();
         if (bigImageButton != null)
         {
             bigImageButton.onClick.AddListener(HideBigImage);
         }
-        else
-        {
-            Debug.LogWarning("BigImagePanelÉÏµÄButton£¿");
-        }
     }
+
     public void ShowGalleryPanel()
     {
+        panelTitle.text = GetLocalized(Constants.GALLERY);
+        prevPageButton.GetComponentInChildren<TextMeshProUGUI>().text = GetLocalized(Constants.PREV_PAGE);
+        nextPageButton.GetComponentInChildren<TextMeshProUGUI>().text = GetLocalized(Constants.NEXT_PAGE);
+        backButton.GetComponentInChildren<TextMeshProUGUI>().text = GetLocalized(Constants.BACK);
+
         UpdateUI();
         galleryPanel.SetActive(true);
     }
@@ -133,5 +135,9 @@ public class GalleryManager : MonoBehaviour
     private void GoBack()
     {
         galleryPanel.SetActive(false);
+    }
+    string GetLocalized(string key)
+    {
+        return LocalizationManager.Instance.GetLocalizedValue(key);
     }
 }

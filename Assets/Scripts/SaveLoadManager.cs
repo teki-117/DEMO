@@ -43,17 +43,21 @@ public class SaveLoadManager : MonoBehaviour
     public void ShowSavePanel(System.Action<int> action)
     {
         isSave = true;
-        panelTitle.text = Constants.SAVE_GAME;
-        currentAction = action;
-        UpdateUI();
-        saveLoadPanel.SetActive(true);
+        ShowPanel(action);
     }
-    public void ShowLoadPanel(System.Action<int> action,System.Action menuAction)
+    public void ShowLoadPanel(System.Action<int> action, System.Action menuAction)
     {
         isSave = false;
-        panelTitle.text = Constants.LOAD_GAME;
-        currentAction = action;
         this.menuAction = menuAction;
+        ShowPanel(action);
+    }
+    private void ShowPanel(System.Action<int> action)
+    {
+        panelTitle.text = GetLocalized(isSave ? Constants.SAVE_GAME : Constants.LOAD_GAME);
+        prevPageButton.GetComponentInChildren<TextMeshProUGUI>().text = GetLocalized(Constants.PREV_PAGE);
+        nextPageButton.GetComponentInChildren<TextMeshProUGUI>().text = GetLocalized(Constants.NEXT_PAGE);
+        backButton.GetComponentInChildren<TextMeshProUGUI>().text = GetLocalized(Constants.BACK);
+        currentAction = action;
         UpdateUI();
         saveLoadPanel.SetActive(true);
     }
@@ -89,7 +93,7 @@ public class SaveLoadManager : MonoBehaviour
 
         var textComponents = button.GetComponentsInChildren<TextMeshProUGUI>();
         textComponents[0].text = null;
-        textComponents[1].text = (index + 1) + Constants.COLON + Constants.EMPTY_SLOT;
+        textComponents[1].text = (index + 1) + GetLocalized(Constants.COLON) + GetLocalized(Constants.EMPTY_SLOT);
         button.GetComponentInChildren<RawImage>().texture = null;
 
         button.onClick.RemoveAllListeners();
@@ -158,7 +162,10 @@ public class SaveLoadManager : MonoBehaviour
         return Path.Combine(Application.persistentDataPath, Constants.SAVE_FILE_PATH, index + Constants.SAVE_FILE_EXTENSION);
 
     }
-  
+    string GetLocalized(string key)
+    {
+        return LocalizationManager.Instance.GetLocalizedValue(key);
+    }
 }
 
 
