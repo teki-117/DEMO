@@ -604,6 +604,50 @@ MonoBehaviour:
       m_LigatureGlyphID: 21113
     - m_ComponentGlyphIDs: 870000007aa40000
       m_LigatureGlyphID: 139
+    - m_ComponentGlyphIDs: 070100001a0100000301000003010000
+      m_LigatureGlyphID: 21175
+    - m_ComponentGlyphIDs: 070100001a0100000301000004010000
+      m_LigatureGlyphID: 21182
+    - m_ComponentGlyphIDs: 070100001a01000008010000
+      m_LigatureGlyphID: 21150
+    - m_ComponentGlyphIDs: 070100001a01000009010000
+      m_LigatureGlyphID: 21155
+    - m_ComponentGlyphIDs: 070100001a0100000a010000
+      m_LigatureGlyphID: 21159
+    - m_ComponentGlyphIDs: 070100001a0100000b010000
+      m_LigatureGlyphID: 21164
+    - m_ComponentGlyphIDs: 070100001a0100000301000003010000
+      m_LigatureGlyphID: 21128
+    - m_ComponentGlyphIDs: 070100001a0100000301000004010000
+      m_LigatureGlyphID: 21135
+    - m_ComponentGlyphIDs: 070100001a01000008010000
+      m_LigatureGlyphID: 438
+    - m_ComponentGlyphIDs: 070100001a01000009010000
+      m_LigatureGlyphID: 21110
+    - m_ComponentGlyphIDs: 070100001a0100000a010000
+      m_LigatureGlyphID: 21114
+    - m_ComponentGlyphIDs: 070100001a0100000b010000
+      m_LigatureGlyphID: 21118
+    - m_ComponentGlyphIDs: 040100001a0100000301000003010000
+      m_LigatureGlyphID: 21172
+    - m_ComponentGlyphIDs: 040100001a01000005010000
+      m_LigatureGlyphID: 21142
+    - m_ComponentGlyphIDs: 040100001a01000007010000
+      m_LigatureGlyphID: 21146
+    - m_ComponentGlyphIDs: 040100001a01000009010000
+      m_LigatureGlyphID: 21152
+    - m_ComponentGlyphIDs: 040100001a0100000b010000
+      m_LigatureGlyphID: 21162
+    - m_ComponentGlyphIDs: 040100001a0100000301000003010000
+      m_LigatureGlyphID: 21125
+    - m_ComponentGlyphIDs: 040100001a01000005010000
+      m_LigatureGlyphID: 21104
+    - m_ComponentGlyphIDs: 040100001a01000007010000
+      m_LigatureGlyphID: 434
+    - m_ComponentGlyphIDs: 040100001a01000009010000
+      m_LigatureGlyphID: 21107
+    - m_ComponentGlyphIDs: 040100001a0100000b010000
+      m_LigatureGlyphID: 21116
     m_GlyphPairAdjustmentRecords: []
     m_MarkToBaseAdjustmentRecords: []
     m_MarkToMarkAdjustmentRecords: []

@@ -13,8 +13,10 @@ public class MenuManager : MonoBehaviour
     public Button settingsButton;
     public Button quitButton;
     public Button languageButton;
-
     public TextMeshProUGUI languageButtonText;
+
+    public AudioSource musicAudio;
+
     private int lastLanguageIndex = Constants.DEFAULT_LANGUAGE_INDEX;
     public int currentLanguageIndex = Constants.DEFAULT_LANGUAGE_INDEX;
     private string currentLanguage;
@@ -38,6 +40,7 @@ public class MenuManager : MonoBehaviour
         MenuButtonsAddListener();
         LocalizationManager.Instance.LoadLanguage(Constants.DEFAULT_LANGUAGE);
         UpdateLanguageButtonText();
+        PlayMainMenuMusic();
     }
     void MenuButtonsAddListener()
     {
@@ -49,6 +52,28 @@ public class MenuManager : MonoBehaviour
         settingsButton.onClick.AddListener(ShowSettingPanel);
         quitButton.onClick.AddListener(QuitGame);
         languageButton.onClick.AddListener(UpdateLanguage);
+    }
+
+    void PlayMainMenuMusic()
+    {
+        string audioPath = Constants.MUSIC_PATH + Constants.MAIN_MENU_MUSIC_FILE_NAME;
+        PlayAudio(audioPath, musicAudio, true);
+    }
+    void PlayAudio(string audioPath, AudioSource audioSource, bool isLoop)
+    {
+        AudioClip audioClip = Resources.Load<AudioClip>(audioPath);
+
+        if (audioClip != null)
+        {
+            audioSource.clip = audioClip;
+            audioSource.loop = isLoop;
+            audioSource.gameObject.SetActive(true);
+            audioSource.Play();
+        }
+        else
+        {
+            Debug.LogError(Constants.AUDIO_LOAD_FAILED + audioPath);
+        }
     }
     public void StartGame()
     {

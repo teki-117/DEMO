@@ -31,7 +31,8 @@ public class Constants : MonoBehaviour
     //ÉùÒô
     public static string VOCAL_PATH = "audio/vocal/";
     public static string MUSIC_PATH = "audio/music/";
-    public static string AUDIO_LOAD_FAILED = "Failed to load music";
+    public static string MAIN_MENU_MUSIC_FILE_NAME = "menu";
+    public static string AUDIO_LOAD_FAILED = "Failed to load music:";
 
     //´ò×Ö»ú
     public static string NO_LOAD_FOUND = "No data found";
