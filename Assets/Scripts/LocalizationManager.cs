@@ -3,6 +3,52 @@ using System.IO;
 using Newtonsoft.Json;
 using UnityEngine;
 
+public static class LM
+{
+
+    public static string GLV(string key)
+    {
+        return LocalizationManager.Instance.GetLocalizedValue(key);
+    }
+    public static string GetSpeakerName(ExcelReader.ExcelData data)
+    {
+        string currentSpeakerName = string.Empty;
+        switch (GameManager.Instance.currentLanguageIndex)
+        {
+            case 0:
+                currentSpeakerName = ReplaceName(data.speakerName);
+                break;
+            case 1:
+                currentSpeakerName = ReplaceName(data.englishName);
+                break;
+            case 2:
+                currentSpeakerName = ReplaceName(data.japaneseName);
+                break;
+        }
+        return currentSpeakerName;
+    }
+    public static string GetSpeakingContent(ExcelReader.ExcelData data)
+    {
+        string currentSpeakingContent = string.Empty;
+        switch (GameManager.Instance.currentLanguageIndex)
+        {
+            case 0:
+                currentSpeakingContent = ReplaceName(data.speakingContent);
+                break;
+            case 1:
+                currentSpeakingContent = ReplaceName(data.englishContent);
+                break;
+            case 2:
+                currentSpeakingContent = ReplaceName(data.japaneseContent);
+                break;
+        }
+        return currentSpeakingContent;
+    }
+    public static string ReplaceName(string content)
+    {
+        return content.Replace(Constants.NAME_PLACEHOLDER, GameManager.Instance.playerName);
+    }
+}
 public class LocalizationManager : MonoBehaviour
 {
     public Dictionary<string, string> localizedText;
@@ -18,6 +64,7 @@ public class LocalizationManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -26,12 +73,11 @@ public class LocalizationManager : MonoBehaviour
     }
     private void Start()
     {
-        LoadLanguage(currentLanguage);
+        LoadLanguage(Constants.DEFAULT_LANGUAGE);
     }
 
     public void LoadLanguage(string language)
     {
-        currentLanguage = language;
         string filePath = Path.Combine(Application.streamingAssetsPath,Constants.LANGUAGE_PATH,language + Constants.JSON_FILE_EXTENSION);
 
         if (File.Exists(filePath))

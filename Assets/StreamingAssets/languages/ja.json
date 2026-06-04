@@ -1,6 +1,7 @@
 {
+  "Ja": "日本語",
   "start_game": "ゲーム開始",
-  "continue_game": "ゲームを続ける",
+  "continue_game": "続きから",
   "settings": "設定",
   "gallery": "ギャラリー",
   "exit_game": "ゲーム終了",
@@ -26,5 +27,7 @@
   "fullscreen": "フルスクリーン",
   "apply": "適用",
   "reset": "リセット",
-  "close": "×"
+  "close": "X",
+  "confirm_delete_save_file": "このセーブデータを削除してもよろしいですか？",
+  "confirm_cover_save_file": "このセーブデータを上書きしてもよろしいですか？"
 }

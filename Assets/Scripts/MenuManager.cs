@@ -1,11 +1,14 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.VFX;
 
 public class MenuManager : MonoBehaviour
 {
-    public GameObject menuPanel;
+    public Image backgroundImage;
+
     public Button startButton;
     public Button continueButton;
     public Button loadButton;
@@ -13,14 +16,8 @@ public class MenuManager : MonoBehaviour
     public Button settingsButton;
     public Button quitButton;
     public Button languageButton;
-    public TextMeshProUGUI languageButtonText;
 
-    public AudioSource musicAudio;
-
-    private int lastLanguageIndex = Constants.DEFAULT_LANGUAGE_INDEX;
-    public int currentLanguageIndex = Constants.DEFAULT_LANGUAGE_INDEX;
-    private string currentLanguage;
-    private bool hasStarted = false;
+    private int currentLanguageIndex;
 
     public static MenuManager Instance { get; private set; }
 
@@ -37,109 +34,66 @@ public class MenuManager : MonoBehaviour
     }
     void Start()
     {
+        GameManager.Instance.currentScene = Constants.MENU_SCENE;
         MenuButtonsAddListener();
-        LocalizationManager.Instance.LoadLanguage(Constants.DEFAULT_LANGUAGE);
+
+        currentLanguageIndex = GameManager.Instance.currentLanguageIndex;
+        LocalizationManager.Instance.LoadLanguage(Constants.LANGUAGES[currentLanguageIndex]);
         UpdateLanguageButtonText();
-        PlayMainMenuMusic();
+
     }
     void MenuButtonsAddListener()
     {
-        //startButton.onClick.AddListener(StartGame);
-        startButton.onClick.AddListener(ShowInputPanel);
+        startButton.onClick.AddListener(StartGame);
         continueButton.onClick.AddListener(ContinueGame);
         loadButton.onClick.AddListener(LoadGame);
-        galleryButton.onClick.AddListener(ShowGalleryPanel);
-        settingsButton.onClick.AddListener(ShowSettingPanel);
+        galleryButton.onClick.AddListener(() => SceneManager.LoadScene(Constants.GALLERY_SCENE));
+        settingsButton.onClick.AddListener(() => SceneManager.LoadScene(Constants.SETTING_SCENE));
         quitButton.onClick.AddListener(QuitGame);
         languageButton.onClick.AddListener(UpdateLanguage);
     }
 
-    void PlayMainMenuMusic()
+    void StartGame()
     {
-        string audioPath = Constants.MUSIC_PATH + Constants.MAIN_MENU_MUSIC_FILE_NAME;
-        PlayAudio(audioPath, musicAudio, true);
+        GameManager.Instance.currentStoryFile = Constants.DEFAULT_STORY_FILE;
+        GameManager.Instance.currentLineIndex = Constants.DEFAULT_START_LINE;
+        GameManager.Instance.currentBackgroundImg = string.Empty;
+        GameManager.Instance.currentBackgroundMusic = string.Empty;
+        GameManager.Instance.isCharacter1Display = false;
+        GameManager.Instance.isCharacter2Display = false;
+        GameManager.Instance.historyRecords = new LinkedList<ExcelReader.ExcelData>();
+        SceneManager.LoadScene(Constants.INPUT_SCENE);
     }
-    void PlayAudio(string audioPath, AudioSource audioSource, bool isLoop)
+    void ContinueGame()
     {
-        AudioClip audioClip = Resources.Load<AudioClip>(audioPath);
-
-        if (audioClip != null)
+        if (GameManager.Instance.hasStarted)
         {
-            audioSource.clip = audioClip;
-            audioSource.loop = isLoop;
-            audioSource.gameObject.SetActive(true);
-            audioSource.Play();
-        }
-        else
-        {
-            Debug.LogError(Constants.AUDIO_LOAD_FAILED + audioPath);
+            GameManager.Instance.historyRecords.RemoveLast();
+            SceneManager.LoadScene(Constants.GAME_SCENE);
         }
     }
-    public void StartGame()
+    void LoadGame()
     {
-        hasStarted = true;
-        VNManager.Instance.StartGame(Constants.DEFAULT_STORY_FILE_NAME, Constants.DEFAULT_START_LINE);
-        ShowGamePanel();
+        GameManager.Instance.currentSaveLoadMode = GameManager.SaveLoadMode.Load;
+        SceneManager.LoadScene(Constants.SAVE_LOAD_SCENE);
     }
-    private void ContinueGame()
-    {
-        if (hasStarted)
-        {
-            if (lastLanguageIndex != currentLanguageIndex)
-            {
-                VNManager.Instance.ReloadStoryLine();
-            }
-            ShowGamePanel();
-        }
-    }
-    private void LoadGame()
-    {
-        VNManager.Instance.ShowLoadPanel(ShowGamePanel);
-    }
-    private void ShowInputPanel()
-    {
-        InputManager.Instance.ShowInputPanel();
-    }    
-    private void ShowGamePanel()
-    {
-        menuPanel.SetActive(false);
-        VNManager.Instance.gamePanel.SetActive(true);
-    }
-    private void ShowGalleryPanel()
-    {
-        GalleryManager.Instance.ShowGalleryPanel();
-    }
-    private void ShowSettingPanel()
-    {
-        SettingManager.Instance.ShowSettingPanel();
-    }
-    private void QuitGame()
+    void QuitGame()
     {
         Application.Quit();
     }
-    private void UpdateLanguage()
+
+    void UpdateLanguage()
     {
         currentLanguageIndex = (currentLanguageIndex + 1) % Constants.LANGUAGES.Length;
-
-        currentLanguage = Constants.LANGUAGES[currentLanguageIndex];
-        LocalizationManager.Instance.LoadLanguage(currentLanguage);
+        LocalizationManager.Instance.LoadLanguage(Constants.LANGUAGES[currentLanguageIndex]);
+        GameManager.Instance.currentLanguageIndex = currentLanguageIndex;
         UpdateLanguageButtonText();
     }
+
     void UpdateLanguageButtonText()
     {
-        switch (currentLanguageIndex)
-        {
-            case 0:
-                languageButtonText.text = Constants.CHINESE;
-                break;
-
-            case 1:
-                languageButtonText.text = Constants.ENGLISH;
-                break;
-
-            case 2:
-                languageButtonText.text = Constants.JAPANESE;
-                break;
-        }
+        var languageButtonTMP = languageButton.GetComponentInChildren<TextMeshProUGUI>();
+        languageButtonTMP.text = LM.GLV(Constants.LANGUAGES[currentLanguageIndex]);
     }
+
 }

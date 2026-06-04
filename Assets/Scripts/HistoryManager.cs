@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class HistoryManager : MonoBehaviour
@@ -10,7 +11,7 @@ public class HistoryManager : MonoBehaviour
     public GameObject historyScrollView; // ScrollView对象
     public Button closeButton; // 关闭按钮
 
-    private LinkedList<VNManager.historyData> historyRecords; // 保存历史记录
+    private LinkedList<ExcelReader.ExcelData> historyRecords; // 保存历史记录
 
     public static HistoryManager Instance { get; private set; }
 
@@ -25,52 +26,45 @@ public class HistoryManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-     void Start()
+    void Start()
     {
-        historyScrollView.SetActive(false);//启动时隐藏历史界面
-        closeButton.onClick.AddListener(CloseHistory);//绑定关闭按钮事件
+        closeButton.onClick.AddListener(CloseHistory);
+
+        if (GameManager.Instance.historyRecords != null && GameManager.Instance.historyRecords.Count > 0)
+        {
+            ShowHistory(GameManager.Instance.historyRecords);
+        }
+        else
+        {
+            historyScrollView.SetActive(true);
+            Debug.LogWarning("No history records found.");
+        }
     }
     // 显示历史记录
-    public void ShowHistory(LinkedList<VNManager.historyData> records)
+    public void ShowHistory(LinkedList<ExcelReader.ExcelData> records)
     {
-
-        closeButton.GetComponentInChildren<TextMeshProUGUI>().text = GetLocalized(Constants.CLOSE);
         // 清空现有的历史记录
         foreach (Transform child in historyContent)
         {
             Destroy(child.gameObject);
         }
         historyRecords = records;
-        LinkedListNode<VNManager.historyData> currentNode = historyRecords.Last;
+        LinkedListNode<ExcelReader.ExcelData> currentNode = historyRecords.Last;
         while (currentNode != null)
         {
-            var name = currentNode.Value.chineseName;
-            var content = currentNode.Value.chineseContent;
-            switch (MenuManager.Instance.currentLanguageIndex)
-            {
-                case 0:
-                    break;
-                case 1:
-                    name = currentNode.Value.englishName;
-                    content = currentNode.Value.englishContent;
-                    break;
-                case 2:
-                    name = currentNode.Value.japaneseName;
-                    content = currentNode.Value.japaneseContent;
-                    break;
-            }
-
-            AddHistoryItem(name + GetLocalized(Constants.COLON) + content); // 添加历史记录项
-            currentNode = currentNode.Previous;
-        } // 移动到前一个节点
+            var name = LM.GetSpeakerName(currentNode.Value);      // 获取说话者名字
+            var content = LM.GetSpeakingContent(currentNode.Value); // 获取说话内容
+            AddHistoryItem(name + LM.GLV(Constants.COLON) + content); // 添加历史记录项
+            currentNode = currentNode.Previous; // 移动到前一个节点
+        }
         historyContent.GetComponent<RectTransform>().localPosition = Vector3.zero; // 将滚动视图的位置重置为顶部
         historyScrollView.SetActive(true); // 显示历史记录界面
     }
-
     // 关闭历史记录
     public void CloseHistory()
     {
-        historyScrollView.SetActive(false); // 隐藏历史记录界面
+        GameManager.Instance.historyRecords.RemoveLast(); // 移除最后一个历史记录
+        SceneManager.LoadScene(GameManager.Instance.currentScene); // 返回到当前场景
     }
 
     // 添加历史记录项
@@ -80,8 +74,5 @@ public class HistoryManager : MonoBehaviour
         historyItem.GetComponentInChildren<TextMeshProUGUI>().text = text;
         historyItem.transform.SetAsFirstSibling(); // 将历史记录项放在顶部
     }
-    string GetLocalized(string key)
-    {
-        return LocalizationManager.Instance.GetLocalizedValue(key);
-    }
+    
 }

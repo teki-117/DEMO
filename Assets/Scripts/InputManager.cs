@@ -1,10 +1,10 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class InputManager : MonoBehaviour
 {
-    public GameObject inputPanel;
     public TextMeshProUGUI promptText;
     public TMP_InputField nameInputField;
     public Button confirmButton;
@@ -24,10 +24,11 @@ public class InputManager : MonoBehaviour
     }
     void Start()
     {
+        promptText.text = LM.GLV(Constants.PROMPT_TEXT);
+        nameInputField.text = "";
+        confirmButton.GetComponentInChildren<TextMeshProUGUI>().text = LM.GLV(Constants.CONFIRM);
         confirmButton.onClick.AddListener(OnConfirm);
-        inputPanel.SetActive(false);
     }
-
     void OnConfirm()
     {
         string playerName = nameInputField.text.Trim();
@@ -37,25 +38,11 @@ public class InputManager : MonoBehaviour
             // 可以添加错误提示（比如用对话框提示玩家）
             return;
         }
-
-        PlayerData.Instance.playerName = playerName;
-        inputPanel.SetActive(false);
-        MenuManager.Instance.StartGame();
+        GameManager.Instance.playerName = playerName;
+        SceneManager.LoadScene(Constants.GAME_SCENE);
     }
-
     bool IsInvalidName(string name)
     {
         return string.IsNullOrEmpty(name);
-    }
-    public void ShowInputPanel()
-    {
-        confirmButton.GetComponentInChildren<TextMeshProUGUI>().text = GetLocalized(Constants.CONFIRM);
-        promptText.text = GetLocalized(Constants.PROMPT_TEXT);
-        nameInputField.text = "";
-        inputPanel.SetActive(true);
-    }
-    string GetLocalized(string key)
-    {
-        return LocalizationManager.Instance.GetLocalizedValue(key);
     }
 }

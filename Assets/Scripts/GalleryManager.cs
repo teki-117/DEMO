@@ -1,22 +1,22 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GalleryManager : MonoBehaviour
 {
-    public GameObject galleryPanel;
     public TextMeshProUGUI panelTitle;
     public Button[] galleryButtons;
     public Button prevPageButton;
     public Button nextPageButton;
     public Button backButton;
+
     public GameObject bigImagePanel; // 全屏大图面板
     public Image bigImage;           // 显示大图的 Image
 
     private int currentPage = Constants.DEFAULT_START_INDEX;
     private readonly int slotsPerPage = Constants.GALLERY_SLOTS_PER_PAGE;
     private readonly int totalSlots = Constants.ALL_BACKGROUNDS.Length;
-
     public static GalleryManager Instance{ get;private set; }
     private void Awake()
     {
@@ -31,29 +31,22 @@ public class GalleryManager : MonoBehaviour
     }
     void Start()
     {
+        panelTitle.text = LM.GLV(Constants.GALLERY);
+        prevPageButton.GetComponentInChildren<TextMeshProUGUI>().text =LM.GLV(Constants.PREV_PAGE);
+        nextPageButton.GetComponentInChildren<TextMeshProUGUI>().text =LM.GLV(Constants.NEXT_PAGE);
+        backButton.GetComponentInChildren<TextMeshProUGUI>().text =LM.GLV(Constants.BACK);
+
         prevPageButton.onClick.AddListener(PrevPage);
         nextPageButton.onClick.AddListener(NextPage);
         backButton.onClick.AddListener(GoBack);
 
-        galleryPanel.SetActive(false);
         bigImagePanel.SetActive(false);
-
         Button bigImageButton = bigImagePanel.GetComponent<Button>();
         if (bigImageButton != null)
         {
             bigImageButton.onClick.AddListener(HideBigImage);
         }
-    }
-
-    public void ShowGalleryPanel()
-    {
-        panelTitle.text = GetLocalized(Constants.GALLERY);
-        prevPageButton.GetComponentInChildren<TextMeshProUGUI>().text = GetLocalized(Constants.PREV_PAGE);
-        nextPageButton.GetComponentInChildren<TextMeshProUGUI>().text = GetLocalized(Constants.NEXT_PAGE);
-        backButton.GetComponentInChildren<TextMeshProUGUI>().text = GetLocalized(Constants.BACK);
-
         UpdateUI();
-        galleryPanel.SetActive(true);
     }
     private void UpdateUI()
     {
@@ -74,9 +67,9 @@ public class GalleryManager : MonoBehaviour
     {
         button.gameObject.SetActive(true);
         string bgName = Constants.ALL_BACKGROUNDS[index];
-        bool isUnlocked = VNManager.Instance.unlockedBackgrounds.Contains(bgName);
+        bool isUnlocked = GameManager.Instance.unlockedBackgrounds.Contains(bgName);
 
-        string imagePath = Constants.THUMBNAIL_PATH + (isUnlocked ? bgName : Constants.GALLERY_PLACEHOLDER);
+        string imagePath = Constants.THUMBNAIL_PATH +(isUnlocked ? bgName : Constants.GALLERY_PLACEHOLDER);
         Sprite sprite = Resources.Load<Sprite>(imagePath);
         if (sprite != null)
         {
@@ -92,14 +85,15 @@ public class GalleryManager : MonoBehaviour
     private void OnButtonClick(Button button, int index)
     {
         string bgName = Constants.ALL_BACKGROUNDS[index];
-        bool isUnlocked = VNManager.Instance.unlockedBackgrounds.Contains(bgName);
+        bool isUnlocked = GameManager.Instance.unlockedBackgrounds.Contains(bgName);
 
         if (!isUnlocked)
         {
             return;
         }
+    
 
-        string imagePath = Constants.BACKGROUND_PATH + bgName;
+    string imagePath = Constants.BACKGROUND_PATH + bgName;
         Sprite sprite = Resources.Load<Sprite>(imagePath);
 
         if (sprite != null)
@@ -134,10 +128,7 @@ public class GalleryManager : MonoBehaviour
     }
     private void GoBack()
     {
-        galleryPanel.SetActive(false);
+        SceneManager.LoadScene(Constants.MENU_SCENE);
     }
-    string GetLocalized(string key)
-    {
-        return LocalizationManager.Instance.GetLocalizedValue(key);
-    }
+ 
 }

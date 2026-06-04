@@ -1,12 +1,13 @@
 {
-  "start_game": "Start Game",
-  "continue_game": "Continue Game",
-  "settings": "Settings",
-  "gallery": "Gallery",
-  "exit_game": "Exit Game",
+  "en": "English",
+  "start_game": "START GAME",
+  "continue_game": "CONTINUE GAME",
+  "settings": "CONFIG",
+  "gallery": "GALLERY",
+  "exit_game": "EXIT GAME",
   "language": "Language",
-  "save_game": "Save Game",
-  "load_game": "Load Game",
+  "save_game": "SAVE GAME",
+  "load_game": "LOAD GAME",
   "empty_slot": "Empty Slot",
   "previous_page": "Previous\nPage",
   "next_page": "Next\nPage",
@@ -26,5 +27,7 @@
   "fullscreen": "Fullscreen",
   "apply": "Apply",
   "reset": "Reset",
-  "close": "×"
+  "close": "X",
+  "confirm_delete_save_file": "Are you sure you want to delete this save file?",
+  "confirm_cover_save_file": "Are you sure you want to overwrite this save file?"
 }

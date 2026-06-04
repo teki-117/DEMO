@@ -2,25 +2,26 @@ using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Newtonsoft.Json;
+using UnityEngine.SceneManagement;
 
 // Unity 脚本 3 个引用
 public class SaveLoadManager : MonoBehaviour
-{
-    public GameObject saveLoadPanel;
+{ 
     public TextMeshProUGUI panelTitle;
-    public Button[] saveLoadButtons;
+    public SaveSlot[] slots;
     public Button prevPageButton;
     public Button nextPageButton;
     public Button backButton;
 
-    private bool isSave;
+    public GameObject confirmPanel;
+    public TextMeshProUGUI confirmText;
+    public Button confirmButton;
+    public Button cancelButton;
+
     private int currentPage = Constants.DEFAULT_START_INDEX;
     private readonly int slotsPerPage = Constants.SLOTS_PER_PAGE;
     private readonly int totalSlots = Constants.TOTAL_SLOTS;
-    private System.Action<int> currentAction;
-    private System.Action menuAction;
-
+    private bool isLoad => GameManager.Instance.currentSaveLoadMode == GameManager.SaveLoadMode.Load;
     public static SaveLoadManager Instance { get; private set; }
     private void Awake()
     {
@@ -35,81 +36,83 @@ public class SaveLoadManager : MonoBehaviour
     }
     void Start()
     {
+        panelTitle.text = isLoad ? LM.GLV(Constants.LOAD_GAME) : LM.GLV(Constants.SAVE_GAME);
+
+        prevPageButton.GetComponentInChildren<TextMeshProUGUI>().text = LM.GLV(Constants.PREV_PAGE);
+        nextPageButton.GetComponentInChildren<TextMeshProUGUI>().text = LM.GLV(Constants.NEXT_PAGE);
+        backButton.GetComponentInChildren<TextMeshProUGUI>().text = LM.GLV(Constants.BACK);
+
         prevPageButton.onClick.AddListener(PrevPage);
         nextPageButton.onClick.AddListener(NextPage);
         backButton.onClick.AddListener(GoBack);
-        saveLoadPanel.SetActive(false);
+
+        confirmPanel.SetActive(false);
+
+        RefreshPage();
     }
-    public void ShowSavePanel(System.Action<int> action)
+    public void HandleEmptySlot(int slotIndex, SaveSlot slot)
     {
-        isSave = true;
-        ShowPanel(action);
+        SaveToSlot(slotIndex, slot);
     }
-    public void ShowLoadPanel(System.Action<int> action, System.Action menuAction)
+    public void HandleExistingSlot(int slotIndex, SaveSlot slot)
     {
-        isSave = false;
-        this.menuAction = menuAction;
-        ShowPanel(action);
-    }
-    private void ShowPanel(System.Action<int> action)
-    {
-        panelTitle.text = GetLocalized(isSave ? Constants.SAVE_GAME : Constants.LOAD_GAME);
-        prevPageButton.GetComponentInChildren<TextMeshProUGUI>().text = GetLocalized(Constants.PREV_PAGE);
-        nextPageButton.GetComponentInChildren<TextMeshProUGUI>().text = GetLocalized(Constants.NEXT_PAGE);
-        backButton.GetComponentInChildren<TextMeshProUGUI>().text = GetLocalized(Constants.BACK);
-        currentAction = action;
-        UpdateUI();
-        saveLoadPanel.SetActive(true);
-    }
-    private void UpdateUI()
-    {
-        for (int i = 0; i < slotsPerPage; ++i)
+        if (isLoad)
         {
-            int slotIndex = currentPage * slotsPerPage + i;
-
-            if (slotIndex < totalSlots)
-            {
-                UpdateSaveLoadButtons(saveLoadButtons[i], slotIndex);
-                LoadStorylineAndScreenshots(saveLoadButtons[i], slotIndex);
-            }
-            else
-            {
-                saveLoadButtons[i].gameObject.SetActive(false);
-            }
-        }
-    }
-    private void UpdateSaveLoadButtons(Button button, int index)
-    {
-        button.gameObject.SetActive(true);
-        button.interactable = true;
-
-        var savePath = GenerateDataPath(index);
-        var fileExists = File.Exists(savePath);
-
-        if (!isSave && !fileExists)
-        {
-            button.interactable = false;
-        }
-
-        var textComponents = button.GetComponentsInChildren<TextMeshProUGUI>();
-        textComponents[0].text = null;
-        textComponents[1].text = (index + 1) + GetLocalized(Constants.COLON) + GetLocalized(Constants.EMPTY_SLOT);
-        button.GetComponentInChildren<RawImage>().texture = null;
-
-        button.onClick.RemoveAllListeners();
-        button.onClick.AddListener(() => OnButtonClick(button, index));
-    }
-    private void OnButtonClick(Button button, int index)
-    {
-       menuAction?.Invoke();
-        currentAction?.Invoke(index);
-        if (isSave)
-        {
-            LoadStorylineAndScreenshots(button, index);
+            GameManager.Instance.Load(slotIndex);
+            SceneManager.LoadScene(Constants.GAME_SCENE);
         }
         else
         {
-            GoBack();
+            ShowConfirm(
+                LM.GLV(Constants.CONFIRM_COVER_SAVE_FILE),
+                () => { SaveToSlot(slotIndex, slot); }
+            );
+        }
+    }
+    public void RequestDelete(int slotIndex, SaveSlot slot)
+    {
+        ShowConfirm(
+              LM.GLV(Constants.CONFIRM_DELETE_SAVE_FILE),
+              () => { DeleteSlot(slotIndex, slot); }
+          );
+    }
+    private void SaveToSlot(int slotIndex, SaveSlot slot)
+    {
+        GameManager.Instance.Save(slotIndex);
+        slot.Refresh();
+    }
+    private void DeleteSlot(int slotIndex, SaveSlot slot)
+    {
+        File.Delete(GameManager.Instance.GenerateDataPath(slotIndex));
+        slot.Refresh();
+    }
+    private void ShowConfirm(string msg, System.Action onYes)
+    {
+        confirmText.text = msg;
+        confirmPanel.SetActive(true);
+
+        confirmButton.onClick.RemoveAllListeners();
+        confirmButton.onClick.AddListener(() =>
+        {
+            confirmPanel.SetActive(false);
+            onYes?.Invoke();
+        });
+        cancelButton.onClick.RemoveAllListeners();
+        cancelButton.onClick.AddListener(() => confirmPanel.SetActive(false));
+    }
+    private void RefreshPage()
+    {
+        for (int i = 0; i < slots.Length; i++)
+        {
+            int slotIndex = currentPage * slotsPerPage + i;
+            if (slotIndex >= totalSlots)
+            {
+                slots[i].gameObject.SetActive(false);
+                continue;
+            }
+            slots[i].gameObject.SetActive(true);
+            slots[i].Init(this, slotIndex);
+            slots[i].Refresh();
         }
     }
     private void PrevPage()
@@ -117,7 +120,7 @@ public class SaveLoadManager : MonoBehaviour
         if (currentPage > 0)
         {
             currentPage--;
-            UpdateUI();
+            RefreshPage();
         }
     }
     private void NextPage()
@@ -125,47 +128,21 @@ public class SaveLoadManager : MonoBehaviour
         if ((currentPage + 1) * slotsPerPage < totalSlots)
         {
             currentPage++;
-            UpdateUI();
+            RefreshPage();
         }
     }
     private void GoBack()
     {
-        saveLoadPanel.SetActive(false);
-    }
-
-    private void LoadStorylineAndScreenshots(Button button, int index)
-    {
-        var savePath = GenerateDataPath(index);
-        if (File.Exists(savePath))
+        var sceneName = GameManager.Instance.currentScene;
+        if (sceneName == Constants.GAME_SCENE)
         {
-            string json = File.ReadAllText(savePath);
-            var saveData = JsonConvert.DeserializeObject<VNManager.SaveData>(json);
-
-            if (saveData.savedScreenshotData != null)
-            {
-                Texture2D screenshot = new Texture2D(2, 2);
-                screenshot.LoadImage(saveData.savedScreenshotData);
-
-                button.GetComponentInChildren<RawImage>().texture = screenshot;
-            }
-
-            if (saveData.savedSpeakingContent != null)
-            {
-                var textComponents = button.GetComponentsInChildren<TextMeshProUGUI>();
-                textComponents[0].text = saveData.savedSpeakingContent;
-                textComponents[1].text = File.GetLastWriteTime(savePath).ToString("G");
-            }
+            GameManager.Instance.historyRecords.RemoveLast();
         }
+        GameManager.Instance.pendingData = null;
+        SceneManager.LoadScene(sceneName);
     }
-    private string GenerateDataPath(int index)
-    {
-        return Path.Combine(Application.persistentDataPath, Constants.SAVE_FILE_PATH, index + Constants.SAVE_FILE_EXTENSION);
-
-    }
-    string GetLocalized(string key)
-    {
-        return LocalizationManager.Instance.GetLocalizedValue(key);
-    }
+    
+  
 }
 
 

@@ -1,19 +1,25 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Audio;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class SettingManager : MonoBehaviour
 {
-    public GameObject settingPanel;
     public Toggle fullscreenToggle;
     public Text toggleLabel;
     public TMP_Dropdown resolutionDropdown;
 
     private Resolution[] availableResolutions;
-    private Resolution defaultResolution;
-    public Button defaultButton;
     public Button closeButton;
+    public Button defaultButton;
+    private Resolution defaultResolution;
+
+    public Slider masterVolumeSlider;
+    public Slider musicVolumeSlider;
+    public Slider voiceVolumeSlider;
+    public AudioMixer audioMixer;
 
     public static SettingManager Instance { get; private set; }
 
@@ -30,27 +36,47 @@ public class SettingManager : MonoBehaviour
     }
     void Start()
     {
+        AddListener();
+        Initialization();
+    }
+    void Initialization()
+    {
+        InitializeDisplayMode();
         InitializeResolutions();
-
-        fullscreenToggle.isOn =
-            Screen.fullScreenMode == FullScreenMode.FullScreenWindow;
-
-        UpdateToggleLabel(fullscreenToggle.isOn);
-
+        InitializeButtons();
+        InitializeVolume();
+    }
+    void AddListener()
+    {
         fullscreenToggle.onValueChanged.AddListener(SetDisplayMode);
         resolutionDropdown.onValueChanged.AddListener(SetResolution);
+
         closeButton.onClick.AddListener(CloseSetting);
         defaultButton.onClick.AddListener(ResetSetting);
 
-        settingPanel.SetActive(false);
+        masterVolumeSlider.onValueChanged.AddListener(SetMasterVolume);
+        musicVolumeSlider.onValueChanged.AddListener(SetMusicVolume);
+        voiceVolumeSlider.onValueChanged.AddListener(SetVoiceVolume);
     }
-
-    public void ShowSettingPanel()
+    void InitializeVolume()
     {
-        closeButton.GetComponentInChildren<TextMeshProUGUI>().text = GetLocalized(Constants.CLOSE);
-        defaultButton.GetComponentInChildren<TextMeshProUGUI>().text = GetLocalized(Constants.RESET);
+        masterVolumeSlider.value = PlayerPrefs.GetFloat(Constants.MASTER_VOLUME, Constants.DEFAULT_VOLUME);
+        musicVolumeSlider.value = PlayerPrefs.GetFloat(Constants.MUSIC_VOLUME, Constants.DEFAULT_VOLUME);
+        voiceVolumeSlider.value = PlayerPrefs.GetFloat(Constants.VOICE_VOLUME, Constants.DEFAULT_VOLUME);
+
+        SetMasterVolume(masterVolumeSlider.value);
+        SetMusicVolume(musicVolumeSlider.value);
+        SetVoiceVolume(voiceVolumeSlider.value);
+    }
+    void InitializeDisplayMode()
+    {
+        fullscreenToggle.isOn = Screen.fullScreenMode == FullScreenMode.FullScreenWindow;
         UpdateToggleLabel(fullscreenToggle.isOn);
-        settingPanel.SetActive(true);
+    }
+    void InitializeButtons()
+    {
+        closeButton.GetComponentInChildren<TextMeshProUGUI>().text = LM.GLV(Constants.CLOSE);
+        defaultButton.GetComponentInChildren<TextMeshProUGUI>().text = LM.GLV(Constants.RESET);
     }
     void InitializeResolutions()
     {
@@ -91,7 +117,7 @@ public class SettingManager : MonoBehaviour
 
     void UpdateToggleLabel(bool isFullscreen)
     {
-        toggleLabel.text = isFullscreen ? GetLocalized(Constants.FULLSCREEN) : GetLocalized(Constants.WINDOWED);
+        toggleLabel.text = isFullscreen ? LM.GLV(Constants.FULLSCREEN) : LM.GLV(Constants.WINDOWED);
     }
 
     void SetResolution(int index)
@@ -101,28 +127,52 @@ public class SettingManager : MonoBehaviour
         int height = int.Parse(dimensions[1].Trim());
         Screen.SetResolution(width, height, Screen.fullScreenMode);
     }
+
+    // 将 Slider 数值（0~1）转换为分贝值（对数曲线），当数值为 0 时设为 -80dB
+    private float SliderValueToDecibel(float value)
+    {
+        return value > 0.0001f ? Mathf.Log10(value) * 20f : -80f;
+    }
+    void SetMasterVolume(float value)
+    {
+        audioMixer.SetFloat(Constants.MASTER_VOLUME, SliderValueToDecibel(value));
+    }
+    void SetMusicVolume(float value)
+    {
+        audioMixer.SetFloat(Constants.MUSIC_VOLUME, SliderValueToDecibel(value));
+    }
+    void SetVoiceVolume(float value)
+    {
+        audioMixer.SetFloat(Constants.VOICE_VOLUME, SliderValueToDecibel(value));
+    }
     void CloseSetting()
     {
-        //SaveSettings();
-        settingPanel.SetActive(false);
-    }
-
-    /*void SaveSettings()
-    {
-        PlayerPrefs.SetInt("Resolution", resolutionDropdown.value);
-        PlayerPrefs.SetInt("Fullscreen", fullscreenToggle.isOn ? 1 : 0);
+        var sceneName = GameManager.Instance.currentScene;
+        if (sceneName == Constants.GAME_SCENE)
+        {
+            GameManager.Instance.historyRecords.RemoveLast();
+        }
+        PlayerPrefs.SetFloat(Constants.MASTER_VOLUME, masterVolumeSlider.value);
+        PlayerPrefs.SetFloat(Constants.MUSIC_VOLUME, musicVolumeSlider.value);
+        PlayerPrefs.SetFloat(Constants.VOICE_VOLUME, voiceVolumeSlider.value);
         PlayerPrefs.Save();
-    }*/
+
+        SceneManager.LoadScene(sceneName);
+
+    }
 
     void ResetSetting()
     {
         resolutionDropdown.value = resolutionDropdown.options.FindIndex(
             option => option.text == $"{defaultResolution.width}x{defaultResolution.height}");
-
         fullscreenToggle.isOn = true;
-    }
-    string GetLocalized(string key)
-    {
-        return LocalizationManager.Instance.GetLocalizedValue(key);
+
+        masterVolumeSlider.value = Constants.DEFAULT_VOLUME;
+        musicVolumeSlider.value = Constants.DEFAULT_VOLUME;
+        voiceVolumeSlider.value = Constants.DEFAULT_VOLUME;
+
+        SetMasterVolume(masterVolumeSlider.value);
+        SetMusicVolume(musicVolumeSlider.value);
+        SetVoiceVolume(voiceVolumeSlider.value);
     }
 }
