@@ -1,0 +1,694 @@
+using DG.Tweening;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using TMPro;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+public class VNManager : MonoBehaviour
+{
+    #region Variables
+    public GameObject dialogueBox;
+    public TextMeshProUGUI speakerName;
+    public TypewriterEffect typewriterEffect;
+    public ScreenShotter screenShotter;
+
+    public Image avatarImage;
+    public Image backgroundImage;
+
+    public GameObject bottomButtons;
+    public Button autoButton;
+    public Button skipButton;
+    public Button saveButton;
+    public Button loadButton;
+    //public Button quickSaveButton;
+    //public Button quickLoadButton;
+    public Button historyButton;
+    public Button settingButton;
+    public Button homeButton;
+    public Button closeButton;
+
+    private List<ExcelData> storyData;
+    private string currentStoryFileName;
+    private int currentLine;
+    private string currentSpeakingContent;
+    private float currentTypingSpeed = Constants.DEFAULT_TYPING_SPEED;
+
+    private bool isAutoPlay = false;
+    private bool isSkip = false;
+    private int maxReachedLineIndex = 0;
+    public static VNManager Instance { get; private set; }
+    #endregion
+    #region Lifecycle
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+    void Start()
+    {
+        var gm = GameManager.Instance;
+        gm.hasStarted = true;
+        gm.currentScene = Constants.GAME_SCENE;
+        if (gm.pendingData != null)
+        {
+            var savedData = gm.pendingData;
+            gm.pendingData = null;
+
+            gm.currentStoryFile = savedData.savedStoryFileName;
+            savedData.savedLine--;
+            gm.currentLineIndex = savedData.savedLine;
+
+            savedData.savedHistoryRecords.RemoveLast();
+            gm.historyRecords = savedData.savedHistoryRecords;
+            gm.playerName = savedData.savedPlayerName;
+
+            gm.currentBackgroundImg = savedData.savedBackgroundImg;
+            gm.currentBackgroundMusic = savedData.savedBackgroundMusic;
+
+            gm.currentCharacterData = savedData.savedCharacters;
+
+            CharacterStateManager.Instance.LoadStates(savedData.savedAffection);
+        }
+        currentLine = gm.currentLineIndex;
+        bottomButtonsAddListener();
+        InitializeImage();
+        LoadStory(gm.currentStoryFile);
+        DisplayNextLine();
+    }
+    void Update()
+    {
+        if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space))
+        {
+            if (!dialogueBox.activeSelf)
+            {
+                OpenUI();
+            }
+            else if (!IsHittingBottomButtons() && !ChoiceManager.Instance.choicePanel.activeSelf)
+            {
+                DisplayNextLine();
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (dialogueBox.activeSelf)
+            {
+                CloseUI();
+            }
+            else
+            {
+                OpenUI();
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.RightControl))
+        {
+            CtrlSkip();
+        }
+    }
+    #endregion
+    #region Initialization
+    void bottomButtonsAddListener()
+    {
+        autoButton.onClick.AddListener(OnAutoButtonClick);
+        skipButton.onClick.AddListener(OnSkipButtonClick);
+        saveButton.onClick.AddListener(OnSaveButtonClick);
+        loadButton.onClick.AddListener(OnLoadButtonClick);
+        //quickSaveButton.onClick.AddListener(OnQuickSaveButtonClick);
+        //quickLoadButton.onClick.AddListener(OnQuickLoadButtonClick);
+        historyButton.onClick.AddListener(OnHistoryButtonClick);
+        settingButton.onClick.AddListener(OnSettingButtonClick);
+        homeButton.onClick.AddListener(OnHomeButtonClick);
+        closeButton.onClick.AddListener(OnCloseButtonClick);
+    }
+    void LoadStory(string fileName)
+    {
+        LoadStoryFromFile(fileName);
+        RecoverLastBackgroundAndCharacter();
+    }
+    void InitializeImage()
+    {
+        backgroundImage.gameObject.SetActive(false);
+        avatarImage.gameObject.SetActive(false);
+    }
+    void LoadStoryFromFile(string fileName)
+    {
+        currentStoryFileName = fileName;
+        string filePath = Path.Combine(Application.streamingAssetsPath,
+                                        Constants.STORY_PATH,
+                                        fileName + Constants.STORY_FILE_EXTENSION);
+        storyData = ExcelReader.ReadExcel(filePath);
+        if (storyData == null || storyData.Count == 0)
+        {
+            Debug.LogError(Constants.NO_DATA_FOUND);
+        }
+        GameManager.Instance.currentStoryFile = currentStoryFileName;
+
+        if (GameManager.Instance.maxReachedLineIndices.ContainsKey(currentStoryFileName))
+        {
+            maxReachedLineIndex = GameManager.Instance.maxReachedLineIndices[currentStoryFileName];
+        }
+        else
+        {
+            maxReachedLineIndex = 0;
+            GameManager.Instance.maxReachedLineIndices[currentStoryFileName] = maxReachedLineIndex;
+        }
+    }
+    #endregion
+    #region Display
+    void DisplayNextLine()
+    {
+        if (currentLine > maxReachedLineIndex)
+        {
+            maxReachedLineIndex = currentLine;
+            GameManager.Instance.maxReachedLineIndices[currentStoryFileName] = maxReachedLineIndex;
+        }
+        if (currentLine >= storyData.Count - 1)
+        {
+            if (isAutoPlay)
+            {
+                isAutoPlay = false;
+                UpdateButtonImage(Constants.AUTO_OFF, autoButton);
+            }
+            if (storyData[currentLine].speakerName == Constants.END_OF_STORY)
+            {
+                GameManager.Instance.hasStarted = false;
+                SceneManager.LoadScene(Constants.MENU_SCENE);
+                // SceneManager.LoadScene(Constants.CREDITS_SCENE);
+            }
+            if (storyData[currentLine].speakerName == Constants.CHOICE)
+            {
+                ShowChoices();
+            }
+            if (storyData[currentLine].speakerName == Constants.GOTO)
+            {
+                LoadStory(storyData[currentLine].speakingContent);
+                currentLine = Constants.DEFAULT_START_LINE;
+                DisplayNextLine();
+            }
+            if (storyData[currentLine].speakerName == Constants.GAME)
+            {
+                LoadMiniGame();
+            }
+            return;
+        }
+        if (typewriterEffect.IsTyping())
+        {
+            typewriterEffect.CompleteLine();
+        }
+        else
+        {
+            DisplayThisLine();
+        }
+    }
+    void DisplayThisLine()
+    {
+        GameManager.Instance.currentLineIndex = currentLine;
+        var data = storyData[currentLine];
+        speakerName.text = LM.GetSpeakerName(data);
+        currentSpeakingContent = LM.GetSpeakingContent(data);
+        typewriterEffect.StartTyping(currentSpeakingContent, currentTypingSpeed);
+
+        // 记录历史文本
+        GameManager.Instance.historyRecords.AddLast(data);
+
+        if (NotNullNorEmpty(data.avatarImageFileName))
+        {
+            UpdateAvatarImage(data.avatarImageFileName);
+        }
+        else
+        {
+            avatarImage.gameObject.SetActive(false);
+        }
+        if (NotNullNorEmpty(data.vocalAudioFileName))
+        {
+            PlayVocalAudio(data.vocalAudioFileName);
+        }
+        if (NotNullNorEmpty(data.backgroundImageFileName))
+        {
+            GameManager.Instance.currentBackgroundImg = data.backgroundImageFileName;
+            UpdateBackgroundImage(data.backgroundImageFileName);
+        }
+        if (NotNullNorEmpty(data.backgroundMusicFileName))
+        {
+            GameManager.Instance.currentBackgroundMusic = data.backgroundMusicFileName;
+            PlayBackgroundMusic(data.backgroundMusicFileName);
+        }
+        // 处理角色动作
+        foreach (var cmd in data.characterCommands)
+        {
+            if (cmd.action == Constants.DISAPPEAR)
+            {
+                GameManager.Instance.currentCharacterData
+                    .RemoveAll(c => c.characterID == cmd.characterID);
+                CharacterManager.Instance.HideCharacter(cmd.characterID);
+            }
+            else
+            {
+                var state = new CharacterSaveData
+                {
+                    characterID = cmd.characterID,
+                    expressionName = cmd.expressionName,
+                    positionX = cmd.positionX
+                };
+
+                GameManager.Instance.currentCharacterData
+                    .RemoveAll(c => c.characterID == cmd.characterID);
+
+                GameManager.Instance.currentCharacterData
+                    .Add(state);
+
+                if (cmd.action.StartsWith(Constants.APPEAR_AT))
+                {
+                    CharacterManager.Instance.ShowCharacter(
+                        cmd.characterID,
+                        new Vector2(cmd.positionX, 0f),
+                        cmd.expressionName
+                    );
+                }
+                if (cmd.action.StartsWith(Constants.MOVE_TO))
+                {
+
+                }
+            }
+        }
+        currentLine++;
+    }
+    void RecoverLastBackgroundAndCharacter()
+    {
+        if (NotNullNorEmpty(GameManager.Instance.currentBackgroundImg))
+        {
+            UpdateBackgroundImage(GameManager.Instance.currentBackgroundImg);
+        }
+
+        if (NotNullNorEmpty(GameManager.Instance.currentBackgroundMusic))
+        {
+            PlayBackgroundMusic(GameManager.Instance.currentBackgroundMusic);
+        }
+
+        CharacterManager.Instance.ClearAll();
+        foreach (var c in GameManager.Instance.currentCharacterData)
+        {
+            CharacterManager.Instance.ShowCharacter(
+                c.characterID,
+                new Vector2(c.positionX, 0f),
+                c.expressionName                
+            );
+        }
+    }
+    bool NotNullNorEmpty(string str)
+    {
+        return !string.IsNullOrEmpty(str);
+    }
+    #endregion
+    #region Choices
+    void ShowChoices()
+    {
+        var choices = ParseChoices();
+        foreach (var opt in choices)
+        {
+            Debug.Log($"选项: {opt.text}, 目标: {opt.nextStoryFileName}, 变化: {string.Join(", ", opt.changes.Select(c => $"{c.characterID}:{c.delta}"))}, 条件: {string.Join(", ", opt.conditions.Select(c => $"{c.characterID}:{c.minValue}-{c.maxValue}"))}");
+        }
+        ChoiceManager.Instance.ShowChoices(choices, HandleChoice);
+    }
+    void HandleChoice(string selectedChoice)
+    {
+        currentLine = Constants.DEFAULT_START_LINE;
+        LoadStory(selectedChoice);
+        DisplayNextLine();
+    }
+    List<ChoiceOption> ParseChoices()
+    {
+        var data = storyData[currentLine];
+        var choiceTexts = LM.GetSpeakingContent(data)
+                        .Split(Constants.ChoiceDelimiter)
+                        .Select(s => s.Trim())
+                        .ToArray();
+        var targetFiles = data.avatarImageFileName
+                        .Split(Constants.ChoiceDelimiter)
+                        .Select(s => s.Trim())
+                        .ToArray();
+        var changes = data.vocalAudioFileName
+                        .Split(Constants.ChoiceDelimiter)
+                        .Select(s => s.Trim())
+                        .ToArray();
+        var conditions = data.backgroundImageFileName
+                        .Split(Constants.ChoiceDelimiter)
+                        .Select(s => s.Trim())
+                        .ToArray();
+
+        var choices = new List<ChoiceOption>();
+        int choiceCount = choiceTexts.Length;
+        for (int i = 0; i < choiceCount; i++)
+        {
+            var opt = new ChoiceOption
+            {
+                text = choiceTexts.ElementAtOrDefault(i) ?? "",
+                nextStoryFileName = targetFiles.ElementAtOrDefault(i) ?? "",
+                changes = ParseChanges(changes.ElementAtOrDefault(i)),
+                conditions = ParseConditions(conditions.ElementAtOrDefault(i))
+            };
+            choices.Add(opt);
+        }
+        return choices;
+    }
+
+    // Parse "Alice:+10;Bob:-5" → List<AffectionChange>
+    List<AffectionChange> ParseChanges(string raw)
+    {
+        var list = new List<AffectionChange>();
+        if (string.IsNullOrEmpty(raw)) return list;
+
+        foreach (var part in raw.Split(';', StringSplitOptions.RemoveEmptyEntries))
+        {
+            var kv = part.Split(':', StringSplitOptions.RemoveEmptyEntries);
+            if (kv.Length != 2) continue;
+
+            if (int.TryParse(kv[1], out int delta))
+            {
+                list.Add(new AffectionChange
+                {
+                    characterID = kv[0].Trim(),
+                    delta = delta
+                });
+            }
+        }
+        return list;
+    }
+
+    // Parse "Annie:0,100;Bob:-50,50" → List<AffectionCondition>
+    List<AffectionCondition> ParseConditions(string raw)
+    {
+        var list = new List<AffectionCondition>();
+        if (string.IsNullOrEmpty(raw)) return list;
+
+        foreach (var part in raw.Split(';', StringSplitOptions.RemoveEmptyEntries))
+        {
+            var kv = part.Split(':', StringSplitOptions.RemoveEmptyEntries);
+            if (kv.Length != 2) continue;
+
+            var id = kv[0].Trim();
+            var nums = kv[1].Split(',', StringSplitOptions.RemoveEmptyEntries);
+            if (nums.Length != 2) continue;
+
+            if (int.TryParse(nums[0], out int min) &&
+                int.TryParse(nums[1], out int max))
+            {
+                list.Add(new AffectionCondition
+                {
+                    characterID = id,
+                    minValue = min,
+                    maxValue = max
+                });
+            }
+        }
+        return list;
+    }
+    #endregion
+    #region MiniGame
+    void LoadMiniGame()
+    {
+        var data = storyData[currentLine];
+        GameManager.Instance.WinStoryFileName = data.avatarImageFileName;
+        GameManager.Instance.LoseStoryFileName = data.vocalAudioFileName;
+        SaveData();
+        GameManager.Instance.pendingData.savedLine = Constants.DEFAULT_START_LINE + 1; // 保存下一行
+        GameManager.Instance.pendingData.savedHistoryRecords.AddLast(storyData[currentLine]);
+        SceneManager.LoadScene(data.speakingContent);
+    }
+    #endregion
+    #region Audios
+    void PlayVocalAudio(string audioFileName)
+    {
+        AudioManager.Instance.PlayVoice(audioFileName);
+    }
+    void PlayBackgroundMusic(string musicFileName)
+    {
+        AudioManager.Instance.PlayBackground(musicFileName);
+    }
+    #endregion
+    #region Images
+    void UpdateAvatarImage(string imageFileName)
+    {
+        var imagePath = Constants.AVATAR_PATH + imageFileName;
+        UpdateImage(imagePath, avatarImage);
+    }
+    void UpdateBackgroundImage(string imageFileName)
+    {
+        string imagePath = Constants.BACKGROUND_PATH + imageFileName;
+        UpdateImage(imagePath, backgroundImage);
+        // 记录该背景已显示
+        if (!GameManager.Instance.unlockedBackgrounds.Contains(imageFileName))
+        {
+            GameManager.Instance.unlockedBackgrounds.Add(imageFileName);
+        }
+    }
+    void UpdateCharacterImage(string action, string imageFileName, Image characterImage, string x)
+    {
+        // 根据action执行对应的动画或操作
+        if (action.StartsWith(Constants.APPEAR_AT))
+        {
+            string imagePath = Constants.CHARACTER_PATH + imageFileName;
+            if (NotNullNorEmpty(x))
+            {
+                UpdateImage(imagePath, characterImage);
+                var newPosition = new Vector2(float.Parse(x), characterImage.rectTransform.anchoredPosition.y);
+                characterImage.rectTransform.anchoredPosition = newPosition;
+
+                var duration = Constants.DURATION_TIME;
+                if (action == Constants.APPEAR_AT_INSTANTLY)
+                {
+                    duration = 0;
+                }
+                characterImage.DOFade(1, duration).From(0);
+            }
+            else
+            {
+                Debug.LogError(Constants.COORDINATE_MISSING);
+            }
+        }
+        else if (action == Constants.DISAPPEAR)
+        {
+            characterImage.DOFade(0, Constants.DURATION_TIME).OnComplete(() => characterImage.gameObject.SetActive(false));
+        }
+        else if (action.StartsWith(Constants.MOVE_TO))
+        {
+            if (NotNullNorEmpty(x))
+            {
+                characterImage.rectTransform.DOAnchorPosX(float.Parse(x), Constants.DURATION_TIME);
+            }
+            else
+            {
+                Debug.LogError(Constants.COORDINATE_MISSING);
+            }
+        }
+    }
+    void UpdateButtonImage(string imageFileName, Button button)
+    {
+        string imagePath = Constants.BUTTON_PATH + imageFileName;
+        UpdateImage(imagePath, button.image);
+    }
+    void UpdateImage(string imagePath, Image image)
+    {
+        Sprite sprite = Resources.Load<Sprite>(imagePath);
+        if (sprite != null)
+        {
+            image.sprite = sprite;
+            image.gameObject.SetActive(true);
+        }
+        else
+        {
+            Debug.LogError(Constants.IMAGE_LOAD_FAILED + imagePath);
+        }
+    }
+    #endregion
+    #region Buttons
+    #region Bottom
+    bool IsHittingBottomButtons()
+    {
+        return RectTransformUtility.RectangleContainsScreenPoint(
+            bottomButtons.GetComponent<RectTransform>(),
+            Input.mousePosition,
+            Camera.main
+        );
+    }
+    #endregion
+    #region Auto
+    void OnAutoButtonClick()
+    {
+        isAutoPlay = !isAutoPlay;
+        UpdateButtonImage((isAutoPlay ? Constants.AUTO_ON : Constants.AUTO_OFF), autoButton);
+        if (isAutoPlay)
+        {
+            StartCoroutine(StartAutoPlay());
+        }
+    }
+    private IEnumerator StartAutoPlay()
+    {
+        while (isAutoPlay)
+        {
+            if (!typewriterEffect.IsTyping())
+            {
+                DisplayNextLine();
+            }
+            yield return new WaitForSeconds(Constants.DEFAULT_AUTO_WAITING_SECONDS);
+        }
+    }
+    #endregion
+    #region Skip
+    void OnSkipButtonClick()
+    {
+        if (!isSkip && CanSkip())
+        {
+            StartSkip();
+        }
+        else if (isSkip)
+        {
+            StopCoroutine(SkipToMaxReachedLine());
+            EndSkip();
+        }
+    }
+    bool CanSkip()
+    {
+        return currentLine < maxReachedLineIndex;
+    }
+    void StartSkip()
+    {
+        isSkip = true;
+        UpdateButtonImage(Constants.SKIP_ON, skipButton);
+        currentTypingSpeed = Constants.SKIP_MODE_TYPING_SPEED; // 设置极快的打字机速度
+        StartCoroutine(SkipToMaxReachedLine());
+    }
+    private IEnumerator SkipToMaxReachedLine()
+    {
+        while (isSkip)
+        {
+            if (CanSkip())
+            {
+                DisplayThisLine();
+            }
+            else
+            {
+                EndSkip();
+            }
+            yield return new WaitForSeconds(Constants.DEFAULT_SKIP_WAITING_SECONDS); // 控制快速跳过的节奏
+        }
+    }
+    void EndSkip()
+    {
+        isSkip = false;
+        currentTypingSpeed = Constants.DEFAULT_TYPING_SPEED;
+        UpdateButtonImage(Constants.SKIP_OFF, skipButton);
+    }
+    void CtrlSkip()
+    {
+        currentTypingSpeed = Constants.SKIP_MODE_TYPING_SPEED; // 设置极快的打字机速度
+        StartCoroutine(SkipWhilePressingCtrl());
+    }
+    private IEnumerator SkipWhilePressingCtrl()
+    {
+        while (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))
+        {
+            DisplayNextLine();
+            yield return new WaitForSeconds(Constants.DEFAULT_SKIP_WAITING_SECONDS); // 控制快速跳过的节奏
+        }
+    }
+    #endregion
+    #region Save
+    void OnSaveButtonClick()
+    {
+        SaveData();
+        GameManager.Instance.currentSaveLoadMode = GameManager.SaveLoadMode.Save;
+        SceneManager.LoadScene(Constants.SAVE_LOAD_SCENE);
+    }
+    void SaveData()
+    {
+        CloseUI();
+        Texture2D screenshot = screenShotter.CaptureScreenshot();
+        OpenUI();
+
+        var gm = GameManager.Instance;
+        gm.pendingData = new SaveData
+        {
+            savedStoryFileName = currentStoryFileName,
+            savedLine = currentLine,
+            savedScreenshotData = screenshot.EncodeToPNG(),
+            savedHistoryRecords = gm.historyRecords,
+            savedPlayerName = gm.playerName,
+            savedBackgroundImg = gm.currentBackgroundImg,
+            savedBackgroundMusic = gm.currentBackgroundMusic,
+            savedCharacters = gm.currentCharacterData,
+            savedAffection = CharacterStateManager.Instance.DumpStates()
+        };
+
+    }
+    #endregion
+    #region Load
+    void OnLoadButtonClick()
+    {
+        GameManager.Instance.currentSaveLoadMode = GameManager.SaveLoadMode.Load;
+        SceneManager.LoadScene(Constants.SAVE_LOAD_SCENE);
+    }
+    #endregion
+    #region Quick SaveLoad
+    //void OnQuickSaveButtonClick()
+    //{
+    //    SaveData();
+    //    GameManager.Instance.Save(Constants.QUICK_SAVE_SLOT);
+    //}
+
+    //void OnQuickLoadButtonClick()
+    //{
+    //    var gm = GameManager.Instance;
+    //    string dataPath = gm.GenerateDataPath(Constants.QUICK_SAVE_SLOT);
+    //    if (File.Exists(dataPath))
+    //    {
+    //        gm.Load(Constants.QUICK_SAVE_SLOT);
+    //        SceneManager.LoadScene(Constants.GAME_SCENE);
+    //    }
+    //}
+    #endregion
+    #region History
+    void OnHistoryButtonClick()
+    {
+        SceneManager.LoadScene(Constants.HISTORY_SCENE);
+    }
+    #endregion
+    #region Setting
+    void OnSettingButtonClick()
+    {
+        SceneManager.LoadScene(Constants.SETTING_SCENE);
+    }
+    #endregion
+    #region Home
+    void OnHomeButtonClick()
+    {
+        SceneManager.LoadScene(Constants.MENU_SCENE);
+    }
+    #endregion
+    #region Close
+    void OnCloseButtonClick()
+    {
+        CloseUI();
+    }
+    void OpenUI()
+    {
+        dialogueBox.SetActive(true);
+        bottomButtons.SetActive(true);
+    }
+    void CloseUI()
+    {
+        dialogueBox.SetActive(false);
+        bottomButtons.SetActive(false);
+    }
+    #endregion
+    #endregion
+}
