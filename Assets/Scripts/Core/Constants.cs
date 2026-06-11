@@ -28,7 +28,7 @@ public class Constants : MonoBehaviour
 
     //打字机
     public static float DEFAULT_TYPING_SPEED = 0.05f;
-    public static float SKIP_MODE_TYPING_SPEED = 0.03f;
+    public static float SKIP_MODE_TYPING_SPEED = 0.005f;
 
     public static string AUTO_ON = "Auto";
     public static string AUTO_OFF = "Auto";
@@ -36,7 +36,7 @@ public class Constants : MonoBehaviour
 
     public static string SKIP_ON = "Skip";
     public static string SKIP_OFF = "Skip";
-    public static float DEFAULT_SKIP_WAITING_SECONDS = 0.04f;
+    public static float DEFAULT_SKIP_WAITING_SECONDS = 0.01f;
     public static float DEFAULT_WAITING_SECONDS = 1.5f;
 
     //声音
@@ -56,6 +56,11 @@ public class Constants : MonoBehaviour
     //立绘动画
     public static string APPEAR_AT = "appearAt";
     public static string APPEAR_AT_INSTANTLY = "appearAtInstantly";
+    public static string APPEAR_AT_WITH_L2D = "appearAtWithL2d";
+    public static string L2D_DEFAULT_MOTION = "idle";
+    public static string L2D_DEFAULT_LAYER = "Default";
+    public static int L2D_DEFAULT_ORDER_IN_LAYER = 10;
+    public static readonly Vector2 CENTER = new Vector2(0.5f, 0.5f);
     public static string DISAPPEAR = "disappear";
     public static string MOVE_TO = "moveTo";
     public static int    DURATION_TIME = 1;

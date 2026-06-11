@@ -57,31 +57,53 @@ public class ExcelReader
                             characterID = fields[0].Trim(),
                             action = fields[1].Trim(),
                         };
-                        if (cmd.action != Constants.DISAPPEAR)
+                        if (cmd.action == Constants.DISAPPEAR)
                         {
-                            if (fields.Length < 4)
-                            {
-                                continue;
-                            }
+                            data.characterCommands.Add(cmd);
+                            continue;
+                        }
+                        if (fields.Length == 2)
+                        {
+                            continue;
+                        }
+                        var third = fields[2].Trim();
+                        if (float.TryParse(third, out var pX))
+                        {
+                            cmd.positionX = pX;
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                        if (fields.Length == 3)
+                        {
+                            data.characterCommands.Add(cmd);
+                            continue;
+                        }
 
-                            var third = fields[2].Trim();
-                            var fourth = fields[3].Trim();
+                        var fourth = fields[3].Trim();
+                        if (cmd.action == Constants.APPEAR_AT_WITH_L2D)
+                        {
+                            cmd.motionKey = fourth;
+                        }
+                        else
+                        {
+                            cmd.expressionName = fourth;
+                        }
+                        if (fields.Length == 4)
+                        {
+                            data.characterCommands.Add(cmd);
+                            continue;
+                        }
 
-                            if (float.TryParse(third, out var px))
-                            {
-                                cmd.positionX = px;
-                                cmd.expressionName = string.IsNullOrWhiteSpace(fourth) ? null : fourth;
-                            }
-                            else if (float.TryParse(fourth, out px))
-                            {
-                                cmd.expressionName = string.IsNullOrWhiteSpace(third) ? null : third;
-                                cmd.positionX = px;
-                            }
-                            else
-                            {
-                                cmd.expressionName = null;
-                                cmd.positionX = 0f;
-                            }
+                        var fifth = fields[4].Trim();
+                        if (float.TryParse(fifth, out var scale))
+                        {
+                            cmd.scale = scale;
+                        }
+                        else
+                        {
+                            continue;
                         }
                         data.characterCommands.Add(cmd);
                     }

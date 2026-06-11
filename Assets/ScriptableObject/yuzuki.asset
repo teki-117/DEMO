@@ -13,7 +13,11 @@ MonoBehaviour:
   m_Name: yuzuki
   m_EditorClassIdentifier: Assembly-CSharp::CharacterData
   characterID: yuzuki
-  standSprite: {fileID: 5888761262817290339, guid: 8f1cb859ecb286e4eaf3e78cbd86a451, type: 3}
-  defaultPosition: {x: 0, y: 0}
-  defaultScale: {x: 1, y: 1}
-  expressionsList: []
+  renderKind: 1
+  standSprite: {fileID: 0}
+  expressions: []
+  live2DModelPrefab: {fileID: 4659150725755658650, guid: d14f0daf691c3e941ac079d7a4a8cf7a, type: 3}
+  live2DMotions:
+  - key: idle
+    clip: {fileID: 7400000, guid: 6a4d60e80afbcb14ebd869304fbcd43c, type: 2}
+  live2DExpressions: []

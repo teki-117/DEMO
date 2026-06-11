@@ -1,16 +1,18 @@
 using UnityEngine;
-using UnityEngine.UI;
 
-public class CharacterDisplay : MonoBehaviour
+public interface ICharacterDisplay
 {
-    public Image image;
-    public void Setup(Sprite sprite, Vector2 anchor, Vector2 scale)
-    {
-        image.sprite = sprite;
-        RectTransform rt = (RectTransform)transform;
-        rt.anchorMin = rt.anchorMax = anchor;
-        rt.anchoredPosition = Vector2.zero;
-        rt.localScale = scale;
-        gameObject.SetActive(true);
-    }
+    GameObject gameObject { get; }
+
+    Transform RootTransform { get; }
+
+    void Setup(CharacterData data, Vector2 anchoredPos, Vector2 scale);
+
+    void SetExpression(string key);
+
+    void PlayMotion(string key, bool loop = false);
+
+    void MoveToX(float x, float duration = 0.2f);
+
+    void Hide();
 }

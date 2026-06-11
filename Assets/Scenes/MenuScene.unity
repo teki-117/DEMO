@@ -155,7 +155,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 249.5, y: 43.44}
+  m_SizeDelta: {x: 500, y: 43.44}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &19950147
 MonoBehaviour:
@@ -1689,7 +1689,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CharacterStateManager
   allCharacterDatas:
   - {fileID: 11400000, guid: a71afacfbce50ca4cad30c2ce7b34b9c, type: 2}
-  - {fileID: 11400000, guid: 2639cb5af0e50334db0421bf2d0a1611, type: 2}
+  - {fileID: 11400000, guid: 21fd5f650a3797a4f989e2064dd9f471, type: 2}
 --- !u!4 &1822564513
 Transform:
   m_ObjectHideFlags: 0
@@ -1892,7 +1892,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 249.5, y: 43.44}
+  m_SizeDelta: {x: 500, y: 43.44}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1835108870
 MonoBehaviour:
@@ -2266,7 +2266,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 249.5, y: 43.44}
+  m_SizeDelta: {x: 500, y: 43.44}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1926464449
 MonoBehaviour:
@@ -2356,7 +2356,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 249.5, y: 43.44}
+  m_SizeDelta: {x: 500, y: 43.44}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2020544649
 MonoBehaviour:
@@ -2525,7 +2525,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 249.5, y: 43.44}
+  m_SizeDelta: {x: 500, y: 43.44}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2063350276
 MonoBehaviour:
@@ -2700,7 +2700,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 249.5, y: 43.44}
+  m_SizeDelta: {x: 500, y: 63.74}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2139456864
 MonoBehaviour:

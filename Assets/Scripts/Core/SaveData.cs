@@ -4,7 +4,9 @@ public class CharacterSaveData
 {
     public string characterID;
     public float positionX;
+    public float scale;
     public string expressionName;
+    public string motionKey;
 }
 
 public class SaveData

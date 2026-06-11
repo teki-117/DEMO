@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: sakura
   m_EditorClassIdentifier: Assembly-CSharp::CharacterData
   characterID: sakura
+  renderKind: 0
   standSprite: {fileID: -4612768578659695768, guid: 5533ae0090f72f94780caea68b04f331, type: 3}
-  defaultPosition: {x: 0, y: 0}
-  defaultScale: {x: 1, y: 1}
-  expressionsList: []
+  expressions: []
+  live2DModelPrefab: {fileID: 0}
+  live2DMotions: []
+  live2DExpressions: []

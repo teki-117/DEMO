@@ -24,6 +24,8 @@ public class CharacterCommand
     public string action;
     public float positionX;
     public string expressionName;
+    public float scale;
+    public string motionKey;
 }
 public class ExcelData
 {

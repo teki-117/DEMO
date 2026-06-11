@@ -530,7 +530,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 015dc80491aa21d42bcd9a935f3e3a0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InputManager
-  inputPanel: {fileID: 1459650192}
   promptText: {fileID: 1311299923}
   nameInputField: {fileID: 332071677}
   confirmButton: {fileID: 1823208980}

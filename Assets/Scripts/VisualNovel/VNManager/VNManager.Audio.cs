@@ -1,16 +1,6 @@
-using UnityEngine;
-
-public class VNManager.Audio : MonoBehaviour
+public partial class VNManager
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    private void Audio_PlayVoice(string file) => AudioManager.Instance.PlayVoice(file);
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    private void Audio_PlayBGM(string file) => AudioManager.Instance.PlayBackground(file);
 }
