@@ -71,9 +71,9 @@ public partial class VNManager
                 Flow_Next();
                 return;
 
-            //case LineKind.Game:
-            //    MiniGame_Load();
-            //    return;
+            case LineKind.Game:
+                Live2DGameScene(d);
+                return;
 
             case LineKind.End:
                 ReturnToMenu();

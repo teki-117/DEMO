@@ -10,6 +10,7 @@ public class Constants : MonoBehaviour
     public static string SAVE_LOAD_SCENE = "SaveLoadScene";
     public static string GALLERY_SCENE = "GalleryScene";
     public static string HISTORY_SCENE = "HistoryScene";
+    public static string LIVE2D_GAME_SCENE = "MuScene";
 
     //ÎÄ±¾
     public static string STORY_PATH = "story";
