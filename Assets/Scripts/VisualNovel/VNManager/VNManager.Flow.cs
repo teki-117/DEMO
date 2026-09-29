@@ -76,7 +76,7 @@ public partial class VNManager
                 return;
 
             case LineKind.End:
-                ReturnToMenu();
+                FinishStory();
                 return;
 
             default:
@@ -170,6 +170,29 @@ public partial class VNManager
         SceneManager.LoadScene(Constants.MENU_SCENE);
     }
 
+    private void FinishStory()
+    {
+        // 结束自动播放或快进。
+        SetMode(AdvanceMode.Manual);
+
+        var gm = GameManager.Instance;
+
+        string targetScene = string.IsNullOrEmpty(gm.storyReturnScene)
+            ? Constants.MENU_SCENE
+            : gm.storyReturnScene;
+
+        gm.currentScene = targetScene;
+
+        // 返回地图时，游戏仍在进行。
+        gm.hasStarted = targetScene != Constants.MENU_SCENE;
+
+        if (targetScene == "MapScene" && WorldManager.Instance != null)
+        {
+            WorldManager.Instance.CompleteCurrentAction();
+        }
+
+        SceneManager.LoadScene(targetScene);
+    }
     private void SetMode(AdvanceMode m)
     {
         if (mode == m) return;

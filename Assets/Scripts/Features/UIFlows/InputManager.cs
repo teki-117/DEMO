@@ -39,7 +39,7 @@ public class InputManager : MonoBehaviour
             return;
         }
         GameManager.Instance.playerName = playerName;
-        SceneManager.LoadScene(Constants.GAME_SCENE);
+        SceneManager.LoadScene("MapScene");
     }
     bool IsInvalidName(string name)
     {

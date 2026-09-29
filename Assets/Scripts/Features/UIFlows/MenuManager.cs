@@ -53,13 +53,8 @@ public class MenuManager : MonoBehaviour
     }
     void StartGame()
     {
-        GameManager.Instance.currentStoryFile = Constants.DEFAULT_STORY_FILE;
-        GameManager.Instance.currentLineIndex = Constants.DEFAULT_START_LINE;
-        GameManager.Instance.currentBackgroundImg = string.Empty;
-        GameManager.Instance.currentBackgroundMusic = string.Empty;
-        GameManager.Instance.currentCharacterData.Clear();
-        GameManager.Instance.historyRecords = new LinkedList<ExcelData>();
-        CharacterStateManager.Instance.ResetAffection();
+        GameManager.Instance.StartNewGame();
+
         SceneManager.LoadScene(Constants.INPUT_SCENE);
     }
     void ContinueGame()
