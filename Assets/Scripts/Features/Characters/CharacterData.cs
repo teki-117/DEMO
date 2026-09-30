@@ -9,6 +9,10 @@ public class CharacterData : ScriptableObject
 {
     public string characterID;
 
+    [Header("联系人资料")]
+    public string displayName;
+    public Sprite contactAvatar;
+
     [Header("Render Kind")]
     public CharacterRenderKind renderKind = CharacterRenderKind.Sprite;
 

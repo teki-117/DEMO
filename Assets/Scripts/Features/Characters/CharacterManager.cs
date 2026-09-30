@@ -109,4 +109,5 @@ public class CharacterManager : MonoBehaviour
         foreach (var kv in active) kv.Value.Hide();
         active.Clear();
     }
+
 }

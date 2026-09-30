@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: sakura
   m_EditorClassIdentifier: Assembly-CSharp::CharacterData
   characterID: sakura
+  displayName: "\u685C"
+  contactAvatar: {fileID: 6937817954938267909, guid: e24e8891bc917aa429d6f0c02b2fd855, type: 3}
   renderKind: 0
   standSprite: {fileID: -4612768578659695768, guid: 5533ae0090f72f94780caea68b04f331, type: 3}
   expressions: []

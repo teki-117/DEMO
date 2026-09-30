@@ -13,7 +13,11 @@ MonoBehaviour:
   m_Name: kaji
   m_EditorClassIdentifier: Assembly-CSharp::CharacterData
   characterID: kaji
+  displayName: 
+  contactAvatar: {fileID: -855298285791758126, guid: e83f8b57be711f448a5f69e039d1cb12, type: 3}
+  renderKind: 0
   standSprite: {fileID: -7261996863345596044, guid: f8d0a4c508a623849889a66d9adae9a9, type: 3}
-  defaultPosition: {x: 0, y: 0}
-  defaultScale: {x: 1, y: 1}
-  expressionsList: []
+  expressions: []
+  live2DModelPrefab: {fileID: 0}
+  live2DMotions: []
+  live2DExpressions: []

@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: yuzuki
   m_EditorClassIdentifier: Assembly-CSharp::CharacterData
   characterID: yuzuki
+  displayName: "\u7ED3\u6708"
+  contactAvatar: {fileID: 5888761262817290339, guid: 8b47010187cde0544af1dd24ac949e91, type: 3}
   renderKind: 1
   standSprite: {fileID: 0}
   expressions: []

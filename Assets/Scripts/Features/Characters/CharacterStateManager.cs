@@ -36,11 +36,14 @@ public class CharacterStateManager : MonoBehaviour
 
     public void ChangeAffection(string characterID, int delta)
     {
-        if (!states.TryGetValue(characterID, out var s))
+        if (string.IsNullOrEmpty(characterID) ||
+            !states.TryGetValue(characterID, out var state))
         {
-            Debug.LogWarning($"无效的角色 ID: {characterID}");
+            Debug.LogWarning($"无效的角色 ID：{characterID}");
+            return;
         }
-        s.affection += delta;
+
+        state.affection += delta;
     }
     public void ResetAffection()
     {
@@ -70,4 +73,5 @@ public class CharacterStateManager : MonoBehaviour
         }
         return map;
     }
+    
 }
