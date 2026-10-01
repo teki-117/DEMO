@@ -64,6 +64,12 @@ public class GameManager : MonoBehaviour
         // 新游戏重置好感度。
         CharacterStateManager.Instance.ResetAffection();
 
+        // 新游戏时重置任务。
+        if (QuestManager.Instance != null)
+        {
+            QuestManager.Instance.ResetQuests();
+        }
+
         PrepareStory(Constants.DEFAULT_STORY_FILE);
     }
     private void Awake()

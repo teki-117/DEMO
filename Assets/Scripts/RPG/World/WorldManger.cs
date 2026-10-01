@@ -71,7 +71,7 @@ public class WorldManager : MonoBehaviour
     }
     public void CompleteCurrentAction()
     {
-        // 没有待结算行动时，不推进时间。
+        // 没有待结算行动时，直接返回。
         if (!hasPendingAction)
         {
             return;
@@ -83,9 +83,17 @@ public class WorldManager : MonoBehaviour
             return;
         }
 
-        // 先标记为已结算，防止重复调用造成多次推进。
+        // 先标记为已结算，避免同一次行动重复结算。
         hasPendingAction = false;
 
+        // 向任务系统报告一次完整的地点行动。
+        if (QuestManager.Instance != null)
+        {
+            QuestManager.Instance.ReportLocationActionCompleted(
+                currentLocationId);
+        }
+
+        // 一次行动推进一个时间段。
         GameTimeManager.Instance.AdvanceTime();
     }
     private void OnDestroy()

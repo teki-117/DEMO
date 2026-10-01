@@ -6,7 +6,15 @@ using UnityEngine.SceneManagement;
 
 public partial class VNManager
 {
-    private enum LineKind { Dialogue, Choice, Goto, Game, End }
+    private enum LineKind
+    {
+        Dialogue,
+        Choice,
+        Goto,
+        Game,
+        End,
+        QuestUnlock
+    }
 
     private enum AdvanceMode { Manual, Auto, Skip, HoldCtrl }
 
@@ -21,6 +29,7 @@ public partial class VNManager
         if (s == Constants.GOTO) return LineKind.Goto;
         if (s == Constants.GAME) return LineKind.Game;
         if (s == Constants.END_OF_STORY) return LineKind.End;
+        if (s == Constants.QUEST_UNLOCK) return LineKind.QuestUnlock;
 
         return LineKind.Dialogue;
     }
@@ -75,6 +84,13 @@ public partial class VNManager
                 Live2DGameScene(d);
                 return;
 
+            case LineKind.QuestUnlock:
+                Flow_UnlockQuest(d.speakingContent);
+
+                currentLine++;
+                Flow_Next();
+                return;
+
             case LineKind.End:
                 FinishStory();
                 return;
@@ -82,6 +98,8 @@ public partial class VNManager
             default:
                 Flow_DisplayThisLine();
                 return;
+
+
         }
     }
     private void Flow_DisplayThisLine()

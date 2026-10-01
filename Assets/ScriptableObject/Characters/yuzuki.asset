@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a52342a8bf1c2a54aa0e4fb7f6954c15, type: 3}
+  m_Name: yuzuki
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterData
+  characterID: yuzuki
+  displayName: "\u7ED3\u6708"
+  contactAvatar: {fileID: 5888761262817290339, guid: 8b47010187cde0544af1dd24ac949e91, type: 3}
+  renderKind: 1
+  standSprite: {fileID: 0}
+  expressions: []
+  live2DModelPrefab: {fileID: 4659150725755658650, guid: d14f0daf691c3e941ac079d7a4a8cf7a, type: 3}
+  live2DMotions:
+  - key: idle
+    clip: {fileID: 7400000, guid: 6a4d60e80afbcb14ebd869304fbcd43c, type: 2}
+  live2DExpressions: []

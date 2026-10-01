@@ -54,6 +54,9 @@ public class Constants : MonoBehaviour
     public static string GAME = "game";
     public static string MAIN_GAME_SCENE = "MuScene";
 
+    // 剧情中的任务指令。
+    public const string QUEST_UNLOCK = "quest_unlock";
+
     //立绘动画
     public static string APPEAR_AT = "appearAt";
     public static string APPEAR_AT_INSTANTLY = "appearAtInstantly";
