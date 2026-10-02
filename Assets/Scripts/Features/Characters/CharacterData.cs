@@ -48,6 +48,13 @@ public class CharacterData : ScriptableObject
     }
     public List<Live2DExpression> live2DExpressions = new();
     public Dictionary<string, int> live2DExpressionMap;
+
+    [Header("RPG ≥ı º Ù–‘")]
+    [Min(1)] public int startingLevel = 1;
+    [Min(1)] public int startingMaxHP = 100;
+    [Min(0)] public int startingMaxSP = 30;
+    [Min(0)] public int startingAttack = 10;
+    [Min(0)] public int startingDefense = 5;
     private void OnEnable()
     {
         // Sprite expressions

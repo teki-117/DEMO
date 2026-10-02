@@ -2,7 +2,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-// 只负责一条联系人的显示，不修改角色状态。
 public class ContactItemUI : MonoBehaviour
 {
     [SerializeField] private Image avatarImage;
@@ -14,29 +13,30 @@ public class ContactItemUI : MonoBehaviour
     public void Initialize(CharacterData data)
     {
         Data = data;
+        RefreshProfile();
+    }
 
-        if (data == null) return;
+    private void RefreshProfile()
+    {
+        if (Data == null)
+            return;
 
         if (nameText != null)
-        {
-            nameText.text = string.IsNullOrWhiteSpace(data.displayName)
-                ? data.characterID
-                : data.displayName;
-        }
+            nameText.text = CharacterDisplayUtility.GetName(Data);
 
         if (avatarImage != null)
         {
-            avatarImage.sprite = data.contactAvatar;
+            avatarImage.sprite = Data.contactAvatar;
             avatarImage.preserveAspect = true;
-            avatarImage.enabled = data.contactAvatar != null;
+            avatarImage.enabled = Data.contactAvatar != null;
         }
     }
 
     public void SetAffection(int affection)
     {
+        RefreshProfile();
+
         if (affectionText != null)
-        {
             affectionText.text = $"好感度：{affection}";
-        }
     }
 }

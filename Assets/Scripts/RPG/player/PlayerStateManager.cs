@@ -5,31 +5,30 @@ public class PlayerStateManager : MonoBehaviour
 {
     public static PlayerStateManager Instance { get; private set; }
 
-    [Header("新游戏初始配置")]
-    [SerializeField, Min(1)] private int startingMaxHP = 100;
-    [SerializeField, Min(0)] private int startingMaxSP = 30;
-    [SerializeField, Min(0)] private int startingAttack = 10;
-    [SerializeField, Min(0)] private int startingDefense = 5;
-    [SerializeField, Min(0)] private int startingMoney = 0;
-
-    [Header("本局运行数据")]
-    [SerializeField] private PlayerState state;
-
-    // 后续手机状态页监听这个事件。
     public event Action OnPlayerStateChanged;
 
-    public int Level => state.level;
-    public int EXP => state.exp;
+    private PartyManager subscribedParty;
 
-    public int CurrentHP => state.currentHP;
-    public int MaxHP => state.maxHP;
+    private PartyManager Party => PartyManager.Instance;
 
-    public int CurrentSP => state.currentSP;
-    public int MaxSP => state.maxSP;
+    private PartyMemberState State =>
+        Party != null
+            ? Party.GetMemberState(Party.MainCharacterId)
+            : null;
 
-    public int Attack => state.baseAttack;
-    public int Defense => state.baseDefense;
-    public int Money => state.money;
+    public int Level => State != null ? State.Level : 1;
+    public int EXP => State != null ? State.EXP : 0;
+
+    public int CurrentHP => State != null ? State.CurrentHP : 0;
+    public int MaxHP => State != null ? State.MaxHP : 0;
+
+    public int CurrentSP => State != null ? State.CurrentSP : 0;
+    public int MaxSP => State != null ? State.MaxSP : 0;
+
+    public int Attack => State != null ? State.Attack : 0;
+    public int Defense => State != null ? State.Defense : 0;
+
+    public int Money => Party != null ? Party.Money : 0;
 
     private void Awake()
     {
@@ -41,106 +40,65 @@ public class PlayerStateManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
-
-        ResetPlayer();
     }
 
-    // 开始新游戏时恢复初始状态。
+    private void Start()
+    {
+        if (BindParty())
+            subscribedParty.EnsureInitialized();
+    }
+
+    private bool BindParty()
+    {
+        PartyManager manager = PartyManager.Instance;
+
+        if (manager == null)
+        {
+            Debug.LogError(
+                "玩家：缺少 PartyManager，请在 MenuScene 配置。",
+                this);
+            return false;
+        }
+
+        if (subscribedParty == manager)
+            return true;
+
+        if (subscribedParty != null)
+            subscribedParty.OnStateChanged -= NotifyChanged;
+
+        subscribedParty = manager;
+        subscribedParty.OnStateChanged += NotifyChanged;
+
+        return true;
+    }
+
     public void ResetPlayer()
     {
-        int hp = Mathf.Max(1, startingMaxHP);
-        int sp = Mathf.Max(0, startingMaxSP);
-
-        state = new PlayerState
-        {
-            currentHP = hp,
-            maxHP = hp,
-
-            currentSP = sp,
-            maxSP = sp,
-
-            baseAttack = Mathf.Max(0, startingAttack),
-            baseDefense = Mathf.Max(0, startingDefense),
-            money = Mathf.Max(0, startingMoney)
-        };
-
-        NotifyChanged();
+        if (BindParty())
+            subscribedParty.ResetParty();
     }
 
-    // amount 是已经计算好的伤害量。
-    public bool TakeDamage(int amount)
-    {
-        if (amount <= 0 || state.currentHP == 0)
-            return false;
+    public bool TakeDamage(int amount) =>
+        Party != null &&
+        Party.TakeDamage(Party.MainCharacterId, amount);
 
-        state.currentHP -= Mathf.Min(amount, state.currentHP);
-        NotifyChanged();
-        return true;
-    }
+    public bool RestoreHP(int amount) =>
+        Party != null &&
+        Party.RestoreHP(Party.MainCharacterId, amount);
 
-    public bool RestoreHP(int amount)
-    {
-        if (amount <= 0 || state.currentHP >= state.maxHP)
-            return false;
+    public bool TrySpendSP(int amount) =>
+        Party != null &&
+        Party.TrySpendSP(Party.MainCharacterId, amount);
 
-        int restored = Mathf.Min(
-            amount,
-            state.maxHP - state.currentHP);
+    public bool RestoreSP(int amount) =>
+        Party != null &&
+        Party.RestoreSP(Party.MainCharacterId, amount);
 
-        state.currentHP += restored;
-        NotifyChanged();
-        return true;
-    }
+    public bool AddMoney(int amount) =>
+        Party != null && Party.AddMoney(amount);
 
-    public bool TrySpendSP(int amount)
-    {
-        if (amount < 0 || state.currentSP < amount)
-            return false;
-
-        if (amount == 0)
-            return true;
-
-        state.currentSP -= amount;
-        NotifyChanged();
-        return true;
-    }
-
-    public bool RestoreSP(int amount)
-    {
-        if (amount <= 0 || state.currentSP >= state.maxSP)
-            return false;
-
-        int restored = Mathf.Min(
-            amount,
-            state.maxSP - state.currentSP);
-
-        state.currentSP += restored;
-        NotifyChanged();
-        return true;
-    }
-
-    public bool AddMoney(int amount)
-    {
-        if (amount <= 0 || amount > int.MaxValue - state.money)
-            return false;
-
-        state.money += amount;
-        NotifyChanged();
-        return true;
-    }
-
-    public bool TrySpendMoney(int amount)
-    {
-        if (amount < 0 || state.money < amount)
-            return false;
-
-        if (amount == 0)
-            return true;
-
-        state.money -= amount;
-        NotifyChanged();
-        return true;
-    }
+    public bool TrySpendMoney(int amount) =>
+        Party != null && Party.TrySpendMoney(amount);
 
     private void NotifyChanged()
     {
@@ -149,6 +107,9 @@ public class PlayerStateManager : MonoBehaviour
 
     private void OnDestroy()
     {
+        if (subscribedParty != null)
+            subscribedParty.OnStateChanged -= NotifyChanged;
+
         if (Instance == this)
             Instance = null;
     }

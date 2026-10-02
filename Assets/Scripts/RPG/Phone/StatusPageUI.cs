@@ -1,81 +1,112 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 public class StatusPageUI : MonoBehaviour
 {
-    [Header("玩家信息")]
-    [SerializeField] private TMP_Text playerNameText;
-    [SerializeField] private TMP_Text levelText;
-    [SerializeField] private TMP_Text expText;
+    [Header("角色列表")]
+    [SerializeField] private Transform content;
+    [SerializeField] private CharacterStatusCardUI cardPrefab;
 
-    [Header("属性")]
-    [SerializeField] private TMP_Text hpText;
-    [SerializeField] private TMP_Text spText;
-    [SerializeField] private TMP_Text attackText;
-    [SerializeField] private TMP_Text defenseText;
+    [Header("团队资金")]
     [SerializeField] private TMP_Text moneyText;
 
-    private PlayerStateManager player;
+    private PartyManager party;
+    private bool hasStarted;
+
+    private readonly List<CharacterStatusCardUI> cards =
+        new List<CharacterStatusCardUI>();
+
+    private void Start()
+    {
+        hasStarted = true;
+        Connect();
+    }
 
     private void OnEnable()
     {
-        if (playerNameText == null ||
-            levelText == null ||
-            expText == null ||
-            hpText == null ||
-            spText == null ||
-            attackText == null ||
-            defenseText == null ||
-            moneyText == null)
-        {
-            Debug.LogError("状态页：文字引用未配置。", this);
-            return;
-        }
-
-        player = PlayerStateManager.Instance;
-
-        if (player == null)
-        {
-            Debug.LogError(
-                "状态页：缺少 PlayerStateManager，请从 MenuScene 开始游戏。",
-                this);
-            return;
-        }
-
-        player.OnPlayerStateChanged += Refresh;
-
-        Refresh();
+        if (hasStarted)
+            Connect();
     }
 
     private void OnDisable()
     {
-        if (player != null)
-            player.OnPlayerStateChanged -= Refresh;
+        if (party != null)
+        {
+            party.OnPartyChanged -= RebuildCards;
+            party.OnStateChanged -= RefreshState;
+        }
 
-        player = null;
+        party = null;
     }
 
-    private void Refresh()
+    private void Connect()
     {
-        if (player == null)
+        if (party != null)
             return;
 
-        string playerName = GameManager.Instance != null
-            ? GameManager.Instance.playerName
-            : null;
+        if (content == null || cardPrefab == null || moneyText == null)
+        {
+            Debug.LogError("队伍状态页：列表或资金引用未配置。", this);
+            return;
+        }
 
-        playerNameText.text = string.IsNullOrWhiteSpace(playerName)
-            ? "主角"
-            : playerName;
+        PartyManager manager = PartyManager.Instance;
 
-        levelText.text = $"等级：{player.Level}";
-        expText.text = $"经验：{player.EXP}";
+        if (manager == null || !manager.EnsureInitialized())
+        {
+            Debug.LogError(
+                "队伍状态页：队伍未初始化，请从 MenuScene 开始游戏。",
+                this);
+            return;
+        }
 
-        hpText.text = $"HP：{player.CurrentHP} / {player.MaxHP}";
-        spText.text = $"SP：{player.CurrentSP} / {player.MaxSP}";
+        party = manager;
 
-        attackText.text = $"攻击：{player.Attack}";
-        defenseText.text = $"防御：{player.Defense}";
-        moneyText.text = $"金钱：{player.Money}";
+        party.OnPartyChanged += RebuildCards;
+        party.OnStateChanged += RefreshState;
+
+        RebuildCards();
+    }
+
+    private void RebuildCards()
+    {
+        foreach (CharacterStatusCardUI card in cards)
+        {
+            if (card == null)
+                continue;
+
+            card.gameObject.SetActive(false);
+            Destroy(card.gameObject);
+        }
+
+        cards.Clear();
+
+        foreach (string characterId in party.MemberIds)
+        {
+            CharacterStatusCardUI card =
+                Instantiate(cardPrefab, content, false);
+
+            card.gameObject.SetActive(true);
+            card.Initialize(party, characterId);
+
+            cards.Add(card);
+        }
+
+        RefreshState();
+    }
+
+    private void RefreshState()
+    {
+        if (party == null)
+            return;
+
+        foreach (CharacterStatusCardUI card in cards)
+        {
+            if (card != null)
+                card.RefreshView();
+        }
+
+        moneyText.text = $"资金：{party.Money}";
     }
 }

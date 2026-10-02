@@ -1407,6 +1407,67 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
   key: exit_game
+--- !u!1 &1162041274
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1162041277}
+  - component: {fileID: 1162041276}
+  - component: {fileID: 1162041275}
+  m_Layer: 0
+  m_Name: PartyManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1162041275
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1162041274}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa683748a09e8014c90db378d324915f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PartyDebugTools
+  testMember: {fileID: 11400000, guid: a71afacfbce50ca4cad30c2ce7b34b9c, type: 2}
+--- !u!114 &1162041276
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1162041274}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d14dd3a77f85e67409690be6c6773bbe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PartyManager
+  mainCharacter: {fileID: 11400000, guid: 1e5ed6bb805b3fb49971118fde9c31b0, type: 2}
+  startingMembers: []
+  startingMoney: 100
+--- !u!4 &1162041277
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1162041274}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -4.45592, y: -1.73073, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1199685799
 GameObject:
   m_ObjectHideFlags: 0
@@ -1666,21 +1727,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d2b27d20e7ab4b45bbd77de63c5cec0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStateManager
-  startingMaxHP: 100
-  startingMaxSP: 30
-  startingAttack: 10
-  startingDefense: 5
-  startingMoney: 0
-  state:
-    level: 1
-    exp: 0
-    currentHP: 0
-    maxHP: 0
-    currentSP: 0
-    maxSP: 0
-    baseAttack: 0
-    baseDefense: 0
-    money: 0
 --- !u!4 &1768115502
 Transform:
   m_ObjectHideFlags: 0
@@ -1828,8 +1874,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterStateManager
   allCharacterDatas:
+  - {fileID: 11400000, guid: 1e5ed6bb805b3fb49971118fde9c31b0, type: 2}
   - {fileID: 11400000, guid: a71afacfbce50ca4cad30c2ce7b34b9c, type: 2}
-  - {fileID: 11400000, guid: 21fd5f650a3797a4f989e2064dd9f471, type: 2}
 --- !u!4 &1822564513
 Transform:
   m_ObjectHideFlags: 0
@@ -3069,3 +3115,4 @@ SceneRoots:
   - {fileID: 2003278404}
   - {fileID: 1768115502}
   - {fileID: 1318522805}
+  - {fileID: 1162041277}

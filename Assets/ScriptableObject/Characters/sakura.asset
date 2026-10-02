@@ -21,3 +21,8 @@ MonoBehaviour:
   live2DModelPrefab: {fileID: 0}
   live2DMotions: []
   live2DExpressions: []
+  startingLevel: 1
+  startingMaxHP: 80
+  startingMaxSP: 40
+  startingAttack: 8
+  startingDefense: 4
