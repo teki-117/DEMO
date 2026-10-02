@@ -18,10 +18,8 @@ public class QuestItemUI : MonoBehaviour
             ? $"<s>{data.questName}</s>"
             : data.questName;
 
-        descriptionText.text = data.description;
-
         progressText.text = completed
-            ? $"已完成：{state.progress}/{data.requiredCount}"
-            : $"进度：{state.progress}/{data.requiredCount}";
+    ? $"已完成：{state.progress}/{data.requiredCount}"
+    : $"进度：{state.progress}/{data.requiredCount}";
     }
 }

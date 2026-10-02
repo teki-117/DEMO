@@ -69,6 +69,16 @@ public class GameManager : MonoBehaviour
         {
             QuestManager.Instance.ResetQuests();
         }
+        // 新游戏重置玩家基础状态。
+        if (PlayerStateManager.Instance != null)
+        {
+            PlayerStateManager.Instance.ResetPlayer();
+        }
+        // 新游戏重置背包。
+        if (InventoryManager.Instance != null)
+        {
+            InventoryManager.Instance.ResetInventory();
+        }
 
         PrepareStory(Constants.DEFAULT_STORY_FILE);
     }

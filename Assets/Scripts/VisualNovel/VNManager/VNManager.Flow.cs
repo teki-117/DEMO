@@ -47,18 +47,21 @@ public partial class VNManager
             return;
         }
 
-        //if (storyData == null || storyData.Count == 0)
-        //{
-        //    Debug.LogError(Constants.NO_DATA_FOUND);
-        //    ReturnToMenu();
-        //    return;
-        //}
+        if (storyData == null || storyData.Count == 0)
+        {
+            SetMode(AdvanceMode.Manual);
+            Debug.LogError("剧情数据为空，已停止推进。", this);
+            return;
+        }
 
-        //if (currentLine < 0 || currentLine >= storyData.Count)
-        //{
-        //    ReturnToMenu();
-        //    return;
-        //}
+        if (currentLine < 0 || currentLine >= storyData.Count)
+        {
+            SetMode(AdvanceMode.Manual);
+            Debug.LogError(
+                $"剧情行号越界：{currentLine}，请检查剧情结束指令。",
+                this);
+            return;
+        }
 
         if (currentLine > maxReachedLineIndex)
         {
