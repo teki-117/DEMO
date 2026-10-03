@@ -9,35 +9,26 @@ public class BagPageUI : MonoBehaviour
     [SerializeField] private BagItemUI itemPrefab;
     [SerializeField] private TMP_Text emptyText;
 
+    [Header("选择使用目标")]
+    [SerializeField] private ItemTargetPanelUI targetPanel;
+
     private InventoryManager inventory;
-    private PlayerStateManager player;
+    private PartyManager party;
+    private bool hasStarted;
 
     private readonly List<BagItemUI> itemViews =
         new List<BagItemUI>();
 
+    private void Start()
+    {
+        hasStarted = true;
+        Connect();
+    }
+
     private void OnEnable()
     {
-        if (content == null || itemPrefab == null || emptyText == null)
-        {
-            Debug.LogError("背包页：UI 引用未配置。", this);
-            return;
-        }
-
-        inventory = InventoryManager.Instance;
-        player = PlayerStateManager.Instance;
-
-        if (inventory == null || player == null)
-        {
-            Debug.LogError(
-                "背包页：缺少管理器，请从 MenuScene 开始游戏。",
-                this);
-            return;
-        }
-
-        inventory.OnInventoryChanged += Refresh;
-        player.OnPlayerStateChanged += RefreshItemActions;
-
-        Refresh();
+        if (hasStarted)
+            Connect();
     }
 
     private void OnDisable()
@@ -45,11 +36,50 @@ public class BagPageUI : MonoBehaviour
         if (inventory != null)
             inventory.OnInventoryChanged -= Refresh;
 
-        if (player != null)
-            player.OnPlayerStateChanged -= RefreshItemActions;
+        if (party != null)
+        {
+            party.OnStateChanged -= RefreshItemActions;
+            party.OnPartyChanged -= RefreshItemActions;
+        }
+
+        if (targetPanel != null)
+            targetPanel.Close();
 
         inventory = null;
-        player = null;
+        party = null;
+    }
+
+    private void Connect()
+    {
+        if (inventory != null)
+            return;
+
+        if (content == null ||
+            itemPrefab == null ||
+            emptyText == null ||
+            targetPanel == null)
+        {
+            Debug.LogError("背包页：列表或目标窗口引用未配置。", this);
+            return;
+        }
+
+        InventoryManager bag = InventoryManager.Instance;
+        PartyManager team = PartyManager.Instance;
+
+        if (bag == null || team == null || !team.EnsureInitialized())
+        {
+            Debug.LogError("背包页：请从 MenuScene 开始游戏。", this);
+            return;
+        }
+
+        inventory = bag;
+        party = team;
+
+        inventory.OnInventoryChanged += Refresh;
+        party.OnStateChanged += RefreshItemActions;
+        party.OnPartyChanged += RefreshItemActions;
+
+        Refresh();
     }
 
     private void Refresh()
@@ -57,7 +87,16 @@ public class BagPageUI : MonoBehaviour
         if (inventory == null)
             return;
 
-        ClearItems();
+        foreach (BagItemUI view in itemViews)
+        {
+            if (view == null)
+                continue;
+
+            view.gameObject.SetActive(false);
+            Destroy(view.gameObject);
+        }
+
+        itemViews.Clear();
 
         foreach (ItemData data in inventory.AllItems)
         {
@@ -69,7 +108,7 @@ public class BagPageUI : MonoBehaviour
             BagItemUI view = Instantiate(itemPrefab, content, false);
 
             view.gameObject.SetActive(true);
-            view.Setup(data, quantity);
+            view.Setup(data, quantity, OpenTargetPanel);
 
             itemViews.Add(view);
         }
@@ -86,17 +125,9 @@ public class BagPageUI : MonoBehaviour
         }
     }
 
-    private void ClearItems()
+    private void OpenTargetPanel(string itemId)
     {
-        foreach (BagItemUI view in itemViews)
-        {
-            if (view == null)
-                continue;
-
-            view.gameObject.SetActive(false);
-            Destroy(view.gameObject);
-        }
-
-        itemViews.Clear();
+        if (targetPanel != null)
+            targetPanel.Open(itemId);
     }
 }

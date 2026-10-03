@@ -209,7 +209,15 @@ public class PartyManager : MonoBehaviour
             return false;
         }
 
+        if (states.TryGetValue(characterId, out PartyMemberState state))
+        {
+            state.WeaponData = null;
+            state.ArmorData = null;
+        }
+
         OnPartyChanged?.Invoke();
+        OnStateChanged?.Invoke();
+
         return true;
     }
 
@@ -309,5 +317,165 @@ public class PartyManager : MonoBehaviour
     {
         if (Instance == this)
             Instance = null;
+    }
+
+    public int GetEquippedCount(string itemId)
+    {
+        if (!initialized || string.IsNullOrWhiteSpace(itemId))
+            return 0;
+
+        int count = 0;
+
+        foreach (string characterId in memberIds)
+        {
+            if (!states.TryGetValue(characterId, out PartyMemberState state))
+                continue;
+
+            if (state.WeaponItemId == itemId)
+                count++;
+
+            if (state.ArmorItemId == itemId)
+                count++;
+        }
+
+        return count;
+    }
+
+    public bool IsEquippedByMember(string characterId, string itemId)
+    {
+        if (string.IsNullOrWhiteSpace(itemId))
+            return false;
+
+        PartyMemberState state = GetMemberState(characterId);
+
+        return state != null &&
+               (state.WeaponItemId == itemId ||
+                state.ArmorItemId == itemId);
+    }
+
+    public bool CanEquipItem(string characterId, string itemId)
+    {
+        PartyMemberState state = GetMemberState(characterId);
+        InventoryManager inventory = InventoryManager.Instance;
+
+        if (state == null || inventory == null)
+            return false;
+
+        ItemData data = inventory.GetItemData(itemId);
+
+        if (data == null ||
+            (data.itemType != ItemType.Weapon &&
+             data.itemType != ItemType.Armor))
+        {
+            return false;
+        }
+
+        if (IsEquippedByMember(characterId, itemId))
+            return false;
+
+        return inventory.GetAvailableCount(itemId) > 0;
+    }
+
+    public bool TryEquipItem(string characterId, string itemId)
+    {
+        if (!CanEquipItem(characterId, itemId))
+            return false;
+
+        PartyMemberState state = GetMemberState(characterId);
+        ItemData data = InventoryManager.Instance.GetItemData(itemId);
+
+        if (data.itemType == ItemType.Weapon)
+            state.WeaponData = data;
+        else
+            state.ArmorData = data;
+
+        OnStateChanged?.Invoke();
+        return true;
+    }
+
+    public bool TryUnequipItem(string characterId, ItemType slotType)
+    {
+        PartyMemberState state = GetMemberState(characterId);
+
+        if (state == null)
+            return false;
+
+        if (slotType == ItemType.Weapon)
+        {
+            if (state.WeaponData == null)
+                return false;
+
+            state.WeaponData = null;
+        }
+        else if (slotType == ItemType.Armor)
+        {
+            if (state.ArmorData == null)
+                return false;
+
+            state.ArmorData = null;
+        }
+        else
+        {
+            return false;
+        }
+
+        OnStateChanged?.Invoke();
+        return true;
+    }
+
+    public void UnequipAll()
+    {
+        if (!initialized)
+            return;
+
+        bool changed = false;
+
+        foreach (PartyMemberState state in states.Values)
+        {
+            if (state.WeaponData == null && state.ArmorData == null)
+                continue;
+
+            state.WeaponData = null;
+            state.ArmorData = null;
+            changed = true;
+        }
+
+        if (changed)
+            OnStateChanged?.Invoke();
+    }
+
+    public void GetEquipmentPreview(
+        string characterId,
+        ItemData item,
+        ItemActionType action,
+        out int attack,
+        out int defense)
+    {
+        PartyMemberState state = GetMemberState(characterId);
+
+        attack = state != null ? state.Attack : 0;
+        defense = state != null ? state.Defense : 0;
+
+        if (state == null || item == null)
+            return;
+
+        ItemData weapon = state.WeaponData;
+        ItemData armor = state.ArmorData;
+
+        if (item.itemType == ItemType.Weapon)
+        {
+            weapon = action == ItemActionType.Unequip ? null : item;
+        }
+        else if (item.itemType == ItemType.Armor)
+        {
+            armor = action == ItemActionType.Unequip ? null : item;
+        }
+        else
+        {
+            return;
+        }
+
+        attack = state.GetAttackWith(weapon, armor);
+        defense = state.GetDefenseWith(weapon, armor);
     }
 }

@@ -16,6 +16,10 @@ public class CharacterStatusCardUI : MonoBehaviour
     [SerializeField] private TMP_Text attackText;
     [SerializeField] private TMP_Text defenseText;
 
+    [Header("当前装备")]
+    [SerializeField] private TMP_Text weaponText;
+    [SerializeField] private TMP_Text armorText;
+
     private PartyManager party;
     private string characterId;
     private bool ready;
@@ -70,5 +74,11 @@ public class CharacterStatusCardUI : MonoBehaviour
 
         attackText.text = $"攻击：{state.Attack}";
         defenseText.text = $"防御：{state.Defense}";
+
+        if (weaponText != null)
+            weaponText.text = $"武器：{state.WeaponName}";
+
+        if (armorText != null)
+            armorText.text = $"护甲：{state.ArmorName}";
     }
 }

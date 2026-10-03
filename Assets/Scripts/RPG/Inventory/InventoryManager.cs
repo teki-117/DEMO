@@ -41,6 +41,9 @@ public class InventoryManager : MonoBehaviour
 
     public void ResetInventory()
     {
+        if (PartyManager.Instance != null)
+            PartyManager.Instance.UnequipAll();
+
         definitions.Clear();
         registeredItems.Clear();
         state = new InventoryState();
@@ -131,51 +134,133 @@ public class InventoryManager : MonoBehaviour
         return true;
     }
 
-    public bool CanUseItem(string itemId)
+    public int GetAvailableCount(string itemId)
     {
-        ItemData data = GetItemData(itemId);
+        int equippedCount = PartyManager.Instance != null
+            ? PartyManager.Instance.GetEquippedCount(itemId)
+            : 0;
 
-        if (data == null ||
-            data.itemType != ItemType.Consumable ||
-            GetCount(itemId) < 1)
-        {
-            return false;
-        }
-
-        PlayerStateManager player = PlayerStateManager.Instance;
-
-        if (player == null)
-            return false;
-
-        bool canRestoreHP =
-            data.restoreHP > 0 && player.CurrentHP < player.MaxHP;
-
-        bool canRestoreSP =
-            data.restoreSP > 0 && player.CurrentSP < player.MaxSP;
-
-        return canRestoreHP || canRestoreSP;
+        return Mathf.Max(0, GetCount(itemId) - equippedCount);
     }
 
-    public bool TryUseItem(string itemId)
+    public bool TryGetAction(
+        string itemId,
+        string characterId,
+        out ItemActionType action)
     {
-        PlayerStateManager player = PlayerStateManager.Instance;
+        action = ItemActionType.UseConsumable;
 
-        if (player == null)
+        ItemData data = GetItemData(itemId);
+        PartyManager party = PartyManager.Instance;
+
+        if (data == null || party == null || GetCount(itemId) < 1)
+            return false;
+
+        PartyMemberState target = party.GetMemberState(characterId);
+
+        if (target == null)
+            return false;
+
+        if (data.itemType == ItemType.Consumable)
         {
-            Debug.LogWarning("背包：缺少 PlayerStateManager。", this);
+            bool canRestoreHP =
+                data.restoreHP > 0 && target.CurrentHP < target.MaxHP;
+
+            bool canRestoreSP =
+                data.restoreSP > 0 && target.CurrentSP < target.MaxSP;
+
+            return canRestoreHP || canRestoreSP;
+        }
+
+        if (data.itemType != ItemType.Weapon &&
+            data.itemType != ItemType.Armor)
+        {
             return false;
         }
 
-        if (!CanUseItem(itemId))
+        if (party.IsEquippedByMember(characterId, itemId))
+        {
+            action = ItemActionType.Unequip;
+            return true;
+        }
+
+        action = ItemActionType.Equip;
+        return party.CanEquipItem(characterId, itemId);
+    }
+
+    public bool CanUseItem(string itemId)
+    {
+        PartyManager party = PartyManager.Instance;
+
+        return party != null &&
+               CanUseItem(itemId, party.MainCharacterId);
+    }
+
+    public bool CanUseItem(string itemId, string characterId)
+    {
+        return TryGetAction(itemId, characterId, out _);
+    }
+
+    public bool CanUseItemOnAnyMember(string itemId)
+    {
+        PartyManager party = PartyManager.Instance;
+
+        if (party == null || !party.EnsureInitialized())
             return false;
 
+        foreach (string characterId in party.MemberIds)
+        {
+            if (CanUseItem(itemId, characterId))
+                return true;
+        }
+
+        return false;
+    }
+
+    // 保留旧调试脚本使用的入口。
+    public bool TryUseItem(string itemId)
+    {
+        PartyManager party = PartyManager.Instance;
+
+        return party != null &&
+               TryUseItem(itemId, party.MainCharacterId);
+    }
+
+    public bool TryUseItem(string itemId, string characterId)
+    {
+        if (!TryGetAction(itemId, characterId, out ItemActionType action))
+            return false;
+
+        return TryPerformAction(itemId, characterId, action);
+    }
+
+    // 确认时要求实际操作仍与用户选择的操作一致。
+    public bool TryPerformAction(
+        string itemId,
+        string characterId,
+        ItemActionType expectedAction)
+    {
+        if (!TryGetAction(
+                itemId, characterId, out ItemActionType currentAction) ||
+            currentAction != expectedAction)
+        {
+            return false;
+        }
+
         ItemData data = GetItemData(itemId);
+        PartyManager party = PartyManager.Instance;
+
+        if (currentAction == ItemActionType.Equip)
+            return party.TryEquipItem(characterId, itemId);
+
+        if (currentAction == ItemActionType.Unequip)
+            return party.TryUnequipItem(characterId, data.itemType);
 
         if (!RemoveItemInternal(itemId, 1))
             return false;
 
-        player.RestoreHP(data.restoreHP);
-        player.RestoreSP(data.restoreSP);
+        party.RestoreHP(characterId, data.restoreHP);
+        party.RestoreSP(characterId, data.restoreSP);
 
         OnInventoryChanged?.Invoke();
         return true;
@@ -213,10 +298,14 @@ public class InventoryManager : MonoBehaviour
         if (amount <= 0)
             return false;
 
-        var stack = FindStack(itemId);
+        ItemStack stack = FindStack(itemId);
 
-        if (stack == null || stack.quantity < amount)
+        if (stack == null ||
+            stack.quantity < amount ||
+            GetAvailableCount(itemId) < amount)
+        {
             return false;
+        }
 
         stack.quantity -= amount;
 
