@@ -1,6 +1,14 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+
+public enum BattleResult
+{
+    Completed,
+    Retreated,
+    Defeated
+}
+
 public class WorldManager : MonoBehaviour
 {
     private bool hasPendingAction;
@@ -153,17 +161,96 @@ public class WorldManager : MonoBehaviour
     // 临时测试出口：取消本次行动，不结算时间和任务。
     public bool ReturnFromBattleForTesting()
     {
+        return FinishBattle(BattleResult.Retreated);
+    }
+
+    public bool FinishBattle(BattleResult result)
+    {
+        // 只有正在进行的 RPG 行动才能结算。
+        // 第一次结算后，这个条件也会阻止重复调用。
         if (currentLocationId != "RPG" || !hasPendingAction)
             return false;
 
         if (!Application.CanStreamedLevelBeLoaded("MapScene"))
         {
-            Debug.LogError("请检查构建场景列表中的 MapScene。");
+            Debug.LogError("找不到 MapScene，请检查构建场景列表。");
             return false;
         }
 
-        hasPendingAction = false;
+        PartyManager party = PartyManager.Instance;
+        GameTimeManager timeManager = GameTimeManager.Instance;
+
+        if (party == null || timeManager == null)
+        {
+            Debug.LogError("缺少队伍或时间管理器，无法结算战斗。");
+            return false;
+        }
+
+        PartyMemberState hero =
+            party.GetMemberState(party.MainCharacterId);
+
+        if (hero == null || hero.MaxHP <= 0)
+        {
+            Debug.LogError("主角状态无效，无法结算战斗。");
+            return false;
+        }
+
+        // 零血时即使有人请求撤退，也必须按失败处理。
+        if (hero.CurrentHP <= 0)
+            result = BattleResult.Defeated;
+
+        switch (result)
+        {
+            case BattleResult.Completed:
+                // 复用已有方法：清除待结算标记、
+                // 报告地点行动、推进一个时段。
+                CompleteCurrentAction();
+                break;
+
+            case BattleResult.Retreated:
+                hasPendingAction = false;
+                break;
+
+            case BattleResult.Defeated:
+                // 先关闭结算入口，再修改状态和时间。
+                hasPendingAction = false;
+
+                int recoveryHP = Mathf.Clamp(
+                    Mathf.CeilToInt(hero.MaxHP * 0.25f),
+                    1,
+                    hero.MaxHP
+                );
+
+                // 死亡和掉出场地都统一设为 25% HP。
+                if (hero.CurrentHP < recoveryHP)
+                {
+                    party.RestoreHP(
+                        party.MainCharacterId,
+                        recoveryHP - hero.CurrentHP
+                    );
+                }
+                else if (hero.CurrentHP > recoveryHP)
+                {
+                    party.TakeDamage(
+                        party.MainCharacterId,
+                        hero.CurrentHP - recoveryHP
+                    );
+                }
+
+                // 失败消耗时间，但不报告任务完成。
+                timeManager.AdvanceTime();
+                break;
+
+            default:
+                Debug.LogError("未知的战斗结算结果。");
+                return false;
+        }
+
         currentLocationId = "Map";
+
+        Debug.Log(
+            $"战斗结束：{result}，返回地图。主角 HP："
+            + $"{hero.CurrentHP}/{hero.MaxHP}");
 
         SceneManager.LoadScene("MapScene");
         return true;

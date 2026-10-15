@@ -39,8 +39,6 @@ public class BattlePlayerController : MonoBehaviour
 
 
     [Header("普通攻击")]
-    [Min(1)]
-    [SerializeField] private int attackDamage = 10;
 
     [Min(0.01f)]
     [SerializeField] private float attackCooldown = 0.35f;
@@ -199,8 +197,27 @@ public class BattlePlayerController : MonoBehaviour
 
     private void TryAttack()
     {
-        if (Time.time < nextAttackTime)
+        if (isDefeated || Time.time < nextAttackTime)
             return;
+
+        PartyManager party = PartyManager.Instance;
+
+        if (party == null)
+        {
+            Debug.LogWarning(
+                "攻击需要队伍数据，请从正式入口进入神社。",
+                this);
+            return;
+        }
+
+        PartyMemberState hero =
+            party.GetMemberState(party.MainCharacterId);
+
+        if (hero == null || hero.CurrentHP <= 0)
+            return;
+
+        // 每次攻击读取当前属性，包含武器和防具提供的攻击加成。
+        int damage = Mathf.Max(1, hero.Attack);
 
         nextAttackTime = Time.time + attackCooldown;
         attackPreviewEndTime = Time.time + 0.12f;
@@ -222,14 +239,12 @@ public class BattlePlayerController : MonoBehaviour
             if (enemy == null || enemy.IsDead)
                 continue;
 
-            // 一个敌人即使有多个碰撞体，这一刀也只扣一次血。
             if (hitEnemies.Add(enemy))
             {
-                enemy.TakeDamage(attackDamage);
+                enemy.TakeDamage(damage);
             }
         }
     }
-
     private void OnDrawGizmosSelected()
     {
         Gizmos.color =
