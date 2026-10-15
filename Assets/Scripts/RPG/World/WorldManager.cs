@@ -38,15 +38,14 @@ public class WorldManager : MonoBehaviour
                 EnterSchool();
                 break;
 
-            case "Home":
-            case "Shop":
             case "RPG":
-                currentLocationId = locationId;
-                Debug.Log($"当前地点：{currentLocationId}，地点内容待接入。");
+                EnterBattle();
                 break;
 
-            default:
-                Debug.LogWarning($"未知地点：{locationId}");
+            case "Home":
+            case "Shop":
+                currentLocationId = locationId;
+                Debug.Log($"当前地点：{currentLocationId}，地点内容待接入。");
                 break;
         }
     }
@@ -102,5 +101,71 @@ public class WorldManager : MonoBehaviour
         {
             Instance = null;
         }
+    }
+
+    // 从地图神社进入战斗场景。
+    private void EnterBattle()
+    {
+        // 已有行动进行中时，防止重复进入。
+        if (hasPendingAction)
+            return;
+
+        if (GameManager.Instance == null ||
+            GameTimeManager.Instance == null ||
+            PartyManager.Instance == null)
+        {
+            Debug.LogError("战斗入口缺少全局管理器，请从正式启动流程进入。");
+            return;
+        }
+
+        PartyManager party = PartyManager.Instance;
+
+        if (!party.EnsureInitialized())
+            return;
+
+        PartyMemberState hero =
+            party.GetMemberState(party.MainCharacterId);
+
+        if (hero == null)
+        {
+            Debug.LogError("找不到主角状态，请检查 PartyManager 的主角配置。");
+            return;
+        }
+
+        if (hero.CurrentHP <= 0)
+        {
+            Debug.LogWarning("主角 HP 为 0，请先在背包中恢复 HP。");
+            return;
+        }
+
+        if (!Application.CanStreamedLevelBeLoaded("BattleScene"))
+        {
+            Debug.LogError("请把 BattleScene 加入构建场景列表并勾选。");
+            return;
+        }
+
+        currentLocationId = "RPG";
+        hasPendingAction = true;
+
+        SceneManager.LoadScene("BattleScene");
+    }
+
+    // 临时测试出口：取消本次行动，不结算时间和任务。
+    public bool ReturnFromBattleForTesting()
+    {
+        if (currentLocationId != "RPG" || !hasPendingAction)
+            return false;
+
+        if (!Application.CanStreamedLevelBeLoaded("MapScene"))
+        {
+            Debug.LogError("请检查构建场景列表中的 MapScene。");
+            return false;
+        }
+
+        hasPendingAction = false;
+        currentLocationId = "Map";
+
+        SceneManager.LoadScene("MapScene");
+        return true;
     }
 }
