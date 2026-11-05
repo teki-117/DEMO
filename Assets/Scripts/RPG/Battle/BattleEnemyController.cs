@@ -10,6 +10,7 @@ public class BattleEnemyController : MonoBehaviour
         Idle,
         Patrol,
         Chase,
+        Windup,
         Attack,
         Dead
     }
@@ -37,8 +38,24 @@ public class BattleEnemyController : MonoBehaviour
     [SerializeField] private float attackHeight = 0.9f;
     [SerializeField] private float attackInterval = 1.2f;
 
+    [Header("攻击前摇")]
+    [Min(0f)]
+    [SerializeField] private float windupDuration = 0.45f;
+    [SerializeField] private Color windupColor = new Color(1f, 0.45f, 0.1f);
+
     [Header("受击表现")]
     [SerializeField] private float hitFlashDuration = 0.12f;
+    [SerializeField] private float knockbackSpeed = 5f;
+    [Min(0f)]
+    [SerializeField] private float knockbackDuration = 0.15f;
+
+    [Header("奖励")]
+    [Min(0)]
+    [SerializeField] private int moneyReward = 10;
+    [Min(0)]
+    [SerializeField] private int expReward = 5;
+    [Tooltip("勾选后，这个敌人被击败时掉出 Boss 房钥匙。")]
+    [SerializeField] private bool dropsKey;
 
     [Header("运行状态（观察用）")]
     [SerializeField] private int currentHP;
@@ -53,10 +70,17 @@ public class BattleEnemyController : MonoBehaviour
     private float flashEndTime;
     private float nextAttackTime;
 
+    private bool isWindingUp;
+    private float windupEndTime;
+    private float knockbackEndTime;
+
     private float patrolCenterX;
     private int patrolDirection = 1;
 
     public bool IsDead => isDead;
+    public int MoneyReward => moneyReward;
+    public int ExpReward => expReward;
+    public bool DropsKey => dropsKey;
 
     private void Awake()
     {
@@ -78,8 +102,13 @@ public class BattleEnemyController : MonoBehaviour
         if (isDead)
             return;
 
-        spriteRenderer.color =
-            Time.time < flashEndTime ? Color.white : originalColor;
+        // 受击白闪优先，其次是前摇变色。
+        if (Time.time < flashEndTime)
+            spriteRenderer.color = Color.white;
+        else if (isWindingUp)
+            spriteRenderer.color = windupColor;
+        else
+            spriteRenderer.color = originalColor;
     }
 
     private void FixedUpdate()
@@ -89,8 +118,19 @@ public class BattleEnemyController : MonoBehaviour
 
         if (player != null && player.IsDefeated)
         {
+            isWindingUp = false;
             currentState = EnemyState.Idle;
             SetHorizontalSpeed(0f);
+            return;
+        }
+
+        // 击退期间保留被打飞的速度，不执行 AI。
+        if (Time.time < knockbackEndTime)
+            return;
+
+        if (isWindingUp)
+        {
+            UpdateWindup();
             return;
         }
 
@@ -126,6 +166,18 @@ public class BattleEnemyController : MonoBehaviour
         );
 
         return obstacle.collider == null;
+    }
+
+    private bool IsPlayerInAttackRange()
+    {
+        if (player == null)
+            return false;
+
+        Vector2 difference =
+            player.transform.position - transform.position;
+
+        return Mathf.Abs(difference.x) <= attackRange &&
+               Mathf.Abs(difference.y) <= attackHeight;
     }
 
     private void Patrol()
@@ -172,8 +224,10 @@ public class BattleEnemyController : MonoBehaviour
 
                 if (Time.time >= nextAttackTime)
                 {
-                    nextAttackTime = Time.time + attackInterval;
-                    player.ReceiveAttack(attackPower);
+                    // 先进入前摇，前摇结束才真正出手，给玩家躲开的时间。
+                    isWindingUp = true;
+                    windupEndTime = Time.time + windupDuration;
+                    currentState = EnemyState.Windup;
                 }
             }
             else
@@ -192,6 +246,25 @@ public class BattleEnemyController : MonoBehaviour
             : 0f;
 
         SetHorizontalSpeed(speed);
+    }
+
+    private void UpdateWindup()
+    {
+        currentState = EnemyState.Windup;
+        SetHorizontalSpeed(0f);
+
+        if (Time.time < windupEndTime)
+            return;
+
+        isWindingUp = false;
+        nextAttackTime = Time.time + attackInterval;
+        currentState = EnemyState.Attack;
+
+        // 出手瞬间再判一次距离：玩家在前摇期间躲开就打空。
+        if (IsPlayerInAttackRange())
+        {
+            player.ReceiveAttack(attackPower, transform.position);
+        }
     }
 
     private bool CanMove(int direction)
@@ -236,7 +309,8 @@ public class BattleEnemyController : MonoBehaviour
         spriteRenderer.flipX = direction < 0;
     }
 
-    public void TakeDamage(int damage)
+    // sourcePosition：攻击来源的位置，用来决定击退方向。
+    public void TakeDamage(int damage, Vector2 sourcePosition)
     {
         if (isDead || damage <= 0)
             return;
@@ -255,17 +329,36 @@ public class BattleEnemyController : MonoBehaviour
 
         flashEndTime = Time.time + hitFlashDuration;
         spriteRenderer.color = Color.white;
+
+        // 朝远离攻击来源的方向击退。
+        float direction =
+            transform.position.x >= sourcePosition.x ? 1f : -1f;
+
+        rb.linearVelocity = new Vector2(
+            direction * knockbackSpeed,
+            rb.linearVelocity.y
+        );
+
+        knockbackEndTime = Time.time + knockbackDuration;
     }
 
     private void Die()
     {
         isDead = true;
+        isWindingUp = false;
         currentState = EnemyState.Dead;
 
         rb.linearVelocity = Vector2.zero;
         rb.simulated = false;
 
         Debug.Log($"{name} 已被击败。", this);
+
+        // 奖励只交给场景累计，真正发放在战斗结算时。
+        if (BattleSceneController.Current != null)
+        {
+            BattleSceneController.Current.ReportEnemyDefeated(this);
+        }
+
         Destroy(gameObject);
     }
 }

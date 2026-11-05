@@ -164,7 +164,11 @@ public class WorldManager : MonoBehaviour
         return FinishBattle(BattleResult.Retreated);
     }
 
-    public bool FinishBattle(BattleResult result)
+    // rewardMoney、rewardExp：本次战斗累计的奖励，只有完成时才发放。
+    public bool FinishBattle(
+        BattleResult result,
+        int rewardMoney = 0,
+        int rewardExp = 0)
     {
         // 只有正在进行的 RPG 行动才能结算。
         // 第一次结算后，这个条件也会阻止重复调用。
@@ -202,9 +206,21 @@ public class WorldManager : MonoBehaviour
         switch (result)
         {
             case BattleResult.Completed:
+                // 奖励只在完成时发放；撤退和失败都作废。
+                if (rewardMoney > 0)
+                    party.AddMoney(rewardMoney);
+
+                // EXP 只发给主角。
+                if (rewardExp > 0)
+                    party.AddEXP(party.MainCharacterId, rewardExp);
+
                 // 复用已有方法：清除待结算标记、
                 // 报告地点行动、推进一个时段。
                 CompleteCurrentAction();
+
+                Debug.Log(
+                    $"战斗奖励：金钱 +{rewardMoney}，EXP +{rewardExp}。"
+                    + $"现在金钱 {party.Money}，主角 EXP {hero.EXP}");
                 break;
 
             case BattleResult.Retreated:
@@ -245,6 +261,11 @@ public class WorldManager : MonoBehaviour
                 Debug.LogError("未知的战斗结算结果。");
                 return false;
         }
+
+        // 不论哪种结果，回地图时主角 SP 回满。
+        party.RestoreSP(
+            party.MainCharacterId,
+            hero.MaxSP - hero.CurrentSP);
 
         currentLocationId = "Map";
 

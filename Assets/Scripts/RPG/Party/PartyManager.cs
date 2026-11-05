@@ -299,6 +299,20 @@ public class PartyManager : MonoBehaviour
         return true;
     }
 
+    // 只累加 EXP；升级规则在第9周加入。
+    public bool AddEXP(string characterId, int amount)
+    {
+        PartyMemberState state = GetMemberState(characterId);
+
+        if (state == null || amount <= 0)
+            return false;
+
+        state.EXP = (int)Math.Min(int.MaxValue, (long)state.EXP + amount);
+
+        OnStateChanged?.Invoke();
+        return true;
+    }
+
     public bool TrySpendMoney(int amount)
     {
         if (!EnsureInitialized() || amount < 0 || amount > money)

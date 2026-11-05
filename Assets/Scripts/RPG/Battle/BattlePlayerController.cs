@@ -47,6 +47,10 @@ public class BattlePlayerController : MonoBehaviour
     [SerializeField] private Vector2 attackOffset = new Vector2(0.9f, 0f);
     [SerializeField] private LayerMask enemyLayer;
 
+    [Tooltip("普攻和冲刺斩每打中一个敌人回复的 SP。法术打中不回。")]
+    [Min(0)]
+    [SerializeField] private int spGainOnHit = 3;
+
     private float nextAttackTime;
     private float attackPreviewEndTime;
 
@@ -58,18 +62,92 @@ public class BattlePlayerController : MonoBehaviour
     [Min(0f)]
     [SerializeField] private float hurtInvincibleDuration = 0.8f;
 
+    [Tooltip("被打中时的击退速度：x 向后，y 向上。")]
+    [SerializeField] private Vector2 hurtKnockback = new Vector2(6f, 4f);
+
+    [Min(0f)]
+    [SerializeField] private float hurtKnockbackDuration = 0.2f;
+
+    [Min(0.01f)]
+    [SerializeField] private float hurtBlinkInterval = 0.08f;
+
     [SerializeField] private bool isDefeated;
 
-   
+    private float knockbackEndTime;
+    private Color originalColor;
+
+    [Header("技能：冲刺斩（K）")]
+    [SerializeField] private float dashSpeed = 16f;
+    [Min(0.01f)]
+    [SerializeField] private float dashDuration = 0.18f;
+    [Min(0f)]
+    [SerializeField] private float dashCooldown = 0.8f;
+    [Min(0f)]
+    [SerializeField] private float dashDamageMultiplier = 1.5f;
+    [SerializeField] private Vector2 dashHitSize = new Vector2(1.4f, 1f);
+
+    private bool isDashing;
+    private float dashEndTime;
+    private float nextDashTime;
+    private float dashDirection;
+    private float savedGravityScale;
+    private int dashDamage;
+
+    private readonly HashSet<BattleEnemyController> dashHitEnemies =
+        new HashSet<BattleEnemyController>();
+
+    [Header("技能：法术（L，耗 SP）")]
+    [Min(0)]
+    [SerializeField] private int spellSPCost = 8;
+    [Min(0f)]
+    [SerializeField] private float spellDamageMultiplier = 2f;
+    [SerializeField] private float spellSpeed = 12f;
+    [SerializeField] private float spellMaxDistance = 8f;
+    [SerializeField] private Vector2 spellHitSize = new Vector2(0.8f, 0.6f);
+    [Min(0f)]
+    [SerializeField] private float spellCooldown = 0.6f;
+
+    [Tooltip("法术飞行时显示的物体（可选）。放在场景里、不要做主角的子物体，开始时会自动隐藏。")]
+    [SerializeField] private Transform spellVisual;
+
+    private bool spellActive;
+    private Vector2 spellPosition;
+    private float spellDirection;
+    private float spellTravelled;
+    private int spellDamage;
+    private float nextSpellTime;
+
+    private readonly HashSet<BattleEnemyController> spellHitEnemies =
+        new HashSet<BattleEnemyController>();
+
+    [Header("技能：回血（I，耗 SP）")]
+    [Min(0)]
+    [SerializeField] private int healSPCost = 10;
+    [Min(1)]
+    [SerializeField] private int healAmount = 25;
+    [Min(0f)]
+    [SerializeField] private float healCooldown = 1f;
+    [SerializeField] private Color healFlashColor = new Color(0.4f, 1f, 0.4f);
+
+    private float nextHealTime;
+    private float healFlashEndTime;
+
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         bodyCollider = GetComponent<BoxCollider2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
 
+        originalColor = spriteRenderer.color;
+        savedGravityScale = rb.gravityScale;
+
         groundFilter = new ContactFilter2D();
         groundFilter.SetLayerMask(groundLayer);
         groundFilter.useTriggers = false;
+
+        if (spellVisual != null)
+            spellVisual.gameObject.SetActive(false);
     }
 
     private void Update()
@@ -79,17 +157,42 @@ public class BattlePlayerController : MonoBehaviour
 
         Keyboard keyboard = Keyboard.current;
 
-        if (Time.timeScale > 0f &&
-            keyboard != null &&
-            keyboard.jKey.wasPressedThisFrame)
+        if (Time.timeScale > 0f && keyboard != null)
         {
-            TryAttack();
+            if (keyboard.jKey.wasPressedThisFrame)
+                TryAttack();
+
+            if (keyboard.kKey.wasPressedThisFrame)
+                TryDashSlash();
+
+            if (keyboard.lKey.wasPressedThisFrame)
+                TryCastSpell();
+
+            if (keyboard.iKey.wasPressedThisFrame)
+                TryHeal();
         }
+
+        UpdateSpell();
+        UpdateColor();
     }
 
     private void FixedUpdate()
     {
         CheckGround();
+
+        if (isDashing)
+        {
+            UpdateDash();
+            jumpRequested = false;
+            return;
+        }
+
+        // 被击退期间不接受左右输入，保留被打飞的速度。
+        if (Time.time < knockbackEndTime)
+        {
+            jumpRequested = false;
+            return;
+        }
 
         // 只修改水平速度，保留重力造成的垂直速度。
         Vector2 velocity = rb.linearVelocity;
@@ -138,6 +241,13 @@ public class BattlePlayerController : MonoBehaviour
 
     private void UpdateFacing()
     {
+        // 冲刺和击退时不改朝向。
+        if (isDashing || Time.time < knockbackEndTime)
+        {
+            spriteRenderer.flipX = !facingRight;
+            return;
+        }
+
         if (moveInput > 0f)
         {
             facingRight = true;
@@ -149,6 +259,23 @@ public class BattlePlayerController : MonoBehaviour
 
         // 默认角色素材朝右，只翻转图片，不翻转碰撞体。
         spriteRenderer.flipX = !facingRight;
+    }
+
+    private void UpdateColor()
+    {
+        Color color = originalColor;
+
+        if (Time.time < healFlashEndTime)
+            color = Color.Lerp(originalColor, healFlashColor, 0.7f);
+
+        // 受伤无敌期间闪烁。
+        if (Time.time < nextDamageTime)
+        {
+            bool dim = Mathf.FloorToInt(Time.time / hurtBlinkInterval) % 2 == 0;
+            color.a = dim ? 0.3f : originalColor.a;
+        }
+
+        spriteRenderer.color = color;
     }
 
     private void CheckGround()
@@ -183,6 +310,12 @@ public class BattlePlayerController : MonoBehaviour
     {
         moveInput = 0f;
         jumpRequested = false;
+
+        EndDash();
+        EndSpell();
+
+        if (spriteRenderer != null)
+            spriteRenderer.color = originalColor;
     }
 
     private Vector2 GetAttackCenter()
@@ -195,25 +328,31 @@ public class BattlePlayerController : MonoBehaviour
         );
     }
 
-    private void TryAttack()
+    // 取主角状态；从正式入口进入且主角未倒下时才返回。
+    private bool TryGetHero(out PartyManager party, out PartyMemberState hero)
     {
-        if (isDefeated || Time.time < nextAttackTime)
-            return;
-
-        PartyManager party = PartyManager.Instance;
+        party = PartyManager.Instance;
+        hero = null;
 
         if (party == null)
         {
             Debug.LogWarning(
-                "攻击需要队伍数据，请从正式入口进入神社。",
+                "战斗需要队伍数据，请从正式入口进入神社。",
                 this);
-            return;
+            return false;
         }
 
-        PartyMemberState hero =
-            party.GetMemberState(party.MainCharacterId);
+        hero = party.GetMemberState(party.MainCharacterId);
 
-        if (hero == null || hero.CurrentHP <= 0)
+        return hero != null && hero.CurrentHP > 0;
+    }
+
+    private void TryAttack()
+    {
+        if (isDefeated || isDashing || Time.time < nextAttackTime)
+            return;
+
+        if (!TryGetHero(out _, out PartyMemberState hero))
             return;
 
         // 每次攻击读取当前属性，包含武器和防具提供的攻击加成。
@@ -224,9 +363,21 @@ public class BattlePlayerController : MonoBehaviour
 
         hitEnemies.Clear();
 
+        HitEnemiesInBox(GetAttackCenter(), attackSize, damage, hitEnemies, true);
+    }
+
+    // 对范围内的敌人造成伤害；同一个集合里的敌人只会被打一次。
+    // gainSP：近战打中时回复 SP。
+    private void HitEnemiesInBox(
+        Vector2 center,
+        Vector2 size,
+        int damage,
+        HashSet<BattleEnemyController> alreadyHit,
+        bool gainSP)
+    {
         Collider2D[] hits = Physics2D.OverlapBoxAll(
-            GetAttackCenter(),
-            attackSize,
+            center,
+            size,
             0f,
             enemyLayer
         );
@@ -239,12 +390,172 @@ public class BattlePlayerController : MonoBehaviour
             if (enemy == null || enemy.IsDead)
                 continue;
 
-            if (hitEnemies.Add(enemy))
+            if (alreadyHit.Add(enemy))
             {
-                enemy.TakeDamage(damage);
+                enemy.TakeDamage(damage, transform.position);
+
+                PartyManager party = PartyManager.Instance;
+
+                if (gainSP && spGainOnHit > 0 && party != null)
+                    party.RestoreSP(party.MainCharacterId, spGainOnHit);
             }
         }
     }
+
+    // ---------- 冲刺斩 ----------
+
+    private void TryDashSlash()
+    {
+        if (isDefeated || isDashing || Time.time < nextDashTime)
+            return;
+
+        if (!TryGetHero(out _, out PartyMemberState hero))
+            return;
+
+        dashDamage = Mathf.Max(
+            1, Mathf.RoundToInt(hero.Attack * dashDamageMultiplier));
+
+        dashDirection = facingRight ? 1f : -1f;
+        isDashing = true;
+        dashEndTime = Time.time + dashDuration;
+        nextDashTime = Time.time + dashCooldown;
+
+        // 冲刺时不受重力影响，保持水平直线。
+        savedGravityScale = rb.gravityScale;
+        rb.gravityScale = 0f;
+
+        dashHitEnemies.Clear();
+    }
+
+    private void UpdateDash()
+    {
+        rb.linearVelocity = new Vector2(dashDirection * dashSpeed, 0f);
+
+        Vector2 center = (Vector2)transform.position +
+                         new Vector2(dashDirection * 0.5f, 0f);
+
+        HitEnemiesInBox(center, dashHitSize, dashDamage, dashHitEnemies, true);
+
+        if (Time.time >= dashEndTime)
+        {
+            EndDash();
+            rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
+        }
+    }
+
+    private void EndDash()
+    {
+        if (!isDashing)
+            return;
+
+        isDashing = false;
+
+        if (rb != null)
+            rb.gravityScale = savedGravityScale;
+    }
+
+    // ---------- 法术 ----------
+
+    private void TryCastSpell()
+    {
+        if (isDefeated || spellActive || Time.time < nextSpellTime)
+            return;
+
+        if (!TryGetHero(out PartyManager party, out PartyMemberState hero))
+            return;
+
+        if (!party.TrySpendSP(party.MainCharacterId, spellSPCost))
+        {
+            Debug.Log($"SP 不足，法术需要 {spellSPCost} SP。", this);
+            return;
+        }
+
+        spellDamage = Mathf.Max(
+            1, Mathf.RoundToInt(hero.Attack * spellDamageMultiplier));
+
+        spellDirection = facingRight ? 1f : -1f;
+        spellPosition = GetAttackCenter();
+        spellTravelled = 0f;
+        spellActive = true;
+        nextSpellTime = Time.time + spellCooldown;
+
+        spellHitEnemies.Clear();
+
+        if (spellVisual != null)
+        {
+            spellVisual.position = new Vector3(
+                spellPosition.x, spellPosition.y, spellVisual.position.z);
+
+            Vector3 scale = spellVisual.localScale;
+            scale.x = Mathf.Abs(scale.x) * spellDirection;
+            spellVisual.localScale = scale;
+
+            spellVisual.gameObject.SetActive(true);
+        }
+    }
+
+    private void UpdateSpell()
+    {
+        if (!spellActive || Time.deltaTime <= 0f)
+            return;
+
+        float step = spellSpeed * Time.deltaTime;
+        spellPosition.x += spellDirection * step;
+        spellTravelled += step;
+
+        if (spellVisual != null)
+        {
+            spellVisual.position = new Vector3(
+                spellPosition.x, spellPosition.y, spellVisual.position.z);
+        }
+
+        // 穿透敌人，碰到地面、墙壁或飞到最远距离时消失。
+        HitEnemiesInBox(spellPosition, spellHitSize, spellDamage, spellHitEnemies, false);
+
+        bool hitWall = Physics2D.OverlapBox(
+            spellPosition, spellHitSize, 0f, groundLayer) != null;
+
+        if (hitWall || spellTravelled >= spellMaxDistance)
+            EndSpell();
+    }
+
+    private void EndSpell()
+    {
+        spellActive = false;
+
+        if (spellVisual != null)
+            spellVisual.gameObject.SetActive(false);
+    }
+
+    // ---------- 回血 ----------
+
+    private void TryHeal()
+    {
+        if (isDefeated || Time.time < nextHealTime)
+            return;
+
+        if (!TryGetHero(out PartyManager party, out PartyMemberState hero))
+            return;
+
+        // HP 已满时不扣 SP。
+        if (hero.CurrentHP >= hero.MaxHP)
+        {
+            Debug.Log("HP 已满，不需要回血。", this);
+            return;
+        }
+
+        if (!party.TrySpendSP(party.MainCharacterId, healSPCost))
+        {
+            Debug.Log($"SP 不足，回血需要 {healSPCost} SP。", this);
+            return;
+        }
+
+        party.RestoreHP(party.MainCharacterId, healAmount);
+
+        nextHealTime = Time.time + healCooldown;
+        healFlashEndTime = Time.time + 0.25f;
+    }
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.color =
@@ -258,10 +569,23 @@ public class BattlePlayerController : MonoBehaviour
             new Vector3(center.x, center.y, transform.position.z),
             new Vector3(attackSize.x, attackSize.y, 0.05f)
         );
+
+        if (spellActive)
+        {
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawWireCube(
+                new Vector3(spellPosition.x, spellPosition.y, transform.position.z),
+                new Vector3(spellHitSize.x, spellHitSize.y, 0.05f)
+            );
+        }
     }
-    public bool ReceiveAttack(int enemyAttack)
+
+    // sourcePosition：攻击来源的位置，用来决定击退方向。
+    public bool ReceiveAttack(int enemyAttack, Vector2 sourcePosition)
     {
+        // 冲刺斩期间无敌，可以用来穿过敌人的攻击。
         if (isDefeated ||
+            isDashing ||
             enemyAttack <= 0 ||
             Time.time < nextDamageTime)
         {
@@ -304,15 +628,23 @@ public class BattlePlayerController : MonoBehaviour
             rb.linearVelocity = Vector2.zero;
             rb.simulated = false;
 
-            // 停止本脚本的移动、跳跃和攻击。
-            // 场景控制器仍工作，所以 F1 仍能返回地图。
+            // 停止本脚本的移动、跳跃、攻击和技能，由场景控制器显示失败结算。
             enabled = false;
 
-            Debug.Log(
-                "主角已倒下。当前测试阶段请按 F1 返回，"
-                + "在背包中恢复主角 HP 后重新进入。",
-                this);
+            Debug.Log("主角已倒下。", this);
+            return true;
         }
+
+        // 朝远离攻击来源的方向击退。
+        float direction =
+            transform.position.x >= sourcePosition.x ? 1f : -1f;
+
+        rb.linearVelocity = new Vector2(
+            direction * hurtKnockback.x,
+            hurtKnockback.y
+        );
+
+        knockbackEndTime = Time.time + hurtKnockbackDuration;
 
         return true;
     }
