@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-// Unity ½Å±¾ 3 ¸öÒýÓÃ
+// Unity è„šæœ¬ 3 ä¸ªå¼•ç”¨
 public class SaveLoadManager : MonoBehaviour
 { 
     public TextMeshProUGUI panelTitle;

@@ -4,11 +4,11 @@ using UnityEngine.UI;
 
 public class CharacterStatusCardUI : MonoBehaviour
 {
-    [Header("½ÇÉ«ÏÔÊ¾")]
+    [Header("è§’è‰²æ˜¾ç¤º")]
     [SerializeField] private TMP_Text playerNameText;
     [SerializeField] private Image portraitImage;
 
-    [Header("½ÇÉ«ÊôĞÔ")]
+    [Header("è§’è‰²å±æ€§")]
     [SerializeField] private TMP_Text levelText;
     [SerializeField] private TMP_Text expText;
     [SerializeField] private TMP_Text hpText;
@@ -16,7 +16,7 @@ public class CharacterStatusCardUI : MonoBehaviour
     [SerializeField] private TMP_Text attackText;
     [SerializeField] private TMP_Text defenseText;
 
-    [Header("µ±Ç°×°±¸")]
+    [Header("å½“å‰è£…å¤‡")]
     [SerializeField] private TMP_Text weaponText;
     [SerializeField] private TMP_Text armorText;
 
@@ -42,7 +42,7 @@ public class CharacterStatusCardUI : MonoBehaviour
 
         if (!ready)
         {
-            Debug.LogError("½ÇÉ«×´Ì¬¿¨Æ¬£ºUI ÒıÓÃÎ´ÅäÖÃ¡£", this);
+            Debug.LogError("è§’è‰²çŠ¶æ€å¡ç‰‡ï¼šUI å¼•ç”¨æœªé…ç½®ã€‚", this);
             return;
         }
 
@@ -66,19 +66,19 @@ public class CharacterStatusCardUI : MonoBehaviour
         portraitImage.preserveAspect = true;
         portraitImage.enabled = data.contactAvatar != null;
 
-        levelText.text = $"µÈ¼¶£º{state.Level}";
-        expText.text = $"¾­Ñé£º{state.EXP}";
+        levelText.text = $"ç­‰çº§ï¼š{state.Level}";
+        expText.text = $"ç»éªŒï¼š{state.EXP}";
 
-        hpText.text = $"HP£º{state.CurrentHP} / {state.MaxHP}";
-        spText.text = $"SP£º{state.CurrentSP} / {state.MaxSP}";
+        hpText.text = $"HPï¼š{state.CurrentHP} / {state.MaxHP}";
+        spText.text = $"SPï¼š{state.CurrentSP} / {state.MaxSP}";
 
-        attackText.text = $"¹¥»÷£º{state.Attack}";
-        defenseText.text = $"·ÀÓù£º{state.Defense}";
+        attackText.text = $"æ”»å‡»ï¼š{state.Attack}";
+        defenseText.text = $"é˜²å¾¡ï¼š{state.Defense}";
 
         if (weaponText != null)
-            weaponText.text = $"ÎäÆ÷£º{state.WeaponName}";
+            weaponText.text = $"æ­¦å™¨ï¼š{state.WeaponName}";
 
         if (armorText != null)
-            armorText.text = $"»¤¼×£º{state.ArmorName}";
+            armorText.text = $"æŠ¤ç”²ï¼š{state.ArmorName}";
     }
 }

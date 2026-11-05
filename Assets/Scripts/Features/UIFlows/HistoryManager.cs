@@ -6,12 +6,12 @@ using UnityEngine.UI;
 
 public class HistoryManager : MonoBehaviour
 {
-    public Transform historyContent; // ScrollViewµÄContent¶ÔÏó
-    public GameObject historyItemPrefab; // ÓÃÓÚÏÔÊ¾ÀúÊ·¼ÇÂ¼µÄÎÄ±¾Ô¤ÖÆ¼ş
-    public GameObject historyScrollView; // ScrollView¶ÔÏó
-    public Button closeButton; // ¹Ø±Õ°´Å¥
+    public Transform historyContent; // ScrollViewçš„Contentå¯¹è±¡
+    public GameObject historyItemPrefab; // ç”¨äºæ˜¾ç¤ºå†å²è®°å½•çš„æ–‡æœ¬é¢„åˆ¶ä»¶
+    public GameObject historyScrollView; // ScrollViewå¯¹è±¡
+    public Button closeButton; // å…³é—­æŒ‰é’®
 
-    private LinkedList<ExcelData> historyRecords; // ±£´æÀúÊ·¼ÇÂ¼
+    private LinkedList<ExcelData> historyRecords; // ä¿å­˜å†å²è®°å½•
 
     public static HistoryManager Instance { get; private set; }
     private void Awake()
@@ -28,14 +28,14 @@ public class HistoryManager : MonoBehaviour
     void Start()
     {
         closeButton.GetComponentInChildren<TextMeshProUGUI>().text = LM.GLV(Constants.CLOSE);
-        closeButton.onClick.AddListener(CloseHistory); // °ó¶¨¹Ø±Õ°´Å¥ÊÂ¼ş
-        ShowHistory(GameManager.Instance.historyRecords); // ÏÔÊ¾ÀúÊ·¼ÇÂ¼
+        closeButton.onClick.AddListener(CloseHistory); // ç»‘å®šå…³é—­æŒ‰é’®äº‹ä»¶
+        ShowHistory(GameManager.Instance.historyRecords); // æ˜¾ç¤ºå†å²è®°å½•
     }
 
-    // ÏÔÊ¾ÀúÊ·¼ÇÂ¼
+    // æ˜¾ç¤ºå†å²è®°å½•
     public void ShowHistory(LinkedList<ExcelData> records)
     {
-        // Çå¿ÕÏÖÓĞµÄÀúÊ·¼ÇÂ¼
+        // æ¸…ç©ºç°æœ‰çš„å†å²è®°å½•
         foreach (Transform child in historyContent)
         {
             Destroy(child.gameObject);
@@ -44,28 +44,28 @@ public class HistoryManager : MonoBehaviour
         LinkedListNode<ExcelData> currentNode = historyRecords.Last;
         while (currentNode != null)
         {
-            var name = LM.GetSpeakerName(currentNode.Value); // »ñÈ¡Ëµ»°ÕßÃû×Ö
-            var content = LM.GetSpeakingContent(currentNode.Value); // »ñÈ¡Ëµ»°ÄÚÈİ
-            AddHistoryItem(name + LM.GLV(Constants.COLON) + content); // Ìí¼ÓÀúÊ·¼ÇÂ¼Ïî
-            currentNode = currentNode.Previous; // ÒÆ¶¯µ½Ç°Ò»¸ö½Úµã
+            var name = LM.GetSpeakerName(currentNode.Value); // è·å–è¯´è¯è€…åå­—
+            var content = LM.GetSpeakingContent(currentNode.Value); // è·å–è¯´è¯å†…å®¹
+            AddHistoryItem(name + LM.GLV(Constants.COLON) + content); // æ·»åŠ å†å²è®°å½•é¡¹
+            currentNode = currentNode.Previous; // ç§»åŠ¨åˆ°å‰ä¸€ä¸ªèŠ‚ç‚¹
         }
 
-        historyContent.GetComponent<RectTransform>().localPosition = Vector3.zero; // ½«¹ö¶¯ÊÓÍ¼µÄÎ»ÖÃÖØÖÃÎª¶¥²¿
-        historyScrollView.SetActive(true); // ÏÔÊ¾ÀúÊ·¼ÇÂ¼½çÃæ
+        historyContent.GetComponent<RectTransform>().localPosition = Vector3.zero; // å°†æ»šåŠ¨è§†å›¾çš„ä½ç½®é‡ç½®ä¸ºé¡¶éƒ¨
+        historyScrollView.SetActive(true); // æ˜¾ç¤ºå†å²è®°å½•ç•Œé¢
     }
 
-    // ¹Ø±ÕÀúÊ·¼ÇÂ¼
+    // å…³é—­å†å²è®°å½•
     public void CloseHistory()
     {
-        GameManager.Instance.historyRecords.RemoveLast(); // ÒÆ³ı×îºóÒ»¸öÀúÊ·¼ÇÂ¼
-        SceneManager.LoadScene(Constants.GAME_SCENE); // ·µ»Øµ½µ±Ç°³¡¾°
+        GameManager.Instance.historyRecords.RemoveLast(); // ç§»é™¤æœ€åä¸€ä¸ªå†å²è®°å½•
+        SceneManager.LoadScene(Constants.GAME_SCENE); // è¿”å›åˆ°å½“å‰åœºæ™¯
     }
     
-    // Ìí¼ÓÀúÊ·¼ÇÂ¼Ïî
+    // æ·»åŠ å†å²è®°å½•é¡¹
     private void AddHistoryItem(string text)
     {
         GameObject historyItem = Instantiate(historyItemPrefab, historyContent);
         historyItem.GetComponentInChildren<TextMeshProUGUI>().text = text;
-        historyItem.transform.SetAsFirstSibling(); // ½«ÀúÊ·¼ÇÂ¼Ïî·ÅÔÚ¶¥²¿
+        historyItem.transform.SetAsFirstSibling(); // å°†å†å²è®°å½•é¡¹æ”¾åœ¨é¡¶éƒ¨
     }
 }

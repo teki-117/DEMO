@@ -48,7 +48,7 @@ public class GameTimeManager : MonoBehaviour
             currentPeriod = (TimePeriod)((int)currentPeriod + 1);
         }
 
-        Debug.Log($"Ê±¼äÍÆ½ø£º{GetDisplayText()}");
+        Debug.Log($"æ—¶é—´æ¨è¿›ï¼š{GetDisplayText()}");
     }
 
     public string GetDisplayText()
@@ -58,20 +58,20 @@ public class GameTimeManager : MonoBehaviour
         switch (currentPeriod)
         {
             case TimePeriod.Morning:
-                periodName = "Ôç³¿";
+                periodName = "æ—©æ™¨";
                 break;
             case TimePeriod.AfterSchool:
-                periodName = "·ÅÑ§ºó";
+                periodName = "æ”¾å­¦å";
                 break;
             case TimePeriod.Evening:
-                periodName = "°øÍí";
+                periodName = "å‚æ™š";
                 break;
             default:
-                periodName = "Ò¹Íí";
+                periodName = "å¤œæ™š";
                 break;
         }
 
-        return $"µÚ {currentDay} Ìì ¡¤ {periodName}";
+        return $"ç¬¬ {currentDay} å¤© Â· {periodName}";
     }
 
     private void OnDestroy()

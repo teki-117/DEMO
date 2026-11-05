@@ -11,15 +11,15 @@ public class BattlePlayerController : MonoBehaviour
 {
     private float nextDamageTime;
     public bool IsDefeated => isDefeated;
-    [Header("ÒÆ¶¯")]
+    [Header("ç§»åŠ¨")]
     [SerializeField] private float moveSpeed = 6f;
 
-    [Header("ÌøÔ¾")]
+    [Header("è·³è·ƒ")]
     [SerializeField] private float jumpSpeed = 12f;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private float groundCheckDistance = 0.06f;
 
-    [Header("ÔËĞĞ×´Ì¬£¨¹Û²ìÓÃ£©")]
+    [Header("è¿è¡ŒçŠ¶æ€ï¼ˆè§‚å¯Ÿç”¨ï¼‰")]
     [SerializeField] private bool isGrounded;
     [SerializeField] private bool facingRight = true;
 
@@ -30,7 +30,7 @@ public class BattlePlayerController : MonoBehaviour
     private float moveInput;
     private bool jumpRequested;
 
-    // ÖØ¸´Ê¹ÓÃ¼ì²â½á¹ûÊı×é£¬±ÜÃâÃ¿´Î¼ì²â¶¼´´½¨ĞÂÊı×é¡£
+    // é‡å¤ä½¿ç”¨æ£€æµ‹ç»“æœæ•°ç»„ï¼Œé¿å…æ¯æ¬¡æ£€æµ‹éƒ½åˆ›å»ºæ–°æ•°ç»„ã€‚
     private readonly RaycastHit2D[] groundHits = new RaycastHit2D[8];
     private ContactFilter2D groundFilter;
 
@@ -38,7 +38,7 @@ public class BattlePlayerController : MonoBehaviour
     public bool FacingRight => facingRight;
 
 
-    [Header("ÆÕÍ¨¹¥»÷")]
+    [Header("æ™®é€šæ”»å‡»")]
 
     [Min(0.01f)]
     [SerializeField] private float attackCooldown = 0.35f;
@@ -50,11 +50,11 @@ public class BattlePlayerController : MonoBehaviour
     private float nextAttackTime;
     private float attackPreviewEndTime;
 
-    // Ò»´Î¹¥»÷ÖĞ£¬¼ÇÂ¼ÒÑ¾­´òÖĞ¹ıµÄµĞÈË¡£
+    // ä¸€æ¬¡æ”»å‡»ä¸­ï¼Œè®°å½•å·²ç»æ‰“ä¸­è¿‡çš„æ•Œäººã€‚
     private readonly HashSet<BattleEnemyController> hitEnemies =
         new HashSet<BattleEnemyController>();
 
-    [Header("ÊÜÉË")]
+    [Header("å—ä¼¤")]
     [Min(0f)]
     [SerializeField] private float hurtInvincibleDuration = 0.8f;
 
@@ -91,7 +91,7 @@ public class BattlePlayerController : MonoBehaviour
     {
         CheckGround();
 
-        // Ö»ĞŞ¸ÄË®Æ½ËÙ¶È£¬±£ÁôÖØÁ¦Ôì³ÉµÄ´¹Ö±ËÙ¶È¡£
+        // åªä¿®æ”¹æ°´å¹³é€Ÿåº¦ï¼Œä¿ç•™é‡åŠ›é€ æˆçš„å‚ç›´é€Ÿåº¦ã€‚
         Vector2 velocity = rb.linearVelocity;
         velocity.x = moveInput * moveSpeed;
 
@@ -103,7 +103,7 @@ public class BattlePlayerController : MonoBehaviour
 
         rb.linearVelocity = velocity;
 
-        // Õâ´Î°´¼üÖ»´¦ÀíÒ»´Î£¬²»ÄÜÁôµ½ÏÂÒ»´ÎÂäµØ¡£
+        // è¿™æ¬¡æŒ‰é”®åªå¤„ç†ä¸€æ¬¡ï¼Œä¸èƒ½ç•™åˆ°ä¸‹ä¸€æ¬¡è½åœ°ã€‚
         jumpRequested = false;
     }
 
@@ -147,7 +147,7 @@ public class BattlePlayerController : MonoBehaviour
             facingRight = false;
         }
 
-        // Ä¬ÈÏ½ÇÉ«ËØ²Ä³¯ÓÒ£¬Ö»·­×ªÍ¼Æ¬£¬²»·­×ªÅö×²Ìå¡£
+        // é»˜è®¤è§’è‰²ç´ ææœå³ï¼Œåªç¿»è½¬å›¾ç‰‡ï¼Œä¸ç¿»è½¬ç¢°æ’ä½“ã€‚
         spriteRenderer.flipX = !facingRight;
     }
 
@@ -155,7 +155,7 @@ public class BattlePlayerController : MonoBehaviour
     {
         isGrounded = false;
 
-        // ÕıÔÚÏòÉÏÌøÊ±£¬²»°Ñ½Å±ßÉĞÎ´Àë¿ªµÄµØÃæµ±×÷ÂäµØ¡£
+        // æ­£åœ¨å‘ä¸Šè·³æ—¶ï¼Œä¸æŠŠè„šè¾¹å°šæœªç¦»å¼€çš„åœ°é¢å½“ä½œè½åœ°ã€‚
         if (rb.linearVelocity.y > 0.1f)
         {
             return;
@@ -170,7 +170,7 @@ public class BattlePlayerController : MonoBehaviour
 
         for (int i = 0; i < hitCount; i++)
         {
-            // ±íÃæ³¯ÉÏ²ÅËãµØÃæ£¬²àÃæµÄÇ½±Ú²»Ëã¡£
+            // è¡¨é¢æœä¸Šæ‰ç®—åœ°é¢ï¼Œä¾§é¢çš„å¢™å£ä¸ç®—ã€‚
             if (groundHits[i].normal.y > 0.5f)
             {
                 isGrounded = true;
@@ -205,7 +205,7 @@ public class BattlePlayerController : MonoBehaviour
         if (party == null)
         {
             Debug.LogWarning(
-                "¹¥»÷ĞèÒª¶ÓÎéÊı¾İ£¬Çë´ÓÕıÊ½Èë¿Ú½øÈëÉñÉç¡£",
+                "æ”»å‡»éœ€è¦é˜Ÿä¼æ•°æ®ï¼Œè¯·ä»æ­£å¼å…¥å£è¿›å…¥ç¥ç¤¾ã€‚",
                 this);
             return;
         }
@@ -216,7 +216,7 @@ public class BattlePlayerController : MonoBehaviour
         if (hero == null || hero.CurrentHP <= 0)
             return;
 
-        // Ã¿´Î¹¥»÷¶ÁÈ¡µ±Ç°ÊôĞÔ£¬°üº¬ÎäÆ÷ºÍ·À¾ßÌá¹©µÄ¹¥»÷¼Ó³É¡£
+        // æ¯æ¬¡æ”»å‡»è¯»å–å½“å‰å±æ€§ï¼ŒåŒ…å«æ­¦å™¨å’Œé˜²å…·æä¾›çš„æ”»å‡»åŠ æˆã€‚
         int damage = Mathf.Max(1, hero.Attack);
 
         nextAttackTime = Time.time + attackCooldown;
@@ -273,7 +273,7 @@ public class BattlePlayerController : MonoBehaviour
         if (party == null)
         {
             Debug.LogWarning(
-                "ÊÜÉËĞèÒª PartyManager£¬Çë´ÓÕıÊ½Èë¿Ú½øÈëÉñÉç¡£",
+                "å—ä¼¤éœ€è¦ PartyManagerï¼Œè¯·ä»æ­£å¼å…¥å£è¿›å…¥ç¥ç¤¾ã€‚",
                 this);
             return false;
         }
@@ -284,17 +284,17 @@ public class BattlePlayerController : MonoBehaviour
         if (hero == null)
             return false;
 
-        // ·ÀÓùÖµ°üº¬µ±Ç°×°±¸Ìá¹©µÄ¼Ó³É¡£
+        // é˜²å¾¡å€¼åŒ…å«å½“å‰è£…å¤‡æä¾›çš„åŠ æˆã€‚
         int damage = Mathf.Max(1, enemyAttack - hero.Defense);
 
-        // ÕæÕıĞŞ¸ÄµÄÊÇ¶ÓÎéÖĞµÄÖ÷½Ç HP£¬²»ÁíÍâ±£´æÒ»·İÑªÁ¿¡£
+        // çœŸæ­£ä¿®æ”¹çš„æ˜¯é˜Ÿä¼ä¸­çš„ä¸»è§’ HPï¼Œä¸å¦å¤–ä¿å­˜ä¸€ä»½è¡€é‡ã€‚
         if (!party.TakeDamage(party.MainCharacterId, damage))
             return false;
 
         nextDamageTime = Time.time + hurtInvincibleDuration;
 
         Debug.Log(
-            $"Ö÷½ÇÊÜµ½ {damage} µãÉËº¦£¬HP£º{hero.CurrentHP}/{hero.MaxHP}",
+            $"ä¸»è§’å—åˆ° {damage} ç‚¹ä¼¤å®³ï¼ŒHPï¼š{hero.CurrentHP}/{hero.MaxHP}",
             this);
 
         if (hero.CurrentHP <= 0)
@@ -304,13 +304,13 @@ public class BattlePlayerController : MonoBehaviour
             rb.linearVelocity = Vector2.zero;
             rb.simulated = false;
 
-            // Í£Ö¹±¾½Å±¾µÄÒÆ¶¯¡¢ÌøÔ¾ºÍ¹¥»÷¡£
-            // ³¡¾°¿ØÖÆÆ÷ÈÔ¹¤×÷£¬ËùÒÔ F1 ÈÔÄÜ·µ»ØµØÍ¼¡£
+            // åœæ­¢æœ¬è„šæœ¬çš„ç§»åŠ¨ã€è·³è·ƒå’Œæ”»å‡»ã€‚
+            // åœºæ™¯æ§åˆ¶å™¨ä»å·¥ä½œï¼Œæ‰€ä»¥ F1 ä»èƒ½è¿”å›åœ°å›¾ã€‚
             enabled = false;
 
             Debug.Log(
-                "Ö÷½ÇÒÑµ¹ÏÂ¡£µ±Ç°²âÊÔ½×¶ÎÇë°´ F1 ·µ»Ø£¬"
-                + "ÔÚ±³°üÖĞ»Ö¸´Ö÷½Ç HP ºóÖØĞÂ½øÈë¡£",
+                "ä¸»è§’å·²å€’ä¸‹ã€‚å½“å‰æµ‹è¯•é˜¶æ®µè¯·æŒ‰ F1 è¿”å›ï¼Œ"
+                + "åœ¨èƒŒåŒ…ä¸­æ¢å¤ä¸»è§’ HP åé‡æ–°è¿›å…¥ã€‚",
                 this);
         }
 

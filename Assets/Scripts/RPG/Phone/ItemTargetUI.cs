@@ -39,7 +39,7 @@ public class ItemTargetUI : MonoBehaviour
 
         if (!ready)
         {
-            Debug.LogError("Ä¿±êÌõÄ¿£ºÊı¾İ»ò UI ÒıÓÃÎ´ÅäÖÃ¡£", this);
+            Debug.LogError("ç›®æ ‡æ¡ç›®ï¼šæ•°æ®æˆ– UI å¼•ç”¨æœªé…ç½®ã€‚", this);
             return;
         }
 
@@ -69,8 +69,8 @@ public class ItemTargetUI : MonoBehaviour
         avatarImage.preserveAspect = true;
         avatarImage.enabled = data.contactAvatar != null;
 
-        hpText.text = $"HP£º{state.CurrentHP} / {state.MaxHP}";
-        spText.text = $"SP£º{state.CurrentSP} / {state.MaxSP}";
+        hpText.text = $"HPï¼š{state.CurrentHP} / {state.MaxHP}";
+        spText.text = $"SPï¼š{state.CurrentSP} / {state.MaxSP}";
 
         selectButton.interactable = canUse;
     }

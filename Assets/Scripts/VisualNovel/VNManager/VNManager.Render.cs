@@ -28,7 +28,7 @@ public partial class VNManager
         }
         GameManager.Instance.currentStoryFile = currentStoryFileName;
 
-        // ×îÔ¶ĞĞË÷Òı
+        // æœ€è¿œè¡Œç´¢å¼•
         var dict = GameManager.Instance.maxReachedLineIndices;
         if (dict.TryGetValue(currentStoryFileName, out var idx))
             maxReachedLineIndex = idx;
@@ -38,7 +38,7 @@ public partial class VNManager
             dict[currentStoryFileName] = 0;
         }
 
-        // »Ö¸´±³¾°¡¢BGM¡¢½ÇÉ«
+        // æ¢å¤èƒŒæ™¯ã€BGMã€è§’è‰²
         Render_RecoverBG_BGM_Characters();
     }
     private void Render_RecoverBG_BGM_Characters()

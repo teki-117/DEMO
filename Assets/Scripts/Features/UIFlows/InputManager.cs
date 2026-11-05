@@ -35,7 +35,7 @@ public class InputManager : MonoBehaviour
 
         if (IsInvalidName(playerName))
         {
-            // 可以添加错误提示（比如用对话框提示玩家）
+            // 鍙互娣诲姞閿欒鎻愮ず锛堟瘮濡傜敤瀵硅瘽妗嗘彁绀虹帺瀹讹級
             return;
         }
         GameManager.Instance.playerName = playerName;

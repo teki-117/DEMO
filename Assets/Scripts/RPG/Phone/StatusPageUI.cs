@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class StatusPageUI : MonoBehaviour
 {
-    [Header("½ÇÉ«ÁĞ±í")]
+    [Header("è§’è‰²åˆ—è¡¨")]
     [SerializeField] private Transform content;
     [SerializeField] private CharacterStatusCardUI cardPrefab;
 
-    [Header("ÍÅ¶Ó×Ê½ğ")]
+    [Header("å›¢é˜Ÿèµ„é‡‘")]
     [SerializeField] private TMP_Text moneyText;
 
     private PartyManager party;
@@ -47,7 +47,7 @@ public class StatusPageUI : MonoBehaviour
 
         if (content == null || cardPrefab == null || moneyText == null)
         {
-            Debug.LogError("¶ÓÎé×´Ì¬Ò³£ºÁĞ±í»ò×Ê½ğÒıÓÃÎ´ÅäÖÃ¡£", this);
+            Debug.LogError("é˜Ÿä¼çŠ¶æ€é¡µï¼šåˆ—è¡¨æˆ–èµ„é‡‘å¼•ç”¨æœªé…ç½®ã€‚", this);
             return;
         }
 
@@ -56,7 +56,7 @@ public class StatusPageUI : MonoBehaviour
         if (manager == null || !manager.EnsureInitialized())
         {
             Debug.LogError(
-                "¶ÓÎé×´Ì¬Ò³£º¶ÓÎéÎ´³õÊ¼»¯£¬Çë´Ó MenuScene ¿ªÊ¼ÓÎÏ·¡£",
+                "é˜Ÿä¼çŠ¶æ€é¡µï¼šé˜Ÿä¼æœªåˆå§‹åŒ–ï¼Œè¯·ä» MenuScene å¼€å§‹æ¸¸æˆã€‚",
                 this);
             return;
         }
@@ -107,6 +107,6 @@ public class StatusPageUI : MonoBehaviour
                 card.RefreshView();
         }
 
-        moneyText.text = $"×Ê½ğ£º{party.Money}";
+        moneyText.text = $"èµ„é‡‘ï¼š{party.Money}";
     }
 }

@@ -8,7 +8,7 @@ public class PartyDebugTools : MonoBehaviour
     {
         if (!Application.isPlaying)
         {
-            Debug.LogWarning("¶ÓÎé²âÊÔĞèÒªÔÚÔËĞĞÖĞÖ´ĞĞ¡£", this);
+            Debug.LogWarning("é˜Ÿä¼æµ‹è¯•éœ€è¦åœ¨è¿è¡Œä¸­æ‰§è¡Œã€‚", this);
             return null;
         }
 
@@ -16,14 +16,14 @@ public class PartyDebugTools : MonoBehaviour
 
         if (party == null || !party.EnsureInitialized())
         {
-            Debug.LogWarning("¶ÓÎé²âÊÔ£ºÕÒ²»µ½ÒÑ³õÊ¼»¯µÄ¶ÓÎé¡£", this);
+            Debug.LogWarning("é˜Ÿä¼æµ‹è¯•ï¼šæ‰¾ä¸åˆ°å·²åˆå§‹åŒ–çš„é˜Ÿä¼ã€‚", this);
             return null;
         }
 
         return party;
     }
 
-    [ContextMenu("¶ÓÎé²âÊÔ/1 ¼ÓÈë²âÊÔ½ÇÉ«")]
+    [ContextMenu("é˜Ÿä¼æµ‹è¯•/1 åŠ å…¥æµ‹è¯•è§’è‰²")]
     private void JoinTestMember()
     {
         PartyManager party = GetParty();
@@ -32,10 +32,10 @@ public class PartyDebugTools : MonoBehaviour
             return;
 
         bool result = party.JoinMember(testMember.characterID);
-        Debug.Log($"²âÊÔ½ÇÉ«Èë¶Ó£º{result}", this);
+        Debug.Log($"æµ‹è¯•è§’è‰²å…¥é˜Ÿï¼š{result}", this);
     }
 
-    [ContextMenu("¶ÓÎé²âÊÔ/2 ²âÊÔ½ÇÉ«ÊÜÉË25")]
+    [ContextMenu("é˜Ÿä¼æµ‹è¯•/2 æµ‹è¯•è§’è‰²å—ä¼¤25")]
     private void DamageTestMember()
     {
         PartyManager party = GetParty();
@@ -44,10 +44,10 @@ public class PartyDebugTools : MonoBehaviour
             return;
 
         bool result = party.TakeDamage(testMember.characterID, 25);
-        Debug.Log($"²âÊÔ½ÇÉ«ÊÜÉË£º{result}", this);
+        Debug.Log($"æµ‹è¯•è§’è‰²å—ä¼¤ï¼š{result}", this);
     }
 
-    [ContextMenu("¶ÓÎé²âÊÔ/3 ²âÊÔ½ÇÉ«Àë¶Ó")]
+    [ContextMenu("é˜Ÿä¼æµ‹è¯•/3 æµ‹è¯•è§’è‰²ç¦»é˜Ÿ")]
     private void LeaveTestMember()
     {
         PartyManager party = GetParty();
@@ -56,10 +56,10 @@ public class PartyDebugTools : MonoBehaviour
             return;
 
         bool result = party.LeaveMember(testMember.characterID);
-        Debug.Log($"²âÊÔ½ÇÉ«Àë¶Ó£º{result}", this);
+        Debug.Log($"æµ‹è¯•è§’è‰²ç¦»é˜Ÿï¼š{result}", this);
     }
 
-    [ContextMenu("¶ÓÎé²âÊÔ/4 ´òÓ¡¶ÓÎé")]
+    [ContextMenu("é˜Ÿä¼æµ‹è¯•/4 æ‰“å°é˜Ÿä¼")]
     private void PrintParty()
     {
         PartyManager party = GetParty();
@@ -67,7 +67,7 @@ public class PartyDebugTools : MonoBehaviour
         if (party == null)
             return;
 
-        Debug.Log($"ÍÅ¶Ó×Ê½ğ£º{party.Money}", this);
+        Debug.Log($"å›¢é˜Ÿèµ„é‡‘ï¼š{party.Money}", this);
 
         foreach (string id in party.MemberIds)
         {
@@ -76,9 +76,9 @@ public class PartyDebugTools : MonoBehaviour
 
             Debug.Log(
                 $"{CharacterDisplayUtility.GetName(data)} " +
-                $"HP {state.CurrentHP}/{state.MaxHP}£¬" +
-                $"SP {state.CurrentSP}/{state.MaxSP}£¬" +
-                $"¹¥»÷ {state.Attack}£¬·ÀÓù {state.Defense}",
+                $"HP {state.CurrentHP}/{state.MaxHP}ï¼Œ" +
+                $"SP {state.CurrentSP}/{state.MaxSP}ï¼Œ" +
+                $"æ”»å‡» {state.Attack}ï¼Œé˜²å¾¡ {state.Defense}",
                 this);
         }
     }

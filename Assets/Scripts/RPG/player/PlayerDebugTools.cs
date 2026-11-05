@@ -3,22 +3,22 @@ using UnityEngine.SceneManagement;
 
 public class PlayerDebugTools : MonoBehaviour
 {
-    [ContextMenu("Íæ¼Ò²âÊÔ/1 ´òÓ¡µ±Ç°×´Ì¬")]
+    [ContextMenu("ç©å®¶æµ‹è¯•/1 æ‰“å°å½“å‰çŠ¶æ€")]
     private void PrintState()
     {
         var manager = GetManager();
         if (manager == null) return;
 
         Debug.Log(
-            $"[Íæ¼Ò×´Ì¬] µÈ¼¶={manager.Level} EXP={manager.EXP} | " +
+            $"[ç©å®¶çŠ¶æ€] ç­‰çº§={manager.Level} EXP={manager.EXP} | " +
             $"HP={manager.CurrentHP}/{manager.MaxHP} | " +
             $"SP={manager.CurrentSP}/{manager.MaxSP} | " +
-            $"¹¥»÷={manager.Attack} ·ÀÓù={manager.Defense} | " +
-            $"½ğÇ®={manager.Money}",
+            $"æ”»å‡»={manager.Attack} é˜²å¾¡={manager.Defense} | " +
+            $"é‡‘é’±={manager.Money}",
             this);
     }
 
-    [ContextMenu("Íæ¼Ò²âÊÔ/2 Ä£ÄâÒ»×é×´Ì¬±ä»¯")]
+    [ContextMenu("ç©å®¶æµ‹è¯•/2 æ¨¡æ‹Ÿä¸€ç»„çŠ¶æ€å˜åŒ–")]
     private void SimulateChanges()
     {
         var manager = GetManager();
@@ -37,15 +37,15 @@ public class PlayerDebugTools : MonoBehaviour
         bool spent1000SP = manager.TrySpendSP(1000);
 
         Debug.Log(
-            $"[Íæ¼Ò²âÊÔ] Ö§¸¶30={paid30}£¬" +
-            $"Ö§¸¶1000={paid1000}£¬" +
-            $"ÏûºÄ1000SP={spent1000SP}",
+            $"[ç©å®¶æµ‹è¯•] æ”¯ä»˜30={paid30}ï¼Œ" +
+            $"æ”¯ä»˜1000={paid1000}ï¼Œ" +
+            $"æ¶ˆè€—1000SP={spent1000SP}",
             this);
 
         PrintState();
     }
 
-    [ContextMenu("Íæ¼Ò²âÊÔ/3 ·µ»Ø²Ëµ¥²âÊÔĞÂÓÎÏ·")]
+    [ContextMenu("ç©å®¶æµ‹è¯•/3 è¿”å›èœå•æµ‹è¯•æ–°æ¸¸æˆ")]
     private void ReturnToMenu()
     {
         if (GetManager() == null) return;
@@ -57,7 +57,7 @@ public class PlayerDebugTools : MonoBehaviour
     {
         if (!Application.isPlaying)
         {
-            Debug.LogWarning("ÇëÏÈ½øÈë Play Ä£Ê½¡£", this);
+            Debug.LogWarning("è¯·å…ˆè¿›å…¥ Play æ¨¡å¼ã€‚", this);
             return null;
         }
 
@@ -66,7 +66,7 @@ public class PlayerDebugTools : MonoBehaviour
         if (manager == null)
         {
             Debug.LogWarning(
-                "Î´ÕÒµ½ PlayerStateManager£¬Çë´ÓÓÎÏ·Ô­Èë¿ÚÔËĞĞ¡£",
+                "æœªæ‰¾åˆ° PlayerStateManagerï¼Œè¯·ä»æ¸¸æˆåŸå…¥å£è¿è¡Œã€‚",
                 this);
         }
 

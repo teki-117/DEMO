@@ -12,13 +12,13 @@ public class Constants : MonoBehaviour
     public static string HISTORY_SCENE = "HistoryScene";
     public static string LIVE2D_GAME_SCENE = "MuScene";
 
-    //ÎÄ±¾
+    //æ–‡æœ¬
     public static string STORY_PATH = "story";
     public static string DEFAULT_STORY_FILE = "1";
     public static string STORY_FILE_EXTENSION = ".xlsx";
     public static int DEFAULT_START_LINE = 1;
 
-    //Í¼Æ¬
+    //å›¾ç‰‡
     public static string AVATAR_PATH = "image/avatar/";
     public static string BACKGROUND_PATH = "image/background/";
     public static string BUTTON_PATH = "image/button/";
@@ -27,7 +27,7 @@ public class Constants : MonoBehaviour
     public static string IMAGE_LOAD_FAILED = "Failed to load image: ";
     public static string BIG_IMAGE_LOAD_FAILED = "Failed to load big image:";
 
-    //´ò×Ö»ú
+    //æ‰“å­—æœº
     public static float DEFAULT_TYPING_SPEED = 0.05f;
     public static float SKIP_MODE_TYPING_SPEED = 0.005f;
 
@@ -40,12 +40,12 @@ public class Constants : MonoBehaviour
     public static float DEFAULT_SKIP_WAITING_SECONDS = 0.01f;
     public static float DEFAULT_WAITING_SECONDS = 1.5f;
 
-    //ÉùÒô
-    public static string VOCAL_PATH = "audio/vocal/";//ÅäÒôÎÄ¼ş¼Ğ
-    public static string MUSIC_PATH = "audio/music/";//BGMÎÄ¼ş¼Ğ
+    //å£°éŸ³
+    public static string VOCAL_PATH = "audio/vocal/";//é…éŸ³æ–‡ä»¶å¤¹
+    public static string MUSIC_PATH = "audio/music/";//BGMæ–‡ä»¶å¤¹
     public static string AUDIO_LOAD_FAILED = "Failed to load audio: ";
-    public static string MENU_MUSIC_FILE_NAME = "menu";//Ö÷²Ëµ¥²¥·Å
-    /*public static string CREDITS_MUSIC_FILE_NAME = "4";*/ //ÖÆ×÷ÈËÔ±Ãûµ¥³¡¾°²¥·Å
+    public static string MENU_MUSIC_FILE_NAME = "menu";//ä¸»èœå•æ’­æ”¾
+    /*public static string CREDITS_MUSIC_FILE_NAME = "4";*/ //åˆ¶ä½œäººå‘˜åå•åœºæ™¯æ’­æ”¾
 
     
     public static string NO_DATA_FOUND = "No data found";
@@ -54,10 +54,10 @@ public class Constants : MonoBehaviour
     public static string GAME = "game";
     public static string MAIN_GAME_SCENE = "MuScene";
 
-    // ¾çÇéÖĞµÄÈÎÎñÖ¸Áî¡£
+    // å‰§æƒ…ä¸­çš„ä»»åŠ¡æŒ‡ä»¤ã€‚
     public const string QUEST_UNLOCK = "quest_unlock";
 
-    //Á¢»æ¶¯»­
+    //ç«‹ç»˜åŠ¨ç”»
     public static string APPEAR_AT = "appearAt";
     public static string APPEAR_AT_INSTANTLY = "appearAtInstantly";
     public static string APPEAR_AT_WITH_L2D = "appearAtWithL2d";
@@ -91,9 +91,9 @@ public class Constants : MonoBehaviour
     public static readonly string[] ALL_BACKGROUNDS = { "1", "2", "3","4" };
     public static string UNLOCKED = "unlocked";
 
-    //ÊäÈëÏµÍ³
+    //è¾“å…¥ç³»ç»Ÿ
     public static string CONFIRM = "confirm";
-    public static string PROMPT_TEXT = "ÇëÊäÈëÄãµÄÃû×Ö";
+    public static string PROMPT_TEXT = "è¯·è¾“å…¥ä½ çš„åå­—";
     public static string NAME_PLACEHOLDER = "[Name]";
 
     public static string GOTO = "goto";

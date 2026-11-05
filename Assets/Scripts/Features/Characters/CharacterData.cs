@@ -9,7 +9,7 @@ public class CharacterData : ScriptableObject
 {
     public string characterID;
 
-    [Header("ÁªÏµÈË×ÊÁÏ")]
+    [Header("è”ç³»äººèµ„æ–™")]
     public string displayName;
     public Sprite contactAvatar;
 
@@ -49,7 +49,7 @@ public class CharacterData : ScriptableObject
     public List<Live2DExpression> live2DExpressions = new();
     public Dictionary<string, int> live2DExpressionMap;
 
-    [Header("RPG ³õÊ¼ÊôĞÔ")]
+    [Header("RPG åˆå§‹å±æ€§")]
     [Min(1)] public int startingLevel = 1;
     [Min(1)] public int startingMaxHP = 100;
     [Min(0)] public int startingMaxSP = 30;
@@ -62,7 +62,7 @@ public class CharacterData : ScriptableObject
         foreach (var expr in expressions)
         {
             if (string.IsNullOrEmpty(expr?.key) || expr.sprite == null) continue;
-            expressionMap[expr.key] = expr.sprite; // ºóĞ´¸²¸Ç£¬±ãÓÚĞŞÅäÖÃ
+            expressionMap[expr.key] = expr.sprite; // åå†™è¦†ç›–ï¼Œä¾¿äºä¿®é…ç½®
         }
 
         // Live2D motion map

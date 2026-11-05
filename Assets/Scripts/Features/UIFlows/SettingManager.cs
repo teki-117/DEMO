@@ -128,7 +128,7 @@ public class SettingManager : MonoBehaviour
         Screen.SetResolution(width, height, Screen.fullScreenMode);
     }
 
-    // ½« Slider ÊýÖµ£¨0~1£©×ª»»Îª·Ö±´Öµ£¨¶ÔÊýÇúÏß£©£¬µ±ÊýÖµÎª 0 Ê±ÉèÎª -80dB
+    // å°† Slider æ•°å€¼ï¼ˆ0~1ï¼‰è½¬æ¢ä¸ºåˆ†è´å€¼ï¼ˆå¯¹æ•°æ›²çº¿ï¼‰ï¼Œå½“æ•°å€¼ä¸º 0 æ—¶è®¾ä¸º -80dB
     private float SliderValueToDecibel(float value)
     {
         return value > 0.0001f ? Mathf.Log10(value) * 20f : -80f;

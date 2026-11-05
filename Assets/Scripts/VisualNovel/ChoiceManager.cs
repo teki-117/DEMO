@@ -61,7 +61,7 @@ public class ChoiceManager : MonoBehaviour
             btn.GetComponentInChildren<TextMeshProUGUI>().text = opt.text;
             btn.onClick.RemoveAllListeners();
             btn.onClick.AddListener(() => {
-                // 点击时先改好感度
+                // 鐐瑰嚮鏃跺厛鏀瑰ソ鎰熷害
                 foreach (var ch in opt.changes)
                 {
                     CharacterStateManager.Instance.ChangeAffection(ch.characterID, ch.delta);

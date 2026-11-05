@@ -31,7 +31,7 @@ public class BagItemUI : MonoBehaviour
             quantityText == null ||
             useButton == null)
         {
-            Debug.LogError("±³°ü¿¨Æ¬£ºÊı¾İ»ò UI ÒıÓÃÎ´ÅäÖÃ¡£", this);
+            Debug.LogError("èƒŒåŒ…å¡ç‰‡ï¼šæ•°æ®æˆ– UI å¼•ç”¨æœªé…ç½®ã€‚", this);
             return;
         }
 
@@ -39,7 +39,7 @@ public class BagItemUI : MonoBehaviour
         requestUse = onRequestUse;
 
         nameText.text = data.itemName;
-        quantityText.text = $"¡Á{quantity}";
+        quantityText.text = $"Ã—{quantity}";
 
         if (iconImage != null)
         {
@@ -69,12 +69,12 @@ public class BagItemUI : MonoBehaviour
 
         if (inventory != null)
         {
-            // ×°±¸ÏÔÊ¾Î´×°±¸ÊıÁ¿£¬ÏûºÄÆ·ÏÔÊ¾Ê£ÓàÊıÁ¿
+            // è£…å¤‡æ˜¾ç¤ºæœªè£…å¤‡æ•°é‡ï¼Œæ¶ˆè€—å“æ˜¾ç¤ºå‰©ä½™æ•°é‡
             int count = isEquipment
                 ? inventory.GetAvailableCount(itemData.itemId)
                 : inventory.GetCount(itemData.itemId);
 
-            quantityText.text = $"¡Á{count}";
+            quantityText.text = $"Ã—{count}";
         }
 
         useButton.gameObject.SetActive(supported);

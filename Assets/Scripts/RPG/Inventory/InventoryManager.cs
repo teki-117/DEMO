@@ -6,13 +6,13 @@ public class InventoryManager : MonoBehaviour
 {
     public static InventoryManager Instance { get; private set; }
 
-    [Header("±¾ Demo Ê¹ÓÃµÄÎïÆ·")]
+    [Header("æœ¬ Demo ä½¿ç”¨çš„ç‰©å“")]
     [SerializeField] private ItemData[] allItemDatas = new ItemData[0];
 
-    [Header("ĞÂÓÎÏ·³õÊ¼ÎïÆ·")]
+    [Header("æ–°æ¸¸æˆåˆå§‹ç‰©å“")]
     [SerializeField] private ItemStack[] startingItems = new ItemStack[0];
 
-    [Header("±¾¾Ö±³°üÊı¾İ")]
+    [Header("æœ¬å±€èƒŒåŒ…æ•°æ®")]
     [SerializeField] private InventoryState state;
 
     private readonly Dictionary<string, ItemData> definitions =
@@ -55,14 +55,14 @@ public class InventoryManager : MonoBehaviour
                 if (data == null ||
                     string.IsNullOrWhiteSpace(data.itemId))
                 {
-                    Debug.LogWarning("±³°ü£ºÌø¹ı¿ÕÎïÆ·»òÈ±ÉÙ ID µÄÎïÆ·¡£", this);
+                    Debug.LogWarning("èƒŒåŒ…ï¼šè·³è¿‡ç©ºç‰©å“æˆ–ç¼ºå°‘ ID çš„ç‰©å“ã€‚", this);
                     continue;
                 }
 
                 if (definitions.ContainsKey(data.itemId))
                 {
                     Debug.LogWarning(
-                        $"±³°ü£ºÎïÆ· ID ÖØ¸´£¬Ìø¹ı {data.itemId}¡£",
+                        $"èƒŒåŒ…ï¼šç‰©å“ ID é‡å¤ï¼Œè·³è¿‡ {data.itemId}ã€‚",
                         this);
                     continue;
                 }
@@ -71,7 +71,7 @@ public class InventoryManager : MonoBehaviour
                     data.attackBonus < 0 || data.defenseBonus < 0)
                 {
                     Debug.LogWarning(
-                        $"±³°ü£ºÎïÆ· {data.itemId} µÄĞ§¹ûÅäÖÃÎŞĞ§¡£",
+                        $"èƒŒåŒ…ï¼šç‰©å“ {data.itemId} çš„æ•ˆæœé…ç½®æ— æ•ˆã€‚",
                         this);
                     continue;
                 }
@@ -90,8 +90,8 @@ public class InventoryManager : MonoBehaviour
                 if (!AddItemInternal(item.itemId, item.quantity))
                 {
                     Debug.LogWarning(
-                        $"±³°ü£º³õÊ¼ÎïÆ·ÅäÖÃÎŞĞ§£¬ID={item.itemId}£¬" +
-                        $"ÊıÁ¿={item.quantity}¡£",
+                        $"èƒŒåŒ…ï¼šåˆå§‹ç‰©å“é…ç½®æ— æ•ˆï¼ŒID={item.itemId}ï¼Œ" +
+                        $"æ•°é‡={item.quantity}ã€‚",
                         this);
                 }
             }
@@ -217,7 +217,7 @@ public class InventoryManager : MonoBehaviour
         return false;
     }
 
-    // ±£Áô¾Éµ÷ÊÔ½Å±¾Ê¹ÓÃµÄÈë¿Ú¡£
+    // ä¿ç•™æ—§è°ƒè¯•è„šæœ¬ä½¿ç”¨çš„å…¥å£ã€‚
     public bool TryUseItem(string itemId)
     {
         PartyManager party = PartyManager.Instance;
@@ -234,7 +234,7 @@ public class InventoryManager : MonoBehaviour
         return TryPerformAction(itemId, characterId, action);
     }
 
-    // È·ÈÏÊ±ÒªÇóÊµ¼Ê²Ù×÷ÈÔÓëÓÃ»§Ñ¡ÔñµÄ²Ù×÷Ò»ÖÂ¡£
+    // ç¡®è®¤æ—¶è¦æ±‚å®é™…æ“ä½œä»ä¸ç”¨æˆ·é€‰æ‹©çš„æ“ä½œä¸€è‡´ã€‚
     public bool TryPerformAction(
         string itemId,
         string characterId,

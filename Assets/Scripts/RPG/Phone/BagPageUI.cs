@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class BagPageUI : MonoBehaviour
 {
-    [Header("ÁĞ±í")]
+    [Header("åˆ—è¡¨")]
     [SerializeField] private Transform content;
     [SerializeField] private BagItemUI itemPrefab;
     [SerializeField] private TMP_Text emptyText;
 
-    [Header("Ñ¡ÔñÊ¹ÓÃÄ¿±ê")]
+    [Header("é€‰æ‹©ä½¿ç”¨ç›®æ ‡")]
     [SerializeField] private ItemTargetPanelUI targetPanel;
 
     private InventoryManager inventory;
@@ -59,7 +59,7 @@ public class BagPageUI : MonoBehaviour
             emptyText == null ||
             targetPanel == null)
         {
-            Debug.LogError("±³°üÒ³£ºÁĞ±í»òÄ¿±ê´°¿ÚÒıÓÃÎ´ÅäÖÃ¡£", this);
+            Debug.LogError("èƒŒåŒ…é¡µï¼šåˆ—è¡¨æˆ–ç›®æ ‡çª—å£å¼•ç”¨æœªé…ç½®ã€‚", this);
             return;
         }
 
@@ -68,7 +68,7 @@ public class BagPageUI : MonoBehaviour
 
         if (bag == null || team == null || !team.EnsureInitialized())
         {
-            Debug.LogError("±³°üÒ³£ºÇë´Ó MenuScene ¿ªÊ¼ÓÎÏ·¡£", this);
+            Debug.LogError("èƒŒåŒ…é¡µï¼šè¯·ä» MenuScene å¼€å§‹æ¸¸æˆã€‚", this);
             return;
         }
 

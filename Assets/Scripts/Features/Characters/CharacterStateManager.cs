@@ -39,7 +39,7 @@ public class CharacterStateManager : MonoBehaviour
         if (string.IsNullOrEmpty(characterID) ||
             !states.TryGetValue(characterID, out var state))
         {
-            Debug.LogWarning($"ÎÞÐ§µÄ½ÇÉ« ID£º{characterID}");
+            Debug.LogWarning($"æ— æ•ˆçš„è§’è‰² IDï¼š{characterID}");
             return;
         }
 

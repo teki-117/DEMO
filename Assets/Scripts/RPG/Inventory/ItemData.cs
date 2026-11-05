@@ -2,16 +2,16 @@ using UnityEngine;
 
 public enum ItemType
 {
-    Consumable,   // 消耗品
-    Weapon,       // 武器
-    Armor,        // 防具
-    KeyItem       // 关键物品
+    Consumable,   // 娑堣�楀搧
+    Weapon,       // 姝﹀櫒
+    Armor,        // 闃插叿
+    KeyItem       // 鍏抽敭鐗╁搧
 }
 
 [CreateAssetMenu(fileName = "NewItem", menuName = "RPG/Item Data")]
 public class ItemData : ScriptableObject
 {
-    [Header("物品信息")]
+    [Header("鐗╁搧淇℃伅")]
     public string itemId;
     public string itemName;
 
@@ -21,11 +21,11 @@ public class ItemData : ScriptableObject
     public Sprite icon;
     public ItemType itemType;
 
-    [Header("消耗品效果")]
+    [Header("娑堣�楀搧鏁堟灉")]
     [Min(0)] public int restoreHP;
     [Min(0)] public int restoreSP;
 
-    [Header("装备加成")]
+    [Header("瑁呭鍔犳垚")]
     [Min(0)] public int attackBonus;
     [Min(0)] public int defenseBonus;
 }

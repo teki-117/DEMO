@@ -7,13 +7,13 @@ using UnityEngine.InputSystem;
 
 public class PhoneUIController : MonoBehaviour
 {
-    [Header("ÊÖ»úÕûÌå")]
+    [Header("æ‰‹æœºæ•´ä½“")]
     [SerializeField] private RectTransform phoneRoot;
 
-    [Header("Ò³ÃæË³Ğò£ºÖ÷Ò³¡¢ÁªÏµÈË¡¢±³°ü¡¢ÈÎÎñ¡¢×´Ì¬")]
+    [Header("é¡µé¢é¡ºåºï¼šä¸»é¡µã€è”ç³»äººã€èƒŒåŒ…ã€ä»»åŠ¡ã€çŠ¶æ€")]
     [SerializeField] private GameObject[] pages = new GameObject[5];
 
-    [Header("¶¯»­Ê±¼ä")]
+    [Header("åŠ¨ç”»æ—¶é—´")]
     [SerializeField] private float openDuration = 0.3f;
     [SerializeField] private float closeDuration = 0.2f;
 
@@ -28,12 +28,12 @@ public class PhoneUIController : MonoBehaviour
     {
         if (phoneRoot == null)
         {
-            Debug.LogError("PhoneUIController£ºÇë°ó¶¨ PhoneRoot¡£", this);
+            Debug.LogError("PhoneUIControllerï¼šè¯·ç»‘å®š PhoneRootã€‚", this);
             enabled = false;
             return;
         }
 
-        // ¼ÇÂ¼ÄãÔÚ±à¼­Æ÷Àï°ÚºÃµÄÎ»ÖÃ£¬×÷Îª´ò¿ªÎ»ÖÃ¡£
+        // è®°å½•ä½ åœ¨ç¼–è¾‘å™¨é‡Œæ‘†å¥½çš„ä½ç½®ï¼Œä½œä¸ºæ‰“å¼€ä½ç½®ã€‚
         Canvas.ForceUpdateCanvases();
         openPosition = phoneRoot.anchoredPosition;
 
@@ -70,7 +70,7 @@ public class PhoneUIController : MonoBehaviour
 #endif
     }
 
-    // ¸ù¾İ¸¸ÈİÆ÷¸ß¶È£¬¼ÆËãÆÁÄ»ÏÂ·½µÄÎ»ÖÃ¡£
+    // æ ¹æ®çˆ¶å®¹å™¨é«˜åº¦ï¼Œè®¡ç®—å±å¹•ä¸‹æ–¹çš„ä½ç½®ã€‚
     private Vector2 GetHiddenPosition()
     {
         RectTransform parent = phoneRoot.parent as RectTransform;
@@ -100,7 +100,7 @@ public class PhoneUIController : MonoBehaviour
     {
         if (!initialized || isOpen) return;
 
-        // ÖĞ¶Ï¾É¶¯»­£¬¿ìËÙÁ¬Ğø°´¼üÊ±Ò²ÄÜ´Óµ±Ç°Î»ÖÃ¼ÌĞø¡£
+        // ä¸­æ–­æ—§åŠ¨ç”»ï¼Œå¿«é€Ÿè¿ç»­æŒ‰é”®æ—¶ä¹Ÿèƒ½ä»å½“å‰ä½ç½®ç»§ç»­ã€‚
         moveTween?.Kill();
         isOpen = true;
 

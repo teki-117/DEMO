@@ -6,16 +6,16 @@ using UnityEngine.UI;
 
 public class ItemTargetPanelUI : MonoBehaviour
 {
-    [Header("Ä¿±ê´°¿Ú")]
+    [Header("ç›®æ ‡çª—å£")]
     [SerializeField] private TMP_Text titleText;
     [SerializeField] private TMP_Text hintText;
     [SerializeField] private Button cancelButton;
 
-    [Header("¶ÓÔ±ÁĞ±í")]
+    [Header("é˜Ÿå‘˜åˆ—è¡¨")]
     [SerializeField] private Transform content;
     [SerializeField] private ItemTargetUI targetPrefab;
 
-    [Header("È·ÈÏ´°¿Ú")]
+    [Header("ç¡®è®¤çª—å£")]
     [SerializeField] private GameObject confirmationRoot;
     [SerializeField] private TMP_Text confirmationText;
     [SerializeField] private Button confirmButton;
@@ -58,7 +58,7 @@ public class ItemTargetPanelUI : MonoBehaviour
             confirmButton == null ||
             backButton == null)
         {
-            Debug.LogError("ÎïÆ·²Ù×÷´°¿Ú£ºUI ÒıÓÃÎ´ÅäÖÃ¡£", this);
+            Debug.LogError("ç‰©å“æ“ä½œçª—å£ï¼šUI å¼•ç”¨æœªé…ç½®ã€‚", this);
             return;
         }
 
@@ -178,7 +178,7 @@ public class ItemTargetPanelUI : MonoBehaviour
             return;
         }
 
-        titleText.text = $"{data.itemName} ¡Á{quantity}";
+        titleText.text = $"{data.itemName} Ã—{quantity}";
 
         bool anyAvailable = false;
 
@@ -201,14 +201,14 @@ public class ItemTargetPanelUI : MonoBehaviour
         if (data.itemType == ItemType.Consumable)
         {
             hintText.text = anyAvailable
-                ? "Ñ¡Ôñ¶ÓÔ±£¬ÔÙÈ·ÈÏÊ¹ÓÃ¡£"
-                : "µ±Ç°¶ÓÔ±¶¼²»ĞèÒªÕâ¸öÎïÆ·¡£";
+                ? "é€‰æ‹©é˜Ÿå‘˜ï¼Œå†ç¡®è®¤ä½¿ç”¨ã€‚"
+                : "å½“å‰é˜Ÿå‘˜éƒ½ä¸éœ€è¦è¿™ä¸ªç‰©å“ã€‚";
         }
         else
         {
             hintText.text =
-                $"¿ÕÏĞ£º{inventory.GetAvailableCount(itemId)} ¼ş¡£" +
-                "Ñ¡Ôñ³ÖÓĞÕß¿ÉĞ¶ÏÂ£¬ÆäËû¶ÓÔ±ĞèÓĞ¿ÕÏĞ×°±¸¡£";
+                $"ç©ºé—²ï¼š{inventory.GetAvailableCount(itemId)} ä»¶ã€‚" +
+                "é€‰æ‹©æŒæœ‰è€…å¯å¸ä¸‹ï¼Œå…¶ä»–é˜Ÿå‘˜éœ€æœ‰ç©ºé—²è£…å¤‡ã€‚";
         }
 
         RefreshConfirmation();
@@ -253,7 +253,7 @@ public class ItemTargetPanelUI : MonoBehaviour
 
         confirmationText.text = valid
             ? BuildConfirmationText()
-            : "Ä¿±ê»òÎïÆ·×´Ì¬ÒÑ±ä»¯¡£\nÇë·µ»ØÖØĞÂÑ¡Ôñ¡£";
+            : "ç›®æ ‡æˆ–ç‰©å“çŠ¶æ€å·²å˜åŒ–ã€‚\nè¯·è¿”å›é‡æ–°é€‰æ‹©ã€‚";
     }
 
     private string BuildConfirmationText()
@@ -277,10 +277,10 @@ public class ItemTargetPanelUI : MonoBehaviour
                 state.MaxSP, (long)state.CurrentSP + data.restoreSP);
 
             return
-                $"¶Ô{name}Ê¹ÓÃ{data.itemName}£¿\n\n" +
-                $"HP£º{state.CurrentHP} ¡ú {afterHP}\n" +
-                $"SP£º{state.CurrentSP} ¡ú {afterSP}\n\n" +
-                "ÏûºÄÊıÁ¿£º1";
+                $"å¯¹{name}ä½¿ç”¨{data.itemName}ï¼Ÿ\n\n" +
+                $"HPï¼š{state.CurrentHP} â†’ {afterHP}\n" +
+                $"SPï¼š{state.CurrentSP} â†’ {afterSP}\n\n" +
+                "æ¶ˆè€—æ•°é‡ï¼š1";
         }
 
         party.GetEquipmentPreview(
@@ -291,13 +291,13 @@ public class ItemTargetPanelUI : MonoBehaviour
             out int afterDefense);
 
         string operation = selectedAction == ItemActionType.Equip
-            ? "×°±¸"
-            : "Ğ¶ÏÂ";
+            ? "è£…å¤‡"
+            : "å¸ä¸‹";
 
         return
-            $"Îª{name}{operation}{data.itemName}£¿\n\n" +
-            $"¹¥»÷£º{state.Attack} ¡ú {afterAttack}\n" +
-            $"·ÀÓù£º{state.Defense} ¡ú {afterDefense}";
+            $"ä¸º{name}{operation}{data.itemName}ï¼Ÿ\n\n" +
+            $"æ”»å‡»ï¼š{state.Attack} â†’ {afterAttack}\n" +
+            $"é˜²å¾¡ï¼š{state.Defense} â†’ {afterDefense}";
     }
 
     private void ConfirmSelection()

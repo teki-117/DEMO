@@ -2,15 +2,15 @@ using UnityEngine;
 
 public class QuestPageUI : MonoBehaviour
 {
-    [Header("·ÖÀà±êÌâ")]
+    [Header("åˆ†ç±»æ ‡é¢˜")]
     [SerializeField] private QuestSectionUI unfinishedSection;
     [SerializeField] private QuestSectionUI completedSection;
 
-    [Header("ÈÎÎñÁĞ±íÈİÆ÷")]
+    [Header("ä»»åŠ¡åˆ—è¡¨å®¹å™¨")]
     [SerializeField] private Transform unfinishedList;
     [SerializeField] private Transform completedList;
 
-    [Header("ÈÎÎñÌõÄ¿Ô¤ÖÆÌå")]
+    [Header("ä»»åŠ¡æ¡ç›®é¢„åˆ¶ä½“")]
     [SerializeField] private QuestItemUI itemPrefab;
 
     private QuestManager manager;
@@ -24,7 +24,7 @@ public class QuestPageUI : MonoBehaviour
             itemPrefab == null)
         {
             Debug.LogError(
-                "QuestPageUI£ºInspector ÖĞ»¹ÓĞÒıÓÃÃ»ÓĞ°ó¶¨¡£",
+                "QuestPageUIï¼šInspector ä¸­è¿˜æœ‰å¼•ç”¨æ²¡æœ‰ç»‘å®šã€‚",
                 this);
             return;
         }
@@ -34,21 +34,21 @@ public class QuestPageUI : MonoBehaviour
         if (manager == null)
         {
             Debug.LogWarning(
-                "QuestPageUI£ºÎ´ÕÒµ½ QuestManager£¬Çë´Ó MenuScene ¿ªÊ¼ÔËĞĞ¡£",
+                "QuestPageUIï¼šæœªæ‰¾åˆ° QuestManagerï¼Œè¯·ä» MenuScene å¼€å§‹è¿è¡Œã€‚",
                 this);
             return;
         }
 
-        // Ò³Ãæ´ò¿ªÊ±£¬¿ªÊ¼¼àÌıÈÎÎñ±ä»¯¡£
+        // é¡µé¢æ‰“å¼€æ—¶ï¼Œå¼€å§‹ç›‘å¬ä»»åŠ¡å˜åŒ–ã€‚
         manager.OnQuestsChanged += Refresh;
 
-        // ÏÈÏÔÊ¾µ±Ç°ÒÑÓĞµÄÈÎÎñ¡£
+        // å…ˆæ˜¾ç¤ºå½“å‰å·²æœ‰çš„ä»»åŠ¡ã€‚
         Refresh();
     }
 
     private void OnDisable()
     {
-        // Ò³Ãæ¹Ø±ÕÊ±£¬Í£Ö¹¼àÌı¡£
+        // é¡µé¢å…³é—­æ—¶ï¼Œåœæ­¢ç›‘å¬ã€‚
         if (manager != null)
         {
             manager.OnQuestsChanged -= Refresh;
@@ -89,7 +89,7 @@ public class QuestPageUI : MonoBehaviour
             }
             else
             {
-                // ÉĞÎ´½âËøµÄÈÎÎñ²»ÏÔÊ¾¡£
+                // å°šæœªè§£é”çš„ä»»åŠ¡ä¸æ˜¾ç¤ºã€‚
                 continue;
             }
 
@@ -107,7 +107,7 @@ public class QuestPageUI : MonoBehaviour
         {
             GameObject item = listRoot.GetChild(i).gameObject;
 
-            // ÏÈÍË³öÏÔÊ¾ºÍ²¼¾Ö£¬ÔÙ°²ÅÅÏú»Ù¡£
+            // å…ˆé€€å‡ºæ˜¾ç¤ºå’Œå¸ƒå±€ï¼Œå†å®‰æ’é”€æ¯ã€‚
             item.SetActive(false);
             Destroy(item);
         }

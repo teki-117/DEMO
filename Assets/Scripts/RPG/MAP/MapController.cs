@@ -4,11 +4,11 @@ using TMPro;
 public class MapController : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI timeText;
-    [Header("ÊÖ»ú½çÃæ")]
+    [Header("æ‰‹æœºç•Œé¢")]
     [SerializeField] private GameObject phoneRoot;
     private void Start()
     {
-        // ¼ÇÂ¼µ±Ç°ËùÔÚµÄµØÍ¼³¡¾°£¬¹©ÉèÖÃµÈ½çÃæ·µ»ØÊ¹ÓÃ¡£
+        // è®°å½•å½“å‰æ‰€åœ¨çš„åœ°å›¾åœºæ™¯ï¼Œä¾›è®¾ç½®ç­‰ç•Œé¢è¿”å›ä½¿ç”¨ã€‚
         if (GameManager.Instance != null)
         {
             GameManager.Instance.currentScene = "MapScene";
@@ -17,7 +17,7 @@ public class MapController : MonoBehaviour
         if (WorldManager.Instance != null)
         {
             Debug.Log(
-                $"µØÍ¼ÒÑ´ò¿ª£¬µ±Ç°µØµã£º{WorldManager.Instance.CurrentLocationId}"
+                $"åœ°å›¾å·²æ‰“å¼€ï¼Œå½“å‰åœ°ç‚¹ï¼š{WorldManager.Instance.CurrentLocationId}"
             );
         }
         if (timeText != null && GameTimeManager.Instance != null)
@@ -28,7 +28,7 @@ public class MapController : MonoBehaviour
 
     public void SelectLocation(string locationId)
     {
-        // ÊÖ»úÏÔÊ¾ÆÚ¼ä£¨°üÀ¨»¬ÈëºÍ»¬³ö¶¯»­£©£¬²»ÏìÓ¦µØÍ¼µØµã²Ù×÷¡£
+        // æ‰‹æœºæ˜¾ç¤ºæœŸé—´ï¼ˆåŒ…æ‹¬æ»‘å…¥å’Œæ»‘å‡ºåŠ¨ç”»ï¼‰ï¼Œä¸å“åº”åœ°å›¾åœ°ç‚¹æ“ä½œã€‚
         if (phoneRoot != null && phoneRoot.activeInHierarchy)
         {
             return;
@@ -36,7 +36,7 @@ public class MapController : MonoBehaviour
 
         if (WorldManager.Instance == null)
         {
-            Debug.LogError("µØÍ¼ÖĞÈ±ÉÙ WorldManager£¬Çë¼ì²é¹ÒÔØ¡£");
+            Debug.LogError("åœ°å›¾ä¸­ç¼ºå°‘ WorldManagerï¼Œè¯·æ£€æŸ¥æŒ‚è½½ã€‚");
             return;
         }
 

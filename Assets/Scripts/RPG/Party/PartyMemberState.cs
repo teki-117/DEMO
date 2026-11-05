@@ -27,10 +27,10 @@ public class PartyMemberState
         ArmorData != null ? ArmorData.itemId : "";
 
     public string WeaponName =>
-        WeaponData != null ? WeaponData.itemName : "ÎÞ";
+        WeaponData != null ? WeaponData.itemName : "æ— ";
 
     public string ArmorName =>
-        ArmorData != null ? ArmorData.itemName : "ÎÞ";
+        ArmorData != null ? ArmorData.itemName : "æ— ";
 
     public int Attack => GetAttackWith(WeaponData, ArmorData);
     public int Defense => GetDefenseWith(WeaponData, ArmorData);

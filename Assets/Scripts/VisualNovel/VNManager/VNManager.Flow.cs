@@ -50,7 +50,7 @@ public partial class VNManager
         if (storyData == null || storyData.Count == 0)
         {
             SetMode(AdvanceMode.Manual);
-            Debug.LogError("¾çÇéÊı¾İÎª¿Õ£¬ÒÑÍ£Ö¹ÍÆ½ø¡£", this);
+            Debug.LogError("å‰§æƒ…æ•°æ®ä¸ºç©ºï¼Œå·²åœæ­¢æ¨è¿›ã€‚", this);
             return;
         }
 
@@ -58,7 +58,7 @@ public partial class VNManager
         {
             SetMode(AdvanceMode.Manual);
             Debug.LogError(
-                $"¾çÇéĞĞºÅÔ½½ç£º{currentLine}£¬Çë¼ì²é¾çÇé½áÊøÖ¸Áî¡£",
+                $"å‰§æƒ…è¡Œå·è¶Šç•Œï¼š{currentLine}ï¼Œè¯·æ£€æŸ¥å‰§æƒ…ç»“æŸæŒ‡ä»¤ã€‚",
                 this);
             return;
         }
@@ -193,7 +193,7 @@ public partial class VNManager
 
     private void FinishStory()
     {
-        // ½áÊø×Ô¶¯²¥·Å»ò¿ì½ø¡£
+        // ç»“æŸè‡ªåŠ¨æ’­æ”¾æˆ–å¿«è¿›ã€‚
         SetMode(AdvanceMode.Manual);
 
         var gm = GameManager.Instance;
@@ -204,7 +204,7 @@ public partial class VNManager
 
         gm.currentScene = targetScene;
 
-        // ·µ»ØµØÍ¼Ê±£¬ÓÎÏ·ÈÔÔÚ½øĞĞ¡£
+        // è¿”å›åœ°å›¾æ—¶ï¼Œæ¸¸æˆä»åœ¨è¿›è¡Œã€‚
         gm.hasStarted = targetScene != Constants.MENU_SCENE;
 
         if (targetScene == "MapScene" && WorldManager.Instance != null)

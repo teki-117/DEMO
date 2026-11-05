@@ -14,33 +14,33 @@ public class BattleEnemyController : MonoBehaviour
         Dead
     }
 
-    [Header("³¡¾°ÒıÓÃ")]
+    [Header("åœºæ™¯å¼•ç”¨")]
     [SerializeField] private BattlePlayerController player;
     [SerializeField] private LayerMask groundLayer;
 
-    [Header("ÉúÃü")]
+    [Header("ç”Ÿå‘½")]
     [Min(1)]
     [SerializeField] private int maxHP = 30;
 
-    [Header("Ñ²Âß")]
+    [Header("å·¡é€»")]
     [SerializeField] private float patrolSpeed = 1.5f;
     [SerializeField] private float patrolHalfWidth = 2f;
 
-    [Header("·¢ÏÖºÍ×·»÷")]
+    [Header("å‘ç°å’Œè¿½å‡»")]
     [SerializeField] private float detectionRange = 4f;
     [SerializeField] private float detectionHeight = 1.5f;
     [SerializeField] private float chaseSpeed = 2.5f;
 
-    [Header("¹¥»÷")]
+    [Header("æ”»å‡»")]
     [SerializeField] private int attackPower = 12;
     [SerializeField] private float attackRange = 1.15f;
     [SerializeField] private float attackHeight = 0.9f;
     [SerializeField] private float attackInterval = 1.2f;
 
-    [Header("ÊÜ»÷±íÏÖ")]
+    [Header("å—å‡»è¡¨ç°")]
     [SerializeField] private float hitFlashDuration = 0.12f;
 
-    [Header("ÔËĞĞ×´Ì¬£¨¹Û²ìÓÃ£©")]
+    [Header("è¿è¡ŒçŠ¶æ€ï¼ˆè§‚å¯Ÿç”¨ï¼‰")]
     [SerializeField] private int currentHP;
     [SerializeField] private bool isDead;
     [SerializeField] private EnemyState currentState;
@@ -68,7 +68,7 @@ public class BattleEnemyController : MonoBehaviour
         currentHP = maxHP;
         isDead = false;
 
-        // ÒÔµĞÈËÔÚ³¡¾°ÀïµÄ³õÊ¼Î»ÖÃ×÷ÎªÑ²ÂßÖĞĞÄ¡£
+        // ä»¥æ•Œäººåœ¨åœºæ™¯é‡Œçš„åˆå§‹ä½ç½®ä½œä¸ºå·¡é€»ä¸­å¿ƒã€‚
         patrolCenterX = transform.position.x;
         currentState = EnemyState.Patrol;
     }
@@ -118,7 +118,7 @@ public class BattleEnemyController : MonoBehaviour
             return false;
         }
 
-        // µØÃæ»òÇ½±Úµ²×¡ÊÓÏßÊ±£¬²»¸ô×ÅÕÏ°­×·»÷¡¢¹¥»÷¡£
+        // åœ°é¢æˆ–å¢™å£æŒ¡ä½è§†çº¿æ—¶ï¼Œä¸éš”ç€éšœç¢è¿½å‡»ã€æ”»å‡»ã€‚
         RaycastHit2D obstacle = Physics2D.Linecast(
             bodyCollider.bounds.center,
             player.transform.position,
@@ -140,7 +140,7 @@ public class BattleEnemyController : MonoBehaviour
         else if (transform.position.x >= rightLimit)
             patrolDirection = -1;
 
-        // Óöµ½Ç½±Ú»òµØÃæ±ßÔµ¾Í×ªÏò¡£
+        // é‡åˆ°å¢™å£æˆ–åœ°é¢è¾¹ç¼˜å°±è½¬å‘ã€‚
         if (!CanMove(patrolDirection))
             patrolDirection *= -1;
 
@@ -163,7 +163,7 @@ public class BattleEnemyController : MonoBehaviour
 
         if (Mathf.Abs(difference.x) <= attackRange)
         {
-            // ÒÑ½Ó½üÖ÷½Ç£¬Í£ÏÂ£¬±ÜÃâÒ»Ö±¶¥×ÅÖ÷½Ç×ß¡£
+            // å·²æ¥è¿‘ä¸»è§’ï¼Œåœä¸‹ï¼Œé¿å…ä¸€ç›´é¡¶ç€ä¸»è§’èµ°ã€‚
             SetHorizontalSpeed(0f);
 
             if (Mathf.Abs(difference.y) <= attackHeight)
@@ -178,7 +178,7 @@ public class BattleEnemyController : MonoBehaviour
             }
             else
             {
-                // Ö÷½ÇÌøµ½Í·¶¥Ê±µÈ´ı£¬²»¸ô¿ÕÏòÉÏ¹¥»÷¡£
+                // ä¸»è§’è·³åˆ°å¤´é¡¶æ—¶ç­‰å¾…ï¼Œä¸éš”ç©ºå‘ä¸Šæ”»å‡»ã€‚
                 currentState = EnemyState.Chase;
             }
 
@@ -198,7 +198,7 @@ public class BattleEnemyController : MonoBehaviour
     {
         Bounds bounds = bodyCollider.bounds;
 
-        // Ë®Æ½Ì½²âÇ°·½ÊÇ·ñÓĞÇ½¡£
+        // æ°´å¹³æ¢æµ‹å‰æ–¹æ˜¯å¦æœ‰å¢™ã€‚
         RaycastHit2D wall = Physics2D.Raycast(
             bounds.center,
             Vector2.right * direction,
@@ -206,7 +206,7 @@ public class BattleEnemyController : MonoBehaviour
             groundLayer
         );
 
-        // ÔÚÉíÌåÇ°·½¡¢¿¿½ü½Åµ×µÄÎ»ÖÃÏòÏÂÌ½²âµØÃæ¡£
+        // åœ¨èº«ä½“å‰æ–¹ã€é è¿‘è„šåº•çš„ä½ç½®å‘ä¸‹æ¢æµ‹åœ°é¢ã€‚
         Vector2 footAhead = new Vector2(
             bounds.center.x + direction * (bounds.extents.x + 0.15f),
             bounds.min.y + 0.15f
@@ -224,7 +224,7 @@ public class BattleEnemyController : MonoBehaviour
 
     private void SetHorizontalSpeed(float speed)
     {
-        // ±£ÁôÖØÁ¦ÓëÂäµØËùĞèµÄ´¹Ö±ËÙ¶È¡£
+        // ä¿ç•™é‡åŠ›ä¸è½åœ°æ‰€éœ€çš„å‚ç›´é€Ÿåº¦ã€‚
         rb.linearVelocity = new Vector2(
             speed,
             rb.linearVelocity.y
@@ -244,7 +244,7 @@ public class BattleEnemyController : MonoBehaviour
         currentHP = Mathf.Max(0, currentHP - damage);
 
         Debug.Log(
-            $"{name} ÊÜµ½ {damage} µãÉËº¦£¬HP£º{currentHP}/{maxHP}",
+            $"{name} å—åˆ° {damage} ç‚¹ä¼¤å®³ï¼ŒHPï¼š{currentHP}/{maxHP}",
             this);
 
         if (currentHP <= 0)
@@ -265,7 +265,7 @@ public class BattleEnemyController : MonoBehaviour
         rb.linearVelocity = Vector2.zero;
         rb.simulated = false;
 
-        Debug.Log($"{name} ÒÑ±»»÷°Ü¡£", this);
+        Debug.Log($"{name} å·²è¢«å‡»è´¥ã€‚", this);
         Destroy(gameObject);
     }
 }

@@ -14,15 +14,15 @@ public class GameManager : MonoBehaviour
     public string currentLanguage = Constants.DEFAULT_LANGUAGE;
     public string currentBackgroundImg;
     public string currentBackgroundMusic;
-    public List<CharacterSaveData> currentCharacterData = new List<CharacterSaveData>(); // µ±Ç°³¡¾°µÄ½ÇÉ«Êı¾İ
+    public List<CharacterSaveData> currentCharacterData = new List<CharacterSaveData>(); // å½“å‰åœºæ™¯çš„è§’è‰²æ•°æ®
 
     public string WinStoryFileName;
     public string LoseStoryFileName;
 
     public bool hasStarted;
-    public HashSet<string> unlockedBackgrounds = new HashSet<string>(); // ±£´æÒÑ½âËøµÄ±³¾°
-    public Dictionary<string, int> maxReachedLineIndices = new Dictionary<string, int>(); // È«¾Ö´æ´¢Ã¿¸öÎÄ¼şµÄ×îÔ¶ĞĞË÷Òı
-    public LinkedList<ExcelData> historyRecords = new LinkedList<ExcelData>(); // ±£´æÀúÊ·¼ÇÂ¼
+    public HashSet<string> unlockedBackgrounds = new HashSet<string>(); // ä¿å­˜å·²è§£é”çš„èƒŒæ™¯
+    public Dictionary<string, int> maxReachedLineIndices = new Dictionary<string, int>(); // å…¨å±€å­˜å‚¨æ¯ä¸ªæ–‡ä»¶çš„æœ€è¿œè¡Œç´¢å¼•
+    public LinkedList<ExcelData> historyRecords = new LinkedList<ExcelData>(); // ä¿å­˜å†å²è®°å½•
     public enum SaveLoadMode { None, Save, Load }
     public SaveLoadMode currentSaveLoadMode { get; set; } = SaveLoadMode.None;
     public SaveData pendingData;
@@ -41,8 +41,8 @@ public class GameManager : MonoBehaviour
         return Path.Combine(Application.persistentDataPath, Constants.SAVE_FILE_PATH, index + Constants.SAVE_FILE_EXTENSION);
     }
     public static GameManager Instance { get; private set; }
-    // ¿ªÊ¼Ò»ÂÖÈ«ĞÂµÄÓÎÏ·¡£
-    // Ö»ÓĞÍæ¼Òµã»÷¡°ĞÂÓÎÏ·¡±Ê±²Åµ÷ÓÃ¡£
+    // å¼€å§‹ä¸€è½®å…¨æ–°çš„æ¸¸æˆã€‚
+    // åªæœ‰ç©å®¶ç‚¹å‡»â€œæ–°æ¸¸æˆâ€æ—¶æ‰è°ƒç”¨ã€‚
     public void StartNewGame()
     {
         playerName = string.Empty;
@@ -61,20 +61,20 @@ public class GameManager : MonoBehaviour
         {
             WorldManager.Instance.ResetWorld();
         }
-        // ĞÂÓÎÏ·ÖØÖÃºÃ¸Ğ¶È¡£
+        // æ–°æ¸¸æˆé‡ç½®å¥½æ„Ÿåº¦ã€‚
         CharacterStateManager.Instance.ResetAffection();
 
-        // ĞÂÓÎÏ·Ê±ÖØÖÃÈÎÎñ¡£
+        // æ–°æ¸¸æˆæ—¶é‡ç½®ä»»åŠ¡ã€‚
         if (QuestManager.Instance != null)
         {
             QuestManager.Instance.ResetQuests();
         }
-        // ĞÂÓÎÏ·ÖØÖÃÍæ¼Ò»ù´¡×´Ì¬¡£
+        // æ–°æ¸¸æˆé‡ç½®ç©å®¶åŸºç¡€çŠ¶æ€ã€‚
         if (PlayerStateManager.Instance != null)
         {
             PlayerStateManager.Instance.ResetPlayer();
         }
-        // ĞÂÓÎÏ·ÖØÖÃ±³°ü¡£
+        // æ–°æ¸¸æˆé‡ç½®èƒŒåŒ…ã€‚
         if (InventoryManager.Instance != null)
         {
             InventoryManager.Instance.ResetInventory();
@@ -87,29 +87,29 @@ public class GameManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); // ¿ç³¡¾°±£³Ö
+            DontDestroyOnLoad(gameObject); // è·¨åœºæ™¯ä¿æŒ
         }
         else
         {
             Destroy(gameObject);
         }
     }
-    // ×¼±¸½øÈëÒ»¶ÎĞÂµÄ¾çÇé¡£
-    // ´ÓµØÍ¼½øÈëÑ§Ğ£µÈÊÂ¼şÊ±µ÷ÓÃ£¬²»ÖØÖÃºÃ¸Ğ¶È¡£
+    // å‡†å¤‡è¿›å…¥ä¸€æ®µæ–°çš„å‰§æƒ…ã€‚
+    // ä»åœ°å›¾è¿›å…¥å­¦æ ¡ç­‰äº‹ä»¶æ—¶è°ƒç”¨ï¼Œä¸é‡ç½®å¥½æ„Ÿåº¦ã€‚
     public void PrepareStory(string storyFileName)
     {
-        // Çå³ıÉĞÎ´Ê¹ÓÃµÄ´æµµÊı¾İ£¬±ÜÃâ½øÈë¾çÇéÊ±±»¾ÉÊı¾İ¸²¸Ç¡£
+        // æ¸…é™¤å°šæœªä½¿ç”¨çš„å­˜æ¡£æ•°æ®ï¼Œé¿å…è¿›å…¥å‰§æƒ…æ—¶è¢«æ—§æ•°æ®è¦†ç›–ã€‚
         pendingData = null;
 
         currentStoryFile = storyFileName;
         currentLineIndex = Constants.DEFAULT_START_LINE;
 
-        // Çå³ıÉÏÒ»¶Î¾çÇéµÄ»­Ãæ×´Ì¬¡£
+        // æ¸…é™¤ä¸Šä¸€æ®µå‰§æƒ…çš„ç”»é¢çŠ¶æ€ã€‚
         currentBackgroundImg = string.Empty;
         currentBackgroundMusic = string.Empty;
         currentCharacterData.Clear();
 
-        // ·ÀÖ¹ÀúÊ·¼ÇÂ¼ÉĞÎ´³õÊ¼»¯¡£
+        // é˜²æ­¢å†å²è®°å½•å°šæœªåˆå§‹åŒ–ã€‚
         if (historyRecords == null)
         {
             historyRecords = new LinkedList<ExcelData>();

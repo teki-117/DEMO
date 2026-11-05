@@ -55,7 +55,7 @@ public class PlayerStateManager : MonoBehaviour
         if (manager == null)
         {
             Debug.LogError(
-                "Íæ¼Ò£ºÈ±ÉÙ PartyManager£¬ÇëÔÚ MenuScene ÅäÖÃ¡£",
+                "ç©å®¶ï¼šç¼ºå°‘ PartyManagerï¼Œè¯·åœ¨ MenuScene é…ç½®ã€‚",
                 this);
             return false;
         }

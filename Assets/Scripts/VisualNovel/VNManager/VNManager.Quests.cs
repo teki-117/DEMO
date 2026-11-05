@@ -8,7 +8,7 @@ public partial class VNManager
 
         if (string.IsNullOrEmpty(questId))
         {
-            Debug.LogError("¾çÇéÈÎÎñÖ¸ÁîÈ±ÉÙÈÎÎñ ID¡£", this);
+            Debug.LogError("å‰§æƒ…ä»»åŠ¡æŒ‡ä»¤ç¼ºå°‘ä»»åŠ¡ IDã€‚", this);
             return;
         }
 
@@ -17,7 +17,7 @@ public partial class VNManager
         if (manager == null)
         {
             Debug.LogError(
-                "¾çÇéÎŞ·¨½âËøÈÎÎñ£ºÕÒ²»µ½ QuestManager¡£",
+                "å‰§æƒ…æ— æ³•è§£é”ä»»åŠ¡ï¼šæ‰¾ä¸åˆ° QuestManagerã€‚",
                 this);
             return;
         }
@@ -27,7 +27,7 @@ public partial class VNManager
         if (data == null)
         {
             Debug.LogError(
-                $"¾çÇéÖĞµÄÈÎÎñ ID Ã»ÓĞ×¢²á£º{questId}",
+                $"å‰§æƒ…ä¸­çš„ä»»åŠ¡ ID æ²¡æœ‰æ³¨å†Œï¼š{questId}",
                 this);
             return;
         }
@@ -35,7 +35,7 @@ public partial class VNManager
         if (manager.UnlockQuest(questId))
         {
             Debug.Log(
-                $"¾çÇé½âËøÈÎÎñ£º{data.questName}£¨{questId}£©",
+                $"å‰§æƒ…è§£é”ä»»åŠ¡ï¼š{data.questName}ï¼ˆ{questId}ï¼‰",
                 this);
         }
     }

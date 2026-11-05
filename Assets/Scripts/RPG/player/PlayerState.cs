@@ -1,6 +1,6 @@
 using System;
 
-// 保存本局玩家数据，不负责执行游戏逻辑
+// 淇濆瓨鏈眬鐜╁鏁版嵁锛屼笉璐熻矗鎵ц娓告垙閫昏緫
 [Serializable]
 public class PlayerState
 {

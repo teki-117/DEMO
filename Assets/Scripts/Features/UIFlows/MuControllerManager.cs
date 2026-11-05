@@ -5,7 +5,7 @@ public class MuSceneController : MonoBehaviour
 {
     public void ExitToGameScene()
     {
-        Debug.Log("点击了出门按钮，准备返回 GameScene");
+        Debug.Log("鐐瑰嚮浜嗗嚭闂ㄦ寜閽紝鍑嗗杩斿洖 GameScene");
         SceneManager.LoadScene(Constants.GAME_SCENE);
     }
 }

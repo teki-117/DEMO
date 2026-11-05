@@ -30,14 +30,14 @@ public class WorldManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    // ¿ªÊ¼ĞÂÓÎÏ·Ê±ÖØÖÃÊÀ½ç×´Ì¬¡£
+    // å¼€å§‹æ–°æ¸¸æˆæ—¶é‡ç½®ä¸–ç•ŒçŠ¶æ€ã€‚
     public void ResetWorld()
     {
         currentLocationId = "Map";
         hasPendingAction = false;
     }
 
-    // µØÍ¼½çÃæÍ³Ò»Í¨¹ıÕâ¸öÈë¿ÚÑ¡ÔñµØµã¡£
+    // åœ°å›¾ç•Œé¢ç»Ÿä¸€é€šè¿‡è¿™ä¸ªå…¥å£é€‰æ‹©åœ°ç‚¹ã€‚
     public void EnterLocation(string locationId)
     {
         switch (locationId)
@@ -53,7 +53,7 @@ public class WorldManager : MonoBehaviour
             case "Home":
             case "Shop":
                 currentLocationId = locationId;
-                Debug.Log($"µ±Ç°µØµã£º{currentLocationId}£¬µØµãÄÚÈİ´ı½ÓÈë¡£");
+                Debug.Log($"å½“å‰åœ°ç‚¹ï¼š{currentLocationId}ï¼Œåœ°ç‚¹å†…å®¹å¾…æ¥å…¥ã€‚");
                 break;
         }
     }
@@ -64,7 +64,7 @@ public class WorldManager : MonoBehaviour
 
         if (gm == null)
         {
-            Debug.LogError("ÕÒ²»µ½ GameManager£¬Çë´ÓÔ­À´µÄÓÎÏ·Èë¿ÚÆô¶¯¡£");
+            Debug.LogError("æ‰¾ä¸åˆ° GameManagerï¼Œè¯·ä»åŸæ¥çš„æ¸¸æˆå…¥å£å¯åŠ¨ã€‚");
             return;
         }
 
@@ -78,7 +78,7 @@ public class WorldManager : MonoBehaviour
     }
     public void CompleteCurrentAction()
     {
-        // Ã»ÓĞ´ı½áËãĞĞ¶¯Ê±£¬Ö±½Ó·µ»Ø¡£
+        // æ²¡æœ‰å¾…ç»“ç®—è¡ŒåŠ¨æ—¶ï¼Œç›´æ¥è¿”å›ã€‚
         if (!hasPendingAction)
         {
             return;
@@ -86,21 +86,21 @@ public class WorldManager : MonoBehaviour
 
         if (GameTimeManager.Instance == null)
         {
-            Debug.LogError("È±ÉÙ GameTimeManager£¬ÎŞ·¨½áËãĞĞ¶¯Ê±¼ä¡£");
+            Debug.LogError("ç¼ºå°‘ GameTimeManagerï¼Œæ— æ³•ç»“ç®—è¡ŒåŠ¨æ—¶é—´ã€‚");
             return;
         }
 
-        // ÏÈ±ê¼ÇÎªÒÑ½áËã£¬±ÜÃâÍ¬Ò»´ÎĞĞ¶¯ÖØ¸´½áËã¡£
+        // å…ˆæ ‡è®°ä¸ºå·²ç»“ç®—ï¼Œé¿å…åŒä¸€æ¬¡è¡ŒåŠ¨é‡å¤ç»“ç®—ã€‚
         hasPendingAction = false;
 
-        // ÏòÈÎÎñÏµÍ³±¨¸æÒ»´ÎÍêÕûµÄµØµãĞĞ¶¯¡£
+        // å‘ä»»åŠ¡ç³»ç»ŸæŠ¥å‘Šä¸€æ¬¡å®Œæ•´çš„åœ°ç‚¹è¡ŒåŠ¨ã€‚
         if (QuestManager.Instance != null)
         {
             QuestManager.Instance.ReportLocationActionCompleted(
                 currentLocationId);
         }
 
-        // Ò»´ÎĞĞ¶¯ÍÆ½øÒ»¸öÊ±¼ä¶Î¡£
+        // ä¸€æ¬¡è¡ŒåŠ¨æ¨è¿›ä¸€ä¸ªæ—¶é—´æ®µã€‚
         GameTimeManager.Instance.AdvanceTime();
     }
     private void OnDestroy()
@@ -111,10 +111,10 @@ public class WorldManager : MonoBehaviour
         }
     }
 
-    // ´ÓµØÍ¼ÉñÉç½øÈëÕ½¶·³¡¾°¡£
+    // ä»åœ°å›¾ç¥ç¤¾è¿›å…¥æˆ˜æ–—åœºæ™¯ã€‚
     private void EnterBattle()
     {
-        // ÒÑÓĞĞĞ¶¯½øĞĞÖĞÊ±£¬·ÀÖ¹ÖØ¸´½øÈë¡£
+        // å·²æœ‰è¡ŒåŠ¨è¿›è¡Œä¸­æ—¶ï¼Œé˜²æ­¢é‡å¤è¿›å…¥ã€‚
         if (hasPendingAction)
             return;
 
@@ -122,7 +122,7 @@ public class WorldManager : MonoBehaviour
             GameTimeManager.Instance == null ||
             PartyManager.Instance == null)
         {
-            Debug.LogError("Õ½¶·Èë¿ÚÈ±ÉÙÈ«¾Ö¹ÜÀíÆ÷£¬Çë´ÓÕıÊ½Æô¶¯Á÷³Ì½øÈë¡£");
+            Debug.LogError("æˆ˜æ–—å…¥å£ç¼ºå°‘å…¨å±€ç®¡ç†å™¨ï¼Œè¯·ä»æ­£å¼å¯åŠ¨æµç¨‹è¿›å…¥ã€‚");
             return;
         }
 
@@ -136,19 +136,19 @@ public class WorldManager : MonoBehaviour
 
         if (hero == null)
         {
-            Debug.LogError("ÕÒ²»µ½Ö÷½Ç×´Ì¬£¬Çë¼ì²é PartyManager µÄÖ÷½ÇÅäÖÃ¡£");
+            Debug.LogError("æ‰¾ä¸åˆ°ä¸»è§’çŠ¶æ€ï¼Œè¯·æ£€æŸ¥ PartyManager çš„ä¸»è§’é…ç½®ã€‚");
             return;
         }
 
         if (hero.CurrentHP <= 0)
         {
-            Debug.LogWarning("Ö÷½Ç HP Îª 0£¬ÇëÏÈÔÚ±³°üÖĞ»Ö¸´ HP¡£");
+            Debug.LogWarning("ä¸»è§’ HP ä¸º 0ï¼Œè¯·å…ˆåœ¨èƒŒåŒ…ä¸­æ¢å¤ HPã€‚");
             return;
         }
 
         if (!Application.CanStreamedLevelBeLoaded("BattleScene"))
         {
-            Debug.LogError("Çë°Ñ BattleScene ¼ÓÈë¹¹½¨³¡¾°ÁĞ±í²¢¹´Ñ¡¡£");
+            Debug.LogError("è¯·æŠŠ BattleScene åŠ å…¥æ„å»ºåœºæ™¯åˆ—è¡¨å¹¶å‹¾é€‰ã€‚");
             return;
         }
 
@@ -158,7 +158,7 @@ public class WorldManager : MonoBehaviour
         SceneManager.LoadScene("BattleScene");
     }
 
-    // ÁÙÊ±²âÊÔ³ö¿Ú£ºÈ¡Ïû±¾´ÎĞĞ¶¯£¬²»½áËãÊ±¼äºÍÈÎÎñ¡£
+    // ä¸´æ—¶æµ‹è¯•å‡ºå£ï¼šå–æ¶ˆæœ¬æ¬¡è¡ŒåŠ¨ï¼Œä¸ç»“ç®—æ—¶é—´å’Œä»»åŠ¡ã€‚
     public bool ReturnFromBattleForTesting()
     {
         return FinishBattle(BattleResult.Retreated);
@@ -166,14 +166,14 @@ public class WorldManager : MonoBehaviour
 
     public bool FinishBattle(BattleResult result)
     {
-        // Ö»ÓĞÕıÔÚ½øĞĞµÄ RPG ĞĞ¶¯²ÅÄÜ½áËã¡£
-        // µÚÒ»´Î½áËãºó£¬Õâ¸öÌõ¼şÒ²»á×èÖ¹ÖØ¸´µ÷ÓÃ¡£
+        // åªæœ‰æ­£åœ¨è¿›è¡Œçš„ RPG è¡ŒåŠ¨æ‰èƒ½ç»“ç®—ã€‚
+        // ç¬¬ä¸€æ¬¡ç»“ç®—åï¼Œè¿™ä¸ªæ¡ä»¶ä¹Ÿä¼šé˜»æ­¢é‡å¤è°ƒç”¨ã€‚
         if (currentLocationId != "RPG" || !hasPendingAction)
             return false;
 
         if (!Application.CanStreamedLevelBeLoaded("MapScene"))
         {
-            Debug.LogError("ÕÒ²»µ½ MapScene£¬Çë¼ì²é¹¹½¨³¡¾°ÁĞ±í¡£");
+            Debug.LogError("æ‰¾ä¸åˆ° MapSceneï¼Œè¯·æ£€æŸ¥æ„å»ºåœºæ™¯åˆ—è¡¨ã€‚");
             return false;
         }
 
@@ -182,7 +182,7 @@ public class WorldManager : MonoBehaviour
 
         if (party == null || timeManager == null)
         {
-            Debug.LogError("È±ÉÙ¶ÓÎé»òÊ±¼ä¹ÜÀíÆ÷£¬ÎŞ·¨½áËãÕ½¶·¡£");
+            Debug.LogError("ç¼ºå°‘é˜Ÿä¼æˆ–æ—¶é—´ç®¡ç†å™¨ï¼Œæ— æ³•ç»“ç®—æˆ˜æ–—ã€‚");
             return false;
         }
 
@@ -191,19 +191,19 @@ public class WorldManager : MonoBehaviour
 
         if (hero == null || hero.MaxHP <= 0)
         {
-            Debug.LogError("Ö÷½Ç×´Ì¬ÎŞĞ§£¬ÎŞ·¨½áËãÕ½¶·¡£");
+            Debug.LogError("ä¸»è§’çŠ¶æ€æ— æ•ˆï¼Œæ— æ³•ç»“ç®—æˆ˜æ–—ã€‚");
             return false;
         }
 
-        // ÁãÑªÊ±¼´Ê¹ÓĞÈËÇëÇó³·ÍË£¬Ò²±ØĞë°´Ê§°Ü´¦Àí¡£
+        // é›¶è¡€æ—¶å³ä½¿æœ‰äººè¯·æ±‚æ’¤é€€ï¼Œä¹Ÿå¿…é¡»æŒ‰å¤±è´¥å¤„ç†ã€‚
         if (hero.CurrentHP <= 0)
             result = BattleResult.Defeated;
 
         switch (result)
         {
             case BattleResult.Completed:
-                // ¸´ÓÃÒÑÓĞ·½·¨£ºÇå³ı´ı½áËã±ê¼Ç¡¢
-                // ±¨¸æµØµãĞĞ¶¯¡¢ÍÆ½øÒ»¸öÊ±¶Î¡£
+                // å¤ç”¨å·²æœ‰æ–¹æ³•ï¼šæ¸…é™¤å¾…ç»“ç®—æ ‡è®°ã€
+                // æŠ¥å‘Šåœ°ç‚¹è¡ŒåŠ¨ã€æ¨è¿›ä¸€ä¸ªæ—¶æ®µã€‚
                 CompleteCurrentAction();
                 break;
 
@@ -212,7 +212,7 @@ public class WorldManager : MonoBehaviour
                 break;
 
             case BattleResult.Defeated:
-                // ÏÈ¹Ø±Õ½áËãÈë¿Ú£¬ÔÙĞŞ¸Ä×´Ì¬ºÍÊ±¼ä¡£
+                // å…ˆå…³é—­ç»“ç®—å…¥å£ï¼Œå†ä¿®æ”¹çŠ¶æ€å’Œæ—¶é—´ã€‚
                 hasPendingAction = false;
 
                 int recoveryHP = Mathf.Clamp(
@@ -221,7 +221,7 @@ public class WorldManager : MonoBehaviour
                     hero.MaxHP
                 );
 
-                // ËÀÍöºÍµô³ö³¡µØ¶¼Í³Ò»ÉèÎª 25% HP¡£
+                // æ­»äº¡å’Œæ‰å‡ºåœºåœ°éƒ½ç»Ÿä¸€è®¾ä¸º 25% HPã€‚
                 if (hero.CurrentHP < recoveryHP)
                 {
                     party.RestoreHP(
@@ -237,19 +237,19 @@ public class WorldManager : MonoBehaviour
                     );
                 }
 
-                // Ê§°ÜÏûºÄÊ±¼ä£¬µ«²»±¨¸æÈÎÎñÍê³É¡£
+                // å¤±è´¥æ¶ˆè€—æ—¶é—´ï¼Œä½†ä¸æŠ¥å‘Šä»»åŠ¡å®Œæˆã€‚
                 timeManager.AdvanceTime();
                 break;
 
             default:
-                Debug.LogError("Î´ÖªµÄÕ½¶·½áËã½á¹û¡£");
+                Debug.LogError("æœªçŸ¥çš„æˆ˜æ–—ç»“ç®—ç»“æœã€‚");
                 return false;
         }
 
         currentLocationId = "Map";
 
         Debug.Log(
-            $"Õ½¶·½áÊø£º{result}£¬·µ»ØµØÍ¼¡£Ö÷½Ç HP£º"
+            $"æˆ˜æ–—ç»“æŸï¼š{result}ï¼Œè¿”å›åœ°å›¾ã€‚ä¸»è§’ HPï¼š"
             + $"{hero.CurrentHP}/{hero.MaxHP}");
 
         SceneManager.LoadScene("MapScene");

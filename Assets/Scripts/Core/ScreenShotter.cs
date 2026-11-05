@@ -36,25 +36,25 @@ public class ScreenShotter : MonoBehaviour
 
     private Texture2D ResizeTexture(Texture2D original, int newWidth, int newHeight)
     {
-        /*²½Öè 1£º´´½¨äÖÈ¾ÎÆÀí
-        ´´½¨Ò»¸öÓëÄ¿±ê·Ö±æÂÊÏàÆ¥ÅäµÄäÖÈ¾ÎÆÀí£¬²¢¼¤»î*/
+        /*æ­¥éª¤ 1ï¼šåˆ›å»ºæ¸²æŸ“çº¹ç†
+        åˆ›å»ºä¸€ä¸ªä¸ç›®æ ‡åˆ†è¾¨ç‡ç›¸åŒ¹é…çš„æ¸²æŸ“çº¹ç†ï¼Œå¹¶æ¿€æ´»*/
         RenderTexture rt = RenderTexture.GetTemporary(newWidth, newHeight, 24);
         RenderTexture.active = rt;
 
-        /*²½Öè 2£ºÊ¹ÓÃ GPU Ëõ·Å
-        Ê¹ÓÃ GPU µÄ Graphics.Blit ½« original µÄÏñËØÊı¾İ¿½±´²¢Ëõ·Åµ½ rt
-        ÎªÊ²Ã´Ê¹ÓÃ GPU£¿
-        GPU ²Ù×÷±ÈÊÖ¶¯ÖğÏñËØËõ·ÅĞ§ÂÊ¸ü¸ß£¬ÊÊºÏÊµÊ±²Ù×÷*/
+        /*æ­¥éª¤ 2ï¼šä½¿ç”¨ GPU ç¼©æ”¾
+        ä½¿ç”¨ GPU çš„ Graphics.Blit å°† original çš„åƒç´ æ•°æ®æ‹·è´å¹¶ç¼©æ”¾åˆ° rt
+        ä¸ºä»€ä¹ˆä½¿ç”¨ GPUï¼Ÿ
+        GPU æ“ä½œæ¯”æ‰‹åŠ¨é€åƒç´ ç¼©æ”¾æ•ˆç‡æ›´é«˜ï¼Œé€‚åˆå®æ—¶æ“ä½œ*/
         Graphics.Blit(original, rt);
 
-        /*²½Öè 3£º¶ÁÈ¡Ëõ·ÅºóµÄÊı¾İ
-        ¶ÁÈ¡ RenderTexture µÄÄÚÈİµ½ĞÂµÄ Texture2D£¬Óë½ØÍ¼µÄÂß¼­ÀàËÆ*/
+        /*æ­¥éª¤ 3ï¼šè¯»å–ç¼©æ”¾åçš„æ•°æ®
+        è¯»å– RenderTexture çš„å†…å®¹åˆ°æ–°çš„ Texture2Dï¼Œä¸æˆªå›¾çš„é€»è¾‘ç±»ä¼¼*/
         Texture2D resized = new Texture2D(newWidth, newHeight, TextureFormat.RGB24, false);
         resized.ReadPixels(new Rect(0, 0, newWidth, newHeight), 0, 0);
         resized.Apply();
 
-        /*²½Öè 4£ºÊÍ·Å×ÊÔ´
-        ÇåÀíÁÙÊ± RenderTexture£¬±ÜÃâÄÚ´æĞ¹Â©*/
+        /*æ­¥éª¤ 4ï¼šé‡Šæ”¾èµ„æº
+        æ¸…ç†ä¸´æ—¶ RenderTextureï¼Œé¿å…å†…å­˜æ³„æ¼*/
         RenderTexture.active = null;
         RenderTexture.ReleaseTemporary(rt);
 

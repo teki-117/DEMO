@@ -11,7 +11,7 @@ public class IntroManager : MonoBehaviour
     void Start()
     {
         string fullPath = System.IO.Path.Combine(Application.streamingAssetsPath, videoPath);
-        videoPlayer.url = fullPath; // 直接加载路径
+        videoPlayer.url = fullPath; // 鐩存帴鍔犺浇璺緞
         videoPlayer.loopPointReached += OnVideoEnd;
         videoPlayer.Play();
     }

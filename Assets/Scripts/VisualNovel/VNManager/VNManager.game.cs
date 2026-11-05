@@ -14,7 +14,7 @@ public partial class VNManager
 
         GameManager.Instance.currentStoryFile = currentStoryFileName;
 
-        // »ØÀ´ÒÔºó²»»áÖØ¸´Ö´ĞĞ game ÕâÒ»ĞĞ£¬Òª´ÓÏÂÒ»ĞĞ¼ÌĞø
+        // å›æ¥ä»¥åä¸ä¼šé‡å¤æ‰§è¡Œ game è¿™ä¸€è¡Œï¼Œè¦ä»ä¸‹ä¸€è¡Œç»§ç»­
         GameManager.Instance.currentLineIndex = currentLine + 1;
 
         GameManager.Instance.currentScene = Constants.GAME_SCENE;

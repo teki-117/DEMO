@@ -11,8 +11,8 @@ public class GalleryManager : MonoBehaviour
     public Button nextPageButton;
     public Button backButton;
 
-    public GameObject bigImagePanel; // È«ÆÁ´óÍ¼Ãæ°å
-    public Image bigImage;           // ÏÔÊ¾´óÍ¼µÄ Image
+    public GameObject bigImagePanel; // å…¨å±å¤§å›¾é¢æ¿
+    public Image bigImage;           // æ˜¾ç¤ºå¤§å›¾çš„ Image
 
     private int currentPage = Constants.DEFAULT_START_INDEX;
     private readonly int slotsPerPage = Constants.GALLERY_SLOTS_PER_PAGE;

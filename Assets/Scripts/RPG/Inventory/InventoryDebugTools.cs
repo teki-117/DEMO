@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class InventoryDebugTools : MonoBehaviour
 {
-    [ContextMenu("±³°ü²âÊÔ/1 ´òÓ¡±³°ü")]
+    [ContextMenu("èƒŒåŒ…æµ‹è¯•/1 æ‰“å°èƒŒåŒ…")]
     private void PrintInventory()
     {
         var inventory = GetInventory();
@@ -11,13 +11,13 @@ public class InventoryDebugTools : MonoBehaviour
         foreach (var data in inventory.AllItems)
         {
             Debug.Log(
-                $"[±³°ü] {data.itemName}£¨{data.itemId}£©" +
-                $"ÊıÁ¿={inventory.GetCount(data.itemId)}",
+                $"[èƒŒåŒ…] {data.itemName}ï¼ˆ{data.itemId}ï¼‰" +
+                $"æ•°é‡={inventory.GetCount(data.itemId)}",
                 this);
         }
     }
 
-    [ContextMenu("±³°ü²âÊÔ/2 Ä£ÄâÒ»×é±³°ü²Ù×÷")]
+    [ContextMenu("èƒŒåŒ…æµ‹è¯•/2 æ¨¡æ‹Ÿä¸€ç»„èƒŒåŒ…æ“ä½œ")]
     private void SimulateInventory()
     {
         var inventory = GetInventory();
@@ -26,39 +26,39 @@ public class InventoryDebugTools : MonoBehaviour
         if (inventory == null || player == null)
             return;
 
-        // »Ö¸´Ò©£º3 ¡ú 5¡£
+        // æ¢å¤è¯ï¼š3 â†’ 5ã€‚
         inventory.AddItem("hp_potion", 2);
 
-        // HP£º100 ¡ú 60 ¡ú 80£»»Ö¸´Ò©£º5 ¡ú 4¡£
+        // HPï¼š100 â†’ 60 â†’ 80ï¼›æ¢å¤è¯ï¼š5 â†’ 4ã€‚
         player.TakeDamage(40);
         bool usedPotion = inventory.TryUseItem("hp_potion");
 
         Debug.Log(
-            $"[Ê¹ÓÃÒ©Ë®ºó] ³É¹¦={usedPotion}£¬" +
-            $"HP={player.CurrentHP}/{player.MaxHP}£¬" +
-            $"»Ö¸´Ò©={inventory.GetCount("hp_potion")}",
+            $"[ä½¿ç”¨è¯æ°´å] æˆåŠŸ={usedPotion}ï¼Œ" +
+            $"HP={player.CurrentHP}/{player.MaxHP}ï¼Œ" +
+            $"æ¢å¤è¯={inventory.GetCount("hp_potion")}",
             this);
 
-        // ÎäÆ÷²»ÄÜµ±×÷ÏûºÄÆ·Ê¹ÓÃ¡£
+        // æ­¦å™¨ä¸èƒ½å½“ä½œæ¶ˆè€—å“ä½¿ç”¨ã€‚
         bool usedWeapon = inventory.TryUseItem("training_sword");
 
-        // ÎïÆ·²»×ãÊ±²»ÄÜ¿Û³ı¡£
+        // ç‰©å“ä¸è¶³æ—¶ä¸èƒ½æ‰£é™¤ã€‚
         bool removedTooMany =
             inventory.TryRemoveItem("hp_potion", 100);
 
-        // ÂúÑªÊ±Ê¹ÓÃ»Ö¸´Ò©£¬²»ÏûºÄ¿â´æ¡£
+        // æ»¡è¡€æ—¶ä½¿ç”¨æ¢å¤è¯ï¼Œä¸æ¶ˆè€—åº“å­˜ã€‚
         player.RestoreHP(100);
         bool usedAtFullHP = inventory.TryUseItem("hp_potion");
 
-        // ×îºóÒ»°Ñ½£ÒÆ³ıºó£¬ÊıÁ¿Ó¦Îª0¡£
+        // æœ€åä¸€æŠŠå‰‘ç§»é™¤åï¼Œæ•°é‡åº”ä¸º0ã€‚
         bool removedSword =
             inventory.TryRemoveItem("training_sword", 1);
 
         Debug.Log(
-            $"[±³°ü±£»¤] Ê¹ÓÃÎäÆ÷={usedWeapon}£¬" +
-            $"¿Û³ı100Æ¿Ò©={removedTooMany}£¬" +
-            $"ÂúÑªÊ¹ÓÃÒ©={usedAtFullHP}£¬" +
-            $"ÒÆ³ıÁ·Ï°½£={removedSword}",
+            $"[èƒŒåŒ…ä¿æŠ¤] ä½¿ç”¨æ­¦å™¨={usedWeapon}ï¼Œ" +
+            $"æ‰£é™¤100ç“¶è¯={removedTooMany}ï¼Œ" +
+            $"æ»¡è¡€ä½¿ç”¨è¯={usedAtFullHP}ï¼Œ" +
+            $"ç§»é™¤ç»ƒä¹ å‰‘={removedSword}",
             this);
 
         PrintInventory();
@@ -68,7 +68,7 @@ public class InventoryDebugTools : MonoBehaviour
     {
         if (!Application.isPlaying)
         {
-            Debug.LogWarning("ÇëÏÈ½øÈë Play Ä£Ê½¡£", this);
+            Debug.LogWarning("è¯·å…ˆè¿›å…¥ Play æ¨¡å¼ã€‚", this);
             return null;
         }
 
@@ -77,7 +77,7 @@ public class InventoryDebugTools : MonoBehaviour
         if (inventory == null)
         {
             Debug.LogWarning(
-                "Î´ÕÒµ½ InventoryManager£¬Çë´ÓÓÎÏ·Ô­Èë¿ÚÔËĞĞ¡£",
+                "æœªæ‰¾åˆ° InventoryManagerï¼Œè¯·ä»æ¸¸æˆåŸå…¥å£è¿è¡Œã€‚",
                 this);
         }
 

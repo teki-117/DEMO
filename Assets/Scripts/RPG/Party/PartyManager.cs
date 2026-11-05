@@ -6,15 +6,15 @@ public class PartyManager : MonoBehaviour
 {
     public static PartyManager Instance { get; private set; }
 
-    [Header("Ö÷½Ç£ºÒıÓÃÒÑÓĞ CharacterData")]
+    [Header("ä¸»è§’ï¼šå¼•ç”¨å·²æœ‰ CharacterData")]
     [SerializeField] private CharacterData mainCharacter;
 
-    [Header("ĞÂÓÎÏ·Ê±¶îÍâ¼ÓÈëµÄ¶ÓÔ±£¬Ö÷½Ç»á×Ô¶¯¼ÓÈë")]
+    [Header("æ–°æ¸¸æˆæ—¶é¢å¤–åŠ å…¥çš„é˜Ÿå‘˜ï¼Œä¸»è§’ä¼šè‡ªåŠ¨åŠ å…¥")]
     [SerializeField]
     private CharacterData[] startingMembers =
         new CharacterData[0];
 
-    [Header("ÍÅ¶Ó³õÊ¼×Ê½ğ")]
+    [Header("å›¢é˜Ÿåˆå§‹èµ„é‡‘")]
     [Min(0)]
     [SerializeField] private int startingMoney;
 
@@ -77,7 +77,7 @@ public class PartyManager : MonoBehaviour
             characterManager.allCharacterDatas == null)
         {
             Debug.LogError(
-                "¶ÓÎé£ºÇëÅäÖÃÖ÷½Ç£¬²¢¼ì²é CharacterStateManager µÄ½ÇÉ«×ÊÁÏ¡£",
+                "é˜Ÿä¼ï¼šè¯·é…ç½®ä¸»è§’ï¼Œå¹¶æ£€æŸ¥ CharacterStateManager çš„è§’è‰²èµ„æ–™ã€‚",
                 this);
             return false;
         }
@@ -95,7 +95,7 @@ public class PartyManager : MonoBehaviour
             if (registered.ContainsKey(data.characterID))
             {
                 Debug.LogWarning(
-                    $"¶ÓÎé£º½ÇÉ« ID ÖØ¸´£º{data.characterID}",
+                    $"é˜Ÿä¼ï¼šè§’è‰² ID é‡å¤ï¼š{data.characterID}",
                     this);
                 continue;
             }
@@ -107,7 +107,7 @@ public class PartyManager : MonoBehaviour
             hero != mainCharacter)
         {
             Debug.LogError(
-                "¶ÓÎé£ºÖ÷½Ç±ØĞëÒıÓÃ CharacterStateManager ÖĞµÄÍ¬Ò»·İ½ÇÉ«×Ê²ú¡£",
+                "é˜Ÿä¼ï¼šä¸»è§’å¿…é¡»å¼•ç”¨ CharacterStateManager ä¸­çš„åŒä¸€ä»½è§’è‰²èµ„äº§ã€‚",
                 this);
             return false;
         }
@@ -132,7 +132,7 @@ public class PartyManager : MonoBehaviour
                     registeredData != data)
                 {
                     Debug.LogWarning(
-                        $"¶ÓÎé£º³õÊ¼¶ÓÔ± {data.name} Ã»ÓĞ×¢²áÎªÍ¬Ò»·İ½ÇÉ«×Ê²ú¡£",
+                        $"é˜Ÿä¼ï¼šåˆå§‹é˜Ÿå‘˜ {data.name} æ²¡æœ‰æ³¨å†Œä¸ºåŒä¸€ä»½è§’è‰²èµ„äº§ã€‚",
                         this);
                     continue;
                 }
@@ -192,7 +192,7 @@ public class PartyManager : MonoBehaviour
             return false;
         }
 
-        // Àë¶ÓºóÖØĞÂ¼ÓÈë£¬±£Áô±¾¾ÖÒÑ¾­²úÉúµÄÊôĞÔ±ä»¯¡£
+        // ç¦»é˜Ÿåé‡æ–°åŠ å…¥ï¼Œä¿ç•™æœ¬å±€å·²ç»äº§ç”Ÿçš„å±æ€§å˜åŒ–ã€‚
         if (!states.ContainsKey(characterId))
             states.Add(characterId, new PartyMemberState(data));
 

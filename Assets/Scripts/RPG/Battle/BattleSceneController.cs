@@ -5,17 +5,17 @@ using TMPro;
 
 public class BattleSceneController : MonoBehaviour
 {
-    [Header("³¡¾°ÒıÓÃ")]
+    [Header("åœºæ™¯å¼•ç”¨")]
     [SerializeField] private Transform player;
     [SerializeField] private Camera battleCamera;
 
-    [Header("Ïà»úË®Æ½¸úËæ")]
+    [Header("ç›¸æœºæ°´å¹³è·Ÿéš")]
     [Min(0.01f)]
     [SerializeField] private float followSmoothTime = 0.15f;
 
     [SerializeField] private float horizontalOffset = 0f;
 
-    [Header("¿ª·¢²âÊÔ")]
+    [Header("å¼€å‘æµ‹è¯•")]
     [SerializeField] private bool enableTestReturn = true;
 
     private float cameraVelocityX;
@@ -24,18 +24,18 @@ public class BattleSceneController : MonoBehaviour
 
     private bool isReturning;
 
-    [Header("Õ½¶· HUD")]
+    [Header("æˆ˜æ–— HUD")]
     [SerializeField] private Slider hpBar;
     [SerializeField] private TMP_Text statusText;
 
     private PartyManager subscribedParty;
 
-    [Header("¹Ø¿¨ÇøÓò")]
+    [Header("å…³å¡åŒºåŸŸ")]
     [SerializeField] private BoxCollider2D bossRoomArea;
     [SerializeField] private BoxCollider2D exitArea;
     [SerializeField] private TMP_Text objectiveText;
 
-    [Header("µôÂäÊ§°Ü")]
+    [Header("æ‰è½å¤±è´¥")]
     [SerializeField] private float fallFailY = -8f;
 
     private BattlePlayerController playerController;
@@ -45,19 +45,19 @@ public class BattleSceneController : MonoBehaviour
         if (player == null || battleCamera == null)
         {
             Debug.LogError(
-                "Çë¸ø BattleSceneController ÅäÖÃ Player ºÍ Battle Camera¡£",
+                "è¯·ç»™ BattleSceneController é…ç½® Player å’Œ Battle Cameraã€‚",
                 this);
 
             enabled = false;
             return;
         }
 
-        // ±£ÁôÏà»úÔ­À´µÄ¸ß¶ÈÓëÉî¶È£¬Ö»¸úËæË®Æ½·½Ïò¡£
+        // ä¿ç•™ç›¸æœºåŸæ¥çš„é«˜åº¦ä¸æ·±åº¦ï¼Œåªè·Ÿéšæ°´å¹³æ–¹å‘ã€‚
         Vector3 position = battleCamera.transform.position;
         fixedCameraY = position.y;
         fixedCameraZ = position.z;
 
-        // ¿ª³¡Ö±½Ó¶Ô×¼Ö÷½Ç£¬±ÜÃâ´ÓÔ¶´¦»¬¹ıÀ´¡£
+        // å¼€åœºç›´æ¥å¯¹å‡†ä¸»è§’ï¼Œé¿å…ä»è¿œå¤„æ»‘è¿‡æ¥ã€‚
         battleCamera.transform.position = new Vector3(
             player.position.x + horizontalOffset,
             fixedCameraY,
@@ -68,15 +68,29 @@ public class BattleSceneController : MonoBehaviour
 
         if (playerController == null ||
             bossRoomArea == null ||
-            exitArea == null ||
-            objectiveText == null)
+            exitArea == null)
         {
             Debug.LogError(
-                "Çë¼ì²éÖ÷½Ç¿ØÖÆ½Å±¾¡¢Boss Room Area¡¢Exit Area ºÍ Objective Text¡£",
+                "è¯·æ£€æŸ¥ä¸»è§’æ§åˆ¶è„šæœ¬ã€Boss Room Area å’Œ Exit Areaã€‚",
                 this);
 
             enabled = false;
+            return;
         }
+
+        // æç¤ºæ–‡å­—åªæ˜¯æ˜¾ç¤ºç”¨ï¼Œç¼ºäº†ä¸å½±å“ç»“ç®—ã€‚
+        if (objectiveText == null)
+        {
+            Debug.LogWarning(
+                "BattleSceneController æ²¡æœ‰é…ç½® Objective Textï¼Œç›®æ ‡æç¤ºä¸ä¼šæ˜¾ç¤ºã€‚",
+                this);
+        }
+    }
+
+    private void SetObjective(string text)
+    {
+        if (objectiveText != null)
+            objectiveText.text = text;
     }
 
     private void Update()
@@ -89,7 +103,7 @@ public class BattleSceneController : MonoBehaviour
             return;
         }
 
-        // ÏÈÅĞÊ§°Ü£¬±ÜÃâÁãÑªÊ±°´³·ÍËÈÆ¹ıÊ§°Ü½áËã¡£
+        // å…ˆåˆ¤å¤±è´¥ï¼Œé¿å…é›¶è¡€æ—¶æŒ‰æ’¤é€€ç»•è¿‡å¤±è´¥ç»“ç®—ã€‚
         if (playerController.IsDefeated ||
             player.position.y < fallFailY)
         {
@@ -107,18 +121,15 @@ public class BattleSceneController : MonoBehaviour
 
         if (insideBossRoom && insideExit)
         {
-            objectiveText.text =
-                "E: Complete demo    Esc: Retreat";
+            SetObjective("E: Complete demo    Esc: Retreat");
         }
         else if (insideBossRoom)
         {
-            objectiveText.text =
-                "Boss room (placeholder) - Reach the exit";
+            SetObjective("Boss room (placeholder) - Reach the exit");
         }
         else
         {
-            objectiveText.text =
-                "Reach the boss room on the right    Esc: Retreat";
+            SetObjective("Reach the boss room on the right    Esc: Retreat");
         }
 
         Keyboard keyboard = Keyboard.current;
@@ -132,7 +143,7 @@ public class BattleSceneController : MonoBehaviour
             return;
         }
 
-        // ±£Áô¾É²âÊÔ¿ì½İ¼ü£¬Í³Ò»×ß³·ÍË¹æÔò¡£
+        // ä¿ç•™æ—§æµ‹è¯•å¿«æ·é”®ï¼Œç»Ÿä¸€èµ°æ’¤é€€è§„åˆ™ã€‚
         if (enableTestReturn && keyboard.f1Key.wasPressedThisFrame)
         {
             ReturnToMapForTesting();
@@ -152,7 +163,7 @@ public class BattleSceneController : MonoBehaviour
         if (isReturning || player == null || battleCamera == null)
             return;
 
-        // ÔİÍ£Ê±²»¸üĞÂÆ½»¬¼ÆËã¡£
+        // æš‚åœæ—¶ä¸æ›´æ–°å¹³æ»‘è®¡ç®—ã€‚
         if (Time.deltaTime <= 0f)
             return;
 
@@ -246,11 +257,11 @@ public class BattleSceneController : MonoBehaviour
         if (world == null)
         {
             Debug.LogError(
-                "È±ÉÙ WorldManager£¬ÇëÍ£Ö¹ÔËĞĞ£¬"
-                + "´ÓÕıÊ½Èë¿Ú½øÈëµØÍ¼£¬ÔÙÍ¨¹ıÉñÉç²âÊÔ¡£",
+                "ç¼ºå°‘ WorldManagerï¼Œè¯·åœæ­¢è¿è¡Œï¼Œ"
+                + "ä»æ­£å¼å…¥å£è¿›å…¥åœ°å›¾ï¼Œå†é€šè¿‡ç¥ç¤¾æµ‹è¯•ã€‚",
                 this);
 
-            // ±ÜÃâ¶ÀÁ¢³¡¾°²âÊÔÊ±Ã¿Ö¡ÖØ¸´±¨´í¡£
+            // é¿å…ç‹¬ç«‹åœºæ™¯æµ‹è¯•æ—¶æ¯å¸§é‡å¤æŠ¥é”™ã€‚
             enabled = false;
             return;
         }
@@ -260,7 +271,7 @@ public class BattleSceneController : MonoBehaviour
         if (!isReturning)
         {
             Debug.LogError(
-                "Õ½¶·½áËãÎ´Ö´ĞĞ£¬Çë¼ì²éÇ°ÃæµÄ Console ÌáÊ¾¡£",
+                "æˆ˜æ–—ç»“ç®—æœªæ‰§è¡Œï¼Œè¯·æ£€æŸ¥å‰é¢çš„ Console æç¤ºã€‚",
                 this);
 
             enabled = false;

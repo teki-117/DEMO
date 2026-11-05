@@ -7,7 +7,7 @@ public partial class VNManager
     {
         autoButton.onClick.AddListener(() =>
         {
-            // «–ªª Auto <-> Manual
+            // ÂàáÊç¢ Auto <-> Manual
             SetMode(mode == AdvanceMode.Auto ? AdvanceMode.Manual : AdvanceMode.Auto);
         });
 
