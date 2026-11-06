@@ -58,7 +58,12 @@ public partial class VNManager
             savedBackgroundImg = gm.currentBackgroundImg,
             savedBackgroundMusic = gm.currentBackgroundMusic,
             savedCharacters = charCopy,
-            savedAffection = CharacterStateManager.Instance.DumpStates()
+            savedAffection = CharacterStateManager.Instance.DumpStates(),
+            savedScene = Constants.GAME_SCENE,
+            savedStoryReturnScene = gm.storyReturnScene,
+            rpg = WorldManager.Instance != null
+                ? WorldManager.Instance.CaptureRpgSave()
+                : null
         };
     }
 }

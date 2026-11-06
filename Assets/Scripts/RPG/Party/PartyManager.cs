@@ -309,6 +309,88 @@ public class PartyManager : MonoBehaviour
         return true;
     }
 
+    // ---------- 存档 ----------
+
+    public List<PartyMemberSaveData> ExportMembers()
+    {
+        var list = new List<PartyMemberSaveData>();
+
+        if (!initialized)
+            return list;
+
+        foreach (string id in memberIds)
+        {
+            PartyMemberState s = states[id];
+
+            list.Add(new PartyMemberSaveData
+            {
+                characterId = id,
+                level = s.Level,
+                exp = s.EXP,
+                currentHP = s.CurrentHP,
+                maxHP = s.MaxHP,
+                currentSP = s.CurrentSP,
+                maxSP = s.MaxSP,
+                baseAttack = s.BaseAttack,
+                baseDefense = s.BaseDefense,
+                weaponItemId = s.WeaponItemId,
+                armorItemId = s.ArmorItemId
+            });
+        }
+
+        return list;
+    }
+
+    // 读档：先回到初始队伍，再套用存档。存档为空时保持新游戏状态。
+    // 背包要先读，装备才能找到对应物品。
+    public void ImportState(int savedMoney, List<PartyMemberSaveData> savedMembers)
+    {
+        if (!ResetParty())
+            return;
+
+        money = Mathf.Max(0, savedMoney);
+
+        if (savedMembers != null && savedMembers.Count > 0)
+        {
+            memberIds.Clear();
+            states.Clear();
+
+            foreach (var m in savedMembers)
+            {
+                if (m == null || !JoinInternal(m.characterId))
+                    continue;
+
+                PartyMemberState s = states[m.characterId];
+
+                s.Level = Mathf.Clamp(m.level, 1, maxLevel);
+                s.EXP = Mathf.Max(0, m.exp);
+                s.MaxHP = Mathf.Max(1, m.maxHP);
+                s.CurrentHP = Mathf.Clamp(m.currentHP, 0, s.MaxHP);
+                s.MaxSP = Mathf.Max(0, m.maxSP);
+                s.CurrentSP = Mathf.Clamp(m.currentSP, 0, s.MaxSP);
+                s.BaseAttack = Mathf.Max(0, m.baseAttack);
+                s.BaseDefense = Mathf.Max(0, m.baseDefense);
+
+                InventoryManager inventory = InventoryManager.Instance;
+
+                if (inventory != null)
+                {
+                    ItemData weapon = inventory.GetItemData(m.weaponItemId);
+                    ItemData armor = inventory.GetItemData(m.armorItemId);
+
+                    s.WeaponData = weapon != null && weapon.itemType == ItemType.Weapon ? weapon : null;
+                    s.ArmorData = armor != null && armor.itemType == ItemType.Armor ? armor : null;
+                }
+            }
+
+            // 主角一定在队伍里。
+            JoinInternal(MainCharacterId);
+        }
+
+        OnPartyChanged?.Invoke();
+        OnStateChanged?.Invoke();
+    }
+
     // 从 level 升到下一级需要的 EXP；满级返回 0。
     public int GetEXPToNextLevel(int level)
     {

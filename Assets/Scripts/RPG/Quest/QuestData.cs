@@ -22,4 +22,10 @@ public class QuestData : ScriptableObject
 
     [Min(0)]
     public int rewardAffection = 5;
+
+    [Min(0)]
+    public int rewardMoney;
+
+    [Tooltip("完成时放进背包的物品，可以填多个。")]
+    public ItemStack[] rewardItems = new ItemStack[0];
 }

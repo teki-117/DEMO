@@ -36,6 +36,13 @@ public class GameTimeManager : MonoBehaviour
         currentPeriod = TimePeriod.Morning;
     }
 
+    // 读档时直接设定时间。
+    public void SetTime(int day, TimePeriod period)
+    {
+        currentDay = Mathf.Max(1, day);
+        currentPeriod = period;
+    }
+
     public void AdvanceTime()
     {
         if (currentPeriod == TimePeriod.Night)

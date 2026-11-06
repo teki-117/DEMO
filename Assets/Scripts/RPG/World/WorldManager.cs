@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -15,6 +16,17 @@ public class WorldManager : MonoBehaviour
     public static WorldManager Instance { get; private set; }
 
     [SerializeField] private string currentLocationId = "Map";
+
+    [Header("地点解锁")]
+    [Tooltip("新游戏时锁住的地点，要由剧情里的 location_unlock 解锁。")]
+    [SerializeField] private string[] lockedAtStart = { "RPG" };
+
+    [Header("通关后剧情")]
+    [Tooltip("第一次完成神社关卡后播放的剧情文件名（不含 .xlsx）。留空则直接回地图。")]
+    [SerializeField] private string afterBattleStoryFile = "2-1";
+
+    private readonly HashSet<string> unlockedLocations = new HashSet<string>();
+    private bool afterBattleStoryPlayed;
 
     public string CurrentLocationId => currentLocationId;
 
@@ -35,11 +47,121 @@ public class WorldManager : MonoBehaviour
     {
         currentLocationId = "Map";
         hasPendingAction = false;
+        unlockedLocations.Clear();
+        afterBattleStoryPlayed = false;
     }
 
-    // 地图界面统一通过这个入口选择地点。
-    public void EnterLocation(string locationId)
+    // ---------- 存档：把各 Manager 的数据收齐 / 分发回去 ----------
+
+    public RpgSaveData CaptureRpgSave()
     {
+        var data = new RpgSaveData
+        {
+            locationId = currentLocationId,
+            hasPendingAction = hasPendingAction,
+            unlockedLocations = new List<string>(unlockedLocations),
+            afterBattleStoryPlayed = afterBattleStoryPlayed
+        };
+
+        if (GameTimeManager.Instance != null)
+        {
+            data.day = GameTimeManager.Instance.CurrentDay;
+            data.period = GameTimeManager.Instance.CurrentPeriod;
+        }
+
+        if (QuestManager.Instance != null)
+            data.quests = QuestManager.Instance.ExportStates();
+
+        if (InventoryManager.Instance != null)
+            data.items = InventoryManager.Instance.ExportItems();
+
+        if (PartyManager.Instance != null)
+        {
+            data.money = PartyManager.Instance.Money;
+            data.members = PartyManager.Instance.ExportMembers();
+        }
+
+        return data;
+    }
+
+    // data 为 null（旧存档）时，全部回到新游戏的初始状态。
+    public void RestoreRpgSave(RpgSaveData data)
+    {
+        if (data == null)
+        {
+            Debug.Log("存档里没有 RPG 数据（旧存档），世界、时间、任务、背包、队伍按新游戏初始值处理。");
+
+            ResetWorld();
+
+            if (GameTimeManager.Instance != null)
+                GameTimeManager.Instance.ResetTime();
+
+            if (QuestManager.Instance != null)
+                QuestManager.Instance.ResetQuests();
+
+            if (PartyManager.Instance != null)
+                PartyManager.Instance.ResetParty();
+
+            if (InventoryManager.Instance != null)
+                InventoryManager.Instance.ResetInventory();
+
+            return;
+        }
+
+        currentLocationId = string.IsNullOrEmpty(data.locationId) ? "Map" : data.locationId;
+        hasPendingAction = data.hasPendingAction;
+        afterBattleStoryPlayed = data.afterBattleStoryPlayed;
+
+        unlockedLocations.Clear();
+        if (data.unlockedLocations != null)
+            unlockedLocations.UnionWith(data.unlockedLocations);
+
+        if (GameTimeManager.Instance != null)
+            GameTimeManager.Instance.SetTime(data.day, data.period);
+
+        if (QuestManager.Instance != null)
+            QuestManager.Instance.ImportStates(data.quests);
+
+        // 先背包后队伍：队伍读档时要按物品 ID 找回装备。
+        if (InventoryManager.Instance != null)
+            InventoryManager.Instance.ImportItems(data.items);
+
+        if (PartyManager.Instance != null)
+            PartyManager.Instance.ImportState(data.money, data.members);
+    }
+
+    public bool IsLocationLocked(string locationId)
+    {
+        if (lockedAtStart == null || unlockedLocations.Contains(locationId))
+            return false;
+
+        return System.Array.IndexOf(lockedAtStart, locationId) >= 0;
+    }
+
+    // 剧情的 location_unlock 指令调用。重复解锁没有影响。
+    public void UnlockLocation(string rawLocationId)
+    {
+        string locationId = rawLocationId?.Trim();
+
+        if (string.IsNullOrEmpty(locationId))
+        {
+            Debug.LogError("剧情地点解锁指令缺少地点 ID。");
+            return;
+        }
+
+        if (unlockedLocations.Add(locationId))
+            Debug.Log($"剧情解锁地点：{locationId}");
+    }
+
+    // 地图界面统一通过这个入口选择地点。地点还没解锁时返回 false。
+    public bool EnterLocation(string locationId)
+    {
+        if (IsLocationLocked(locationId))
+        {
+            Debug.Log($"地点 {locationId} 还没有解锁。");
+            return false;
+        }
+
         switch (locationId)
         {
             case "School":
@@ -56,6 +178,8 @@ public class WorldManager : MonoBehaviour
                 Debug.Log($"当前地点：{currentLocationId}，地点内容待接入。");
                 break;
         }
+
+        return true;
     }
 
     private void EnterSchool()
@@ -272,6 +396,23 @@ public class WorldManager : MonoBehaviour
         Debug.Log(
             $"战斗结束：{result}，返回地图。主角 HP："
             + $"{hero.CurrentHP}/{hero.MaxHP}");
+
+        // 第一次通关：先播通关后剧情，播完再回地图。
+        // 此时行动已经结算，剧情结束时不会再推进时间。
+        if (result == BattleResult.Completed &&
+            !afterBattleStoryPlayed &&
+            !string.IsNullOrWhiteSpace(afterBattleStoryFile) &&
+            GameManager.Instance != null)
+        {
+            afterBattleStoryPlayed = true;
+
+            GameManager gm = GameManager.Instance;
+            gm.PrepareStory(afterBattleStoryFile.Trim());
+            gm.storyReturnScene = "MapScene";
+
+            SceneManager.LoadScene(Constants.GAME_SCENE);
+            return true;
+        }
 
         SceneManager.LoadScene("MapScene");
         return true;

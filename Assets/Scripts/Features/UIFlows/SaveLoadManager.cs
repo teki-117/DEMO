@@ -58,8 +58,7 @@ public class SaveLoadManager : MonoBehaviour
     {
         if (isLoad)
         {
-            GameManager.Instance.Load(slotIndex);
-            SceneManager.LoadScene(Constants.GAME_SCENE);
+            LoadSlot(slotIndex);
         }
         else
         {
@@ -69,6 +68,42 @@ public class SaveLoadManager : MonoBehaviour
             );
         }
     }
+    // 读档：先恢复 RPG 数据，再按存档时所在的场景进入剧情或地图。
+    private void LoadSlot(int slotIndex)
+    {
+        var gm = GameManager.Instance;
+        gm.Load(slotIndex);
+
+        SaveData data = gm.pendingData;
+
+        if (WorldManager.Instance != null)
+            WorldManager.Instance.RestoreRpgSave(data.rpg);
+
+        // 旧存档没有这个字段时保持原值。
+        if (!string.IsNullOrEmpty(data.savedStoryReturnScene))
+            gm.storyReturnScene = data.savedStoryReturnScene;
+
+        if (data.savedScene == "MapScene")
+        {
+            // 地图存档：剧情画面数据用不到，这里直接恢复名字、好感度和历史记录。
+            gm.pendingData = null;
+            gm.playerName = data.savedPlayerName;
+
+            if (data.savedHistoryRecords != null)
+                gm.historyRecords = data.savedHistoryRecords;
+
+            if (data.savedAffection != null && CharacterStateManager.Instance != null)
+                CharacterStateManager.Instance.LoadStates(data.savedAffection);
+
+            gm.hasStarted = true;
+            gm.currentScene = "MapScene";
+            SceneManager.LoadScene("MapScene");
+            return;
+        }
+
+        SceneManager.LoadScene(Constants.GAME_SCENE);
+    }
+
     public void RequestDelete(int slotIndex, SaveSlot slot)
     {
         ShowConfirm(

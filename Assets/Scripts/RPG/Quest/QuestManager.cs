@@ -198,7 +198,69 @@ public class QuestManager : MonoBehaviour
         if (data.rewardAffection > 0)
             characterManager.ChangeAffection(data.rewardCharacterId, data.rewardAffection);
 
+        if (data.rewardMoney > 0 && PartyManager.Instance != null)
+            PartyManager.Instance.AddMoney(data.rewardMoney);
+
+        if (data.rewardItems != null && InventoryManager.Instance != null)
+        {
+            foreach (var item in data.rewardItems)
+            {
+                if (item == null || item.quantity <= 0)
+                    continue;
+
+                if (!InventoryManager.Instance.AddItem(item.itemId, item.quantity))
+                    Debug.LogWarning($"QuestManager：任务 {data.questId} 的奖励物品无效：{item.itemId}", this);
+            }
+        }
+
+        Debug.Log($"任务完成：{data.questName}，奖励：好感度 {data.rewardAffection}、金钱 {data.rewardMoney}、物品 {data.rewardItems?.Length ?? 0} 种", this);
+
         return true;
+    }
+
+    // ---------- 存档 ----------
+
+    public List<QuestState> ExportStates()
+    {
+        var list = new List<QuestState>();
+
+        foreach (var data in quests)
+        {
+            var s = states[data.questId];
+            list.Add(new QuestState(s.questId)
+            {
+                status = s.status,
+                progress = s.progress,
+                rewardGranted = s.rewardGranted
+            });
+        }
+
+        return list;
+    }
+
+    // 读档：先回到初始状态，再套用存档里的进度；存档里没有的任务保持初始值。
+    public void ImportStates(List<QuestState> saved)
+    {
+        ResetQuests();
+
+        if (saved != null)
+        {
+            foreach (var s in saved)
+            {
+                if (s == null || !states.TryGetValue(s.questId ?? "", out var state))
+                    continue;
+
+                state.status = s.status;
+                state.progress = Mathf.Clamp(s.progress, 0, definitions[s.questId].requiredCount);
+                state.rewardGranted = s.rewardGranted;
+
+                // 已完成但奖励没发出去的，读档后继续补发。
+                if (state.status == QuestStatus.Completed && !state.rewardGranted)
+                    hasPendingRewards = true;
+            }
+        }
+
+        OnQuestsChanged?.Invoke();
     }
 
     private void OnDestroy()

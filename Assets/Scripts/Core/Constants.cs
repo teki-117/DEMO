@@ -56,6 +56,8 @@ public class Constants : MonoBehaviour
 
     // 剧情中的任务指令。
     public const string QUEST_UNLOCK = "quest_unlock";
+    // 剧情表第一列写这个，第二列写地点 ID（例如 RPG），解锁地图上的地点。
+    public const string LOCATION_UNLOCK = "location_unlock";
 
     //立绘动画
     public static string APPEAR_AT = "appearAt";

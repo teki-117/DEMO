@@ -100,6 +100,39 @@ public class InventoryManager : MonoBehaviour
         OnInventoryChanged?.Invoke();
     }
 
+    // ---------- 存档 ----------
+
+    public Dictionary<string, int> ExportItems()
+    {
+        var result = new Dictionary<string, int>();
+
+        foreach (var stack in state.items)
+        {
+            if (stack != null && stack.quantity > 0)
+                result[stack.itemId] = stack.quantity;
+        }
+
+        return result;
+    }
+
+    // 读档：清空后按存档数量放回，不发初始物品。
+    // 装备由 PartyManager 读档时重新穿上，这里不动装备。
+    public void ImportItems(Dictionary<string, int> saved)
+    {
+        state = new InventoryState();
+
+        if (saved != null)
+        {
+            foreach (var kv in saved)
+            {
+                if (!AddItemInternal(kv.Key, kv.Value))
+                    Debug.LogWarning($"背包读档：跳过无效物品 {kv.Key} × {kv.Value}。", this);
+            }
+        }
+
+        OnInventoryChanged?.Invoke();
+    }
+
     public ItemData GetItemData(string itemId)
     {
         if (string.IsNullOrWhiteSpace(itemId))

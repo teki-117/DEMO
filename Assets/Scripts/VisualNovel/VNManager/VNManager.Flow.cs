@@ -13,7 +13,8 @@ public partial class VNManager
         Goto,
         Game,
         End,
-        QuestUnlock
+        QuestUnlock,
+        LocationUnlock
     }
 
     private enum AdvanceMode { Manual, Auto, Skip, HoldCtrl }
@@ -30,6 +31,7 @@ public partial class VNManager
         if (s == Constants.GAME) return LineKind.Game;
         if (s == Constants.END_OF_STORY) return LineKind.End;
         if (s == Constants.QUEST_UNLOCK) return LineKind.QuestUnlock;
+        if (s == Constants.LOCATION_UNLOCK) return LineKind.LocationUnlock;
 
         return LineKind.Dialogue;
     }
@@ -89,6 +91,16 @@ public partial class VNManager
 
             case LineKind.QuestUnlock:
                 Flow_UnlockQuest(d.speakingContent);
+
+                currentLine++;
+                Flow_Next();
+                return;
+
+            case LineKind.LocationUnlock:
+                if (WorldManager.Instance != null)
+                    WorldManager.Instance.UnlockLocation(d.speakingContent);
+                else
+                    Debug.LogError("剧情无法解锁地点：找不到 WorldManager。", this);
 
                 currentLine++;
                 Flow_Next();
