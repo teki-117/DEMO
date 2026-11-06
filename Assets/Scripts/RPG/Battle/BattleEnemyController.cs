@@ -1,9 +1,18 @@
 using UnityEngine;
 
+// 能被主角攻击的对象：小怪和 Boss 都实现它。
+public interface IBattleDamageable
+{
+    bool IsDead { get; }
+
+    // sourcePosition：攻击来源的位置，用来决定击退方向。
+    void TakeDamage(int damage, Vector2 sourcePosition);
+}
+
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(BoxCollider2D))]
 [RequireComponent(typeof(SpriteRenderer))]
-public class BattleEnemyController : MonoBehaviour
+public class BattleEnemyController : MonoBehaviour, IBattleDamageable
 {
     private enum EnemyState
     {

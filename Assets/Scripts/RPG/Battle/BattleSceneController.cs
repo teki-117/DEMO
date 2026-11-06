@@ -49,12 +49,37 @@ public class BattleSceneController : MonoBehaviour
     [Min(0.1f)]
     [SerializeField] private float keyPickupRadius = 0.9f;
 
-    [Tooltip("Boss 房入口的门：捡到钥匙后隐藏。留空表示不需要钥匙。")]
+    [Tooltip("Boss 房入口的门：带着钥匙在门前按 E 打开。留空表示不需要钥匙。")]
     [SerializeField] private GameObject bossDoor;
+
+    [Tooltip("离门多近可以按 E（入口门和出口门共用）。")]
+    [Min(0.1f)]
+    [SerializeField] private float doorInteractDistance = 0.6f;
+
+    private bool entranceOpened;
 
     [Header("结算画面")]
     [SerializeField] private GameObject resultPanel;
     [SerializeField] private TMP_Text resultText;
+
+    [Header("Boss 战")]
+    [Tooltip("留空表示这一关没有 Boss，Boss 房只是占位。")]
+    [SerializeField] private BattleBossController boss;
+
+    [Tooltip("出口的门：击败 Boss 后，站到门前按 E 离开（完成关卡）。")]
+    [SerializeField] private GameObject exitDoor;
+
+    [Tooltip("主角离入口门多远（进到房里）才锁门开战。")]
+    [Min(0.5f)]
+    [SerializeField] private float bossLockDistance = 2f;
+
+    [Tooltip("Boss 血条的整体（包含血条和名字），平时隐藏。")]
+    [SerializeField] private GameObject bossHudRoot;
+    [SerializeField] private Slider bossHpBar;
+    [SerializeField] private TMP_Text bossNameText;
+
+    private bool bossFightStarted;
+    private bool bossDefeated;
 
     private BattlePlayerController playerController;
 
@@ -93,6 +118,17 @@ public class BattleSceneController : MonoBehaviour
 
         // 没配门就当作 Boss 房不需要钥匙。
         hasKey = bossDoor == null;
+        entranceOpened = bossDoor == null;
+
+        // 没配 Boss 就当作已经击败，保持以前“走到出口就能完成”的流程。
+        bossDefeated = boss == null;
+
+        // 出口门一直都在，击败 Boss 后对着它按 E 离开。
+        if (exitDoor != null)
+            exitDoor.SetActive(true);
+
+        if (bossHudRoot != null)
+            bossHudRoot.SetActive(false);
 
         if (player == null || battleCamera == null)
         {
@@ -194,9 +230,38 @@ public class BattleSceneController : MonoBehaviour
         bool insideExit =
             exitArea.OverlapPoint(playerPosition);
 
-        if (insideBossRoom && insideExit)
+        UpdateBossFight(insideBossRoom);
+
+        // 入口门：带着钥匙站到门前按 E 才打开。
+        bool canOpenEntrance =
+            !entranceOpened &&
+            hasKey &&
+            IsPlayerNearDoor(bossDoor);
+
+        // 出口：有出口门时对着门按 E 离开；没配门时沿用站进 Exit Area 的做法。
+        bool canLeave =
+            bossDefeated &&
+            (exitDoor != null
+                ? IsPlayerNearDoor(exitDoor)
+                : insideBossRoom && insideExit);
+
+        if (canLeave)
         {
-            SetObjective("E：完成关卡    Esc：撤退");
+            SetObjective("E：开门离开（完成关卡）    Esc：撤退");
+        }
+        else if (canOpenEntrance)
+        {
+            SetObjective("E：用钥匙开门    Esc：撤退");
+        }
+        else if (boss != null &&
+                 !bossDefeated &&
+                 (bossFightStarted || insideBossRoom))
+        {
+            SetObjective("击败 Boss    Esc：撤退");
+        }
+        else if (insideBossRoom && boss != null)
+        {
+            SetObjective("Boss 已击败，前往出口的门");
         }
         else if (insideBossRoom)
         {
@@ -205,6 +270,10 @@ public class BattleSceneController : MonoBehaviour
         else if (!hasKey)
         {
             SetObjective("击败敌人，找到 Boss 房钥匙    Esc：撤退");
+        }
+        else if (!entranceOpened)
+        {
+            SetObjective("带着钥匙前往 Boss 房的门    Esc：撤退");
         }
         else
         {
@@ -229,12 +298,39 @@ public class BattleSceneController : MonoBehaviour
             return;
         }
 
-        if (insideBossRoom &&
-            insideExit &&
-            keyboard.eKey.wasPressedThisFrame)
+        if (!keyboard.eKey.wasPressedThisFrame)
+            return;
+
+        if (canLeave)
         {
             EndBattle(BattleResult.Completed);
         }
+        else if (canOpenEntrance)
+        {
+            entranceOpened = true;
+            bossDoor.SetActive(false);
+            Debug.Log("用钥匙打开了 Boss 房的门。", this);
+        }
+    }
+
+    // 主角是否站在门前（贴着门或离门很近）。
+    private bool IsPlayerNearDoor(GameObject door)
+    {
+        if (door == null || !door.activeInHierarchy)
+            return false;
+
+        Collider2D doorCollider = door.GetComponent<Collider2D>();
+        Collider2D playerCollider = player.GetComponent<Collider2D>();
+
+        if (doorCollider != null && playerCollider != null)
+        {
+            Bounds reach = playerCollider.bounds;
+            reach.Expand(new Vector3(doorInteractDistance * 2f, 0f, 10f));
+            return reach.Intersects(doorCollider.bounds);
+        }
+
+        return Vector2.Distance(door.transform.position, player.position)
+               <= doorInteractDistance + 0.5f;
     }
 
     private void LateUpdate()
@@ -302,10 +398,69 @@ public class BattleSceneController : MonoBehaviour
         hasKey = true;
         keyPickup.SetActive(false);
 
-        if (bossDoor != null)
-            bossDoor.SetActive(false);
+        Debug.Log("捡到 Boss 房钥匙，到门前按 E 开门。", this);
+    }
 
-        Debug.Log("捡到 Boss 房钥匙，入口的门已打开。", this);
+    // ---------- Boss 战 ----------
+
+    private void UpdateBossFight(bool insideBossRoom)
+    {
+        if (boss == null || bossDefeated)
+            return;
+
+        // 主角走进房间一段距离后锁门开战；Boss 被提前打到也算开战。
+        if (!bossFightStarted)
+        {
+            bool farEnoughInside =
+                insideBossRoom &&
+                (bossDoor == null ||
+                 Mathf.Abs(player.position.x - bossDoor.transform.position.x)
+                     >= bossLockDistance);
+
+            if (farEnoughInside || boss.IsActive)
+                StartBossFight();
+        }
+
+        if (bossFightStarted && bossHpBar != null)
+        {
+            bossHpBar.SetValueWithoutNotify(
+                boss.MaxHP > 0 ? (float)boss.CurrentHP / boss.MaxHP : 0f);
+        }
+    }
+
+    private void StartBossFight()
+    {
+        bossFightStarted = true;
+
+        // 入口门重新出现，把主角关在房里。
+        if (bossDoor != null)
+            bossDoor.SetActive(true);
+
+        boss.Activate();
+
+        if (bossHudRoot != null)
+            bossHudRoot.SetActive(true);
+
+        if (bossNameText != null)
+            bossNameText.text = boss.BossName;
+
+        Debug.Log("进入 Boss 房，门已锁上。", this);
+    }
+
+    public void ReportBossDefeated(BattleBossController defeatedBoss)
+    {
+        if (defeatedBoss == null || bossDefeated || isShowingResult || isReturning)
+            return;
+
+        bossDefeated = true;
+        defeatedCount++;
+        earnedMoney += defeatedBoss.MoneyReward;
+        earnedExp += defeatedBoss.ExpReward;
+
+        if (bossHudRoot != null)
+            bossHudRoot.SetActive(false);
+
+        Debug.Log("Boss 已击败，到出口的门前按 E 离开。", this);
     }
 
     // ---------- HUD ----------

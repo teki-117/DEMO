@@ -55,8 +55,8 @@ public class BattlePlayerController : MonoBehaviour
     private float attackPreviewEndTime;
 
     // 一次攻击中，记录已经打中过的敌人。
-    private readonly HashSet<BattleEnemyController> hitEnemies =
-        new HashSet<BattleEnemyController>();
+    private readonly HashSet<IBattleDamageable> hitEnemies =
+        new HashSet<IBattleDamageable>();
 
     [Header("受伤")]
     [Min(0f)]
@@ -93,8 +93,8 @@ public class BattlePlayerController : MonoBehaviour
     private float savedGravityScale;
     private int dashDamage;
 
-    private readonly HashSet<BattleEnemyController> dashHitEnemies =
-        new HashSet<BattleEnemyController>();
+    private readonly HashSet<IBattleDamageable> dashHitEnemies =
+        new HashSet<IBattleDamageable>();
 
     [Header("技能：法术（L，耗 SP）")]
     [Min(0)]
@@ -117,8 +117,8 @@ public class BattlePlayerController : MonoBehaviour
     private int spellDamage;
     private float nextSpellTime;
 
-    private readonly HashSet<BattleEnemyController> spellHitEnemies =
-        new HashSet<BattleEnemyController>();
+    private readonly HashSet<IBattleDamageable> spellHitEnemies =
+        new HashSet<IBattleDamageable>();
 
     [Header("技能：回血（I，耗 SP）")]
     [Min(0)]
@@ -372,7 +372,7 @@ public class BattlePlayerController : MonoBehaviour
         Vector2 center,
         Vector2 size,
         int damage,
-        HashSet<BattleEnemyController> alreadyHit,
+        HashSet<IBattleDamageable> alreadyHit,
         bool gainSP)
     {
         Collider2D[] hits = Physics2D.OverlapBoxAll(
@@ -384,8 +384,8 @@ public class BattlePlayerController : MonoBehaviour
 
         foreach (Collider2D hit in hits)
         {
-            BattleEnemyController enemy =
-                hit.GetComponentInParent<BattleEnemyController>();
+            IBattleDamageable enemy =
+                hit.GetComponentInParent<IBattleDamageable>();
 
             if (enemy == null || enemy.IsDead)
                 continue;
