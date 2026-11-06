@@ -18,6 +18,16 @@ public class PartyManager : MonoBehaviour
     [Min(0)]
     [SerializeField] private int startingMoney;
 
+    [Header("升级规则")]
+    [Tooltip("升到下一级需要的 EXP = 当前等级 × 这个数。")]
+    [Min(1)]
+    [SerializeField] private int expPerLevel = 15;
+
+    [Min(1)]
+    [SerializeField] private int maxLevel = 10;
+
+    public int MaxLevel => maxLevel;
+
     private Dictionary<string, CharacterData> definitions =
         new Dictionary<string, CharacterData>();
 
@@ -299,18 +309,88 @@ public class PartyManager : MonoBehaviour
         return true;
     }
 
-    // 只累加 EXP；升级规则在第9周加入。
+    // 从 level 升到下一级需要的 EXP；满级返回 0。
+    public int GetEXPToNextLevel(int level)
+    {
+        if (level >= maxLevel)
+            return 0;
+
+        return Mathf.Max(1, level) * expPerLevel;
+    }
+
+    // 只计算、不修改：拿到 amount 点 EXP 后会是几级。
+    public int PreviewLevelAfterEXP(string characterId, int amount)
+    {
+        PartyMemberState state = GetMemberState(characterId);
+
+        if (state == null)
+            return 0;
+
+        int level = state.Level;
+        long exp = (long)state.EXP + Mathf.Max(0, amount);
+
+        while (level < maxLevel && exp >= GetEXPToNextLevel(level))
+        {
+            exp -= GetEXPToNextLevel(level);
+            level++;
+        }
+
+        return level;
+    }
+
+    // 累加 EXP，够了就升级（可以连升）；满级后不再增加 EXP。
     public bool AddEXP(string characterId, int amount)
     {
         PartyMemberState state = GetMemberState(characterId);
 
-        if (state == null || amount <= 0)
+        if (state == null || amount <= 0 || state.Level >= maxLevel)
             return false;
 
-        state.EXP = (int)Math.Min(int.MaxValue, (long)state.EXP + amount);
+        definitions.TryGetValue(characterId, out CharacterData data);
+
+        long exp = (long)state.EXP + amount;
+        int startLevel = state.Level;
+
+        while (state.Level < maxLevel &&
+               exp >= GetEXPToNextLevel(state.Level))
+        {
+            exp -= GetEXPToNextLevel(state.Level);
+            LevelUp(state, data);
+        }
+
+        // 满级后经验清零，状态页显示 MAX。
+        state.EXP = state.Level >= maxLevel
+            ? 0
+            : (int)Math.Min(int.MaxValue, exp);
+
+        if (state.Level > startLevel)
+        {
+            Debug.Log(
+                $"{characterId} 升级：Lv {startLevel} → {state.Level}，"
+                + $"HP {state.MaxHP}、SP {state.MaxSP}、"
+                + $"基础攻击 {state.BaseAttack}、基础防御 {state.BaseDefense}");
+        }
 
         OnStateChanged?.Invoke();
         return true;
+    }
+
+    // 只加基础属性，装备加成照常叠加；当前 HP/SP 跟着上限一起加，不回满。
+    private static void LevelUp(PartyMemberState state, CharacterData data)
+    {
+        state.Level++;
+
+        if (data == null)
+            return;
+
+        state.MaxHP += data.hpPerLevel;
+        state.CurrentHP += data.hpPerLevel;
+
+        state.MaxSP += data.spPerLevel;
+        state.CurrentSP += data.spPerLevel;
+
+        state.BaseAttack += data.attackPerLevel;
+        state.BaseDefense += data.defensePerLevel;
     }
 
     public bool TrySpendMoney(int amount)

@@ -55,6 +55,12 @@ public class CharacterData : ScriptableObject
     [Min(0)] public int startingMaxSP = 30;
     [Min(0)] public int startingAttack = 10;
     [Min(0)] public int startingDefense = 5;
+
+    [Header("RPG 成长（每升一级增加）")]
+    [Min(0)] public int hpPerLevel = 10;
+    [Min(0)] public int spPerLevel = 5;
+    [Min(0)] public int attackPerLevel = 2;
+    [Min(0)] public int defensePerLevel = 1;
     private void OnEnable()
     {
         // Sprite expressions

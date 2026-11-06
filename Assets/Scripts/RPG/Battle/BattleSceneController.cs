@@ -431,7 +431,8 @@ public class BattleSceneController : MonoBehaviour
                 return "关卡完成\n\n" +
                        $"击败敌人：{defeatedCount}\n" +
                        $"金钱 +{earnedMoney}\n" +
-                       $"EXP +{earnedExp}\n\n" +
+                       $"EXP +{earnedExp}\n" +
+                       BuildLevelUpLine() + "\n" +
                        "SP 已回满，时段 +1\n\n" +
                        "按 E 返回地图";
 
@@ -447,6 +448,26 @@ public class BattleSceneController : MonoBehaviour
                        "奖励未获得。HP 降为 25%，SP 已回满，时段 +1\n\n" +
                        "按 E 返回地图";
         }
+    }
+
+    // EXP 在按 E 之后才发放，这里先预览会不会升级。
+    private string BuildLevelUpLine()
+    {
+        PartyManager party = PartyManager.Instance;
+
+        PartyMemberState hero = party != null
+            ? party.GetMemberState(party.MainCharacterId)
+            : null;
+
+        if (hero == null || earnedExp <= 0)
+            return "";
+
+        int newLevel = party.PreviewLevelAfterEXP(
+            party.MainCharacterId, earnedExp);
+
+        return newLevel > hero.Level
+            ? $"升级！Lv {hero.Level} → {newLevel}\n"
+            : "";
     }
 
     private void UpdateResultScreen()

@@ -67,7 +67,11 @@ public class CharacterStatusCardUI : MonoBehaviour
         portraitImage.enabled = data.contactAvatar != null;
 
         levelText.text = $"等级：{state.Level}";
-        expText.text = $"经验：{state.EXP}";
+        int expToNext = party.GetEXPToNextLevel(state.Level);
+
+        expText.text = expToNext > 0
+            ? $"经验：{state.EXP} / {expToNext}"
+            : "经验：MAX";
 
         hpText.text = $"HP：{state.CurrentHP} / {state.MaxHP}";
         spText.text = $"SP：{state.CurrentSP} / {state.MaxSP}";
