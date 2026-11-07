@@ -1,0 +1,819 @@
+fileFormatVersion: 2
+guid: 02b3f78695f25e74ca1725e55ed001b1
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 8466338972411107545
+    second: WarriorWomanNoEffect-Sheet_0
+  - first:
+      213: -7591370193891404316
+    second: WarriorWomanNoEffect-Sheet_1
+  - first:
+      213: 5790004606126060643
+    second: WarriorWomanNoEffect-Sheet_2
+  - first:
+      213: -4521726667292783024
+    second: WarriorWomanNoEffect-Sheet_3
+  - first:
+      213: -9131085626817123811
+    second: WarriorWomanNoEffect-Sheet_4
+  - first:
+      213: 8114489766835503122
+    second: WarriorWomanNoEffect-Sheet_5
+  - first:
+      213: 5969927325010381641
+    second: WarriorWomanNoEffect-Sheet_6
+  - first:
+      213: 2036831123744707048
+    second: WarriorWomanNoEffect-Sheet_7
+  - first:
+      213: 7465681916082089281
+    second: WarriorWomanNoEffect-Sheet_8
+  - first:
+      213: -4257130292616987878
+    second: WarriorWomanNoEffect-Sheet_9
+  - first:
+      213: 4814518340533988800
+    second: WarriorWomanNoEffect-Sheet_10
+  - first:
+      213: 5017035968410709298
+    second: WarriorWomanNoEffect-Sheet_11
+  - first:
+      213: 8411463405769551007
+    second: WarriorWomanNoEffect-Sheet_12
+  - first:
+      213: 4916079779492778933
+    second: WarriorWomanNoEffect-Sheet_13
+  - first:
+      213: 1517218237098285486
+    second: WarriorWomanNoEffect-Sheet_14
+  - first:
+      213: -389715966754524083
+    second: WarriorWomanNoEffect-Sheet_15
+  - first:
+      213: -4331657308174280754
+    second: WarriorWomanNoEffect-Sheet_16
+  - first:
+      213: -2781743607377074421
+    second: WarriorWomanNoEffect-Sheet_17
+  - first:
+      213: -3484208495459447833
+    second: WarriorWomanNoEffect-Sheet_18
+  - first:
+      213: 685963919777834572
+    second: WarriorWomanNoEffect-Sheet_19
+  - first:
+      213: -1474343334236093901
+    second: WarriorWomanNoEffect-Sheet_20
+  - first:
+      213: -5365426123598204387
+    second: WarriorWomanNoEffect-Sheet_21
+  - first:
+      213: -9212856055214608839
+    second: WarriorWomanNoEffect-Sheet_22
+  - first:
+      213: -785058968984197780
+    second: WarriorWomanNoEffect-Sheet_23
+  - first:
+      213: -7900099494595024727
+    second: WarriorWomanNoEffect-Sheet_24
+  - first:
+      213: -7169769776096753580
+    second: WarriorWomanNoEffect-Sheet_25
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: WarriorWomanNoEffect-Sheet_0
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 143
+        width: 27
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9d81c96507a7e7570800000000000000
+      internalID: 8466338972411107545
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WarriorWomanNoEffect-Sheet_1
+      rect:
+        serializedVersion: 2
+        x: 115
+        y: 143
+        width: 24
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4e55d9a870906a690800000000000000
+      internalID: -7591370193891404316
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WarriorWomanNoEffect-Sheet_2
+      rect:
+        serializedVersion: 2
+        x: 195
+        y: 143
+        width: 24
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 364f404338a3a5050800000000000000
+      internalID: 5790004606126060643
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WarriorWomanNoEffect-Sheet_3
+      rect:
+        serializedVersion: 2
+        x: 275
+        y: 143
+        width: 25
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 05e4a90ad899f31c0800000000000000
+      internalID: -4521726667292783024
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WarriorWomanNoEffect-Sheet_4
+      rect:
+        serializedVersion: 2
+        x: 355
+        y: 143
+        width: 26
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d1ae3ef300ed74180800000000000000
+      internalID: -9131085626817123811
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WarriorWomanNoEffect-Sheet_5
+      rect:
+        serializedVersion: 2
+        x: 435
+        y: 143
+        width: 27
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 210c5c553757c9070800000000000000
+      internalID: 8114489766835503122
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WarriorWomanNoEffect-Sheet_6
+      rect:
+        serializedVersion: 2
+        x: 27
+        y: 79
+        width: 27
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 94b4426a54179d250800000000000000
+      internalID: 5969927325010381641
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WarriorWomanNoEffect-Sheet_7
+      rect:
+        serializedVersion: 2
+        x: 106
+        y: 79
+        width: 27
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8e1534e8d17444c10800000000000000
+      internalID: 2036831123744707048
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WarriorWomanNoEffect-Sheet_8
+      rect:
+        serializedVersion: 2
+        x: 185
+        y: 79
+        width: 25
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 14d6126d52e6b9760800000000000000
+      internalID: 7465681916082089281
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WarriorWomanNoEffect-Sheet_9
+      rect:
+        serializedVersion: 2
+        x: 265
+        y: 79
+        width: 25
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a1b720add82abe4c0800000000000000
+      internalID: -4257130292616987878
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WarriorWomanNoEffect-Sheet_10
+      rect:
+        serializedVersion: 2
+        x: 345
+        y: 79
+        width: 25
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0cda12c1cea90d240800000000000000
+      internalID: 4814518340533988800
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WarriorWomanNoEffect-Sheet_11
+      rect:
+        serializedVersion: 2
+        x: 425
+        y: 79
+        width: 25
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 23d6a72c1a710a540800000000000000
+      internalID: 5017035968410709298
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WarriorWomanNoEffect-Sheet_12
+      rect:
+        serializedVersion: 2
+        x: 505
+        y: 79
+        width: 25
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f9c6716d6658bb470800000000000000
+      internalID: 8411463405769551007
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WarriorWomanNoEffect-Sheet_13
+      rect:
+        serializedVersion: 2
+        x: 585
+        y: 79
+        width: 25
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5b3d520538c693440800000000000000
+      internalID: 4916079779492778933
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WarriorWomanNoEffect-Sheet_14
+      rect:
+        serializedVersion: 2
+        x: 666
+        y: 79
+        width: 27
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ea9dcf4b2fd3e0510800000000000000
+      internalID: 1517218237098285486
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WarriorWomanNoEffect-Sheet_15
+      rect:
+        serializedVersion: 2
+        x: 747
+        y: 79
+        width: 27
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d447c4e9463779af0800000000000000
+      internalID: -389715966754524083
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WarriorWomanNoEffect-Sheet_16
+      rect:
+        serializedVersion: 2
+        x: 27
+        y: 15
+        width: 27
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ec71c89d0acd2e3c0800000000000000
+      internalID: -4331657308174280754
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WarriorWomanNoEffect-Sheet_17
+      rect:
+        serializedVersion: 2
+        x: 106
+        y: 15
+        width: 27
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b07631a6de24569d0800000000000000
+      internalID: -2781743607377074421
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WarriorWomanNoEffect-Sheet_18
+      rect:
+        serializedVersion: 2
+        x: 185
+        y: 15
+        width: 25
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7ebcdb065da95afc0800000000000000
+      internalID: -3484208495459447833
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WarriorWomanNoEffect-Sheet_19
+      rect:
+        serializedVersion: 2
+        x: 265
+        y: 15
+        width: 25
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c46a717fc88058900800000000000000
+      internalID: 685963919777834572
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WarriorWomanNoEffect-Sheet_20
+      rect:
+        serializedVersion: 2
+        x: 345
+        y: 15
+        width: 25
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 33284e58c841a8be0800000000000000
+      internalID: -1474343334236093901
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WarriorWomanNoEffect-Sheet_21
+      rect:
+        serializedVersion: 2
+        x: 425
+        y: 15
+        width: 25
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d12f35a2e5d2a85b0800000000000000
+      internalID: -5365426123598204387
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WarriorWomanNoEffect-Sheet_22
+      rect:
+        serializedVersion: 2
+        x: 505
+        y: 15
+        width: 25
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 93e6026ca3c552080800000000000000
+      internalID: -9212856055214608839
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WarriorWomanNoEffect-Sheet_23
+      rect:
+        serializedVersion: 2
+        x: 585
+        y: 15
+        width: 25
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c6566f1f609ea15f0800000000000000
+      internalID: -785058968984197780
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WarriorWomanNoEffect-Sheet_24
+      rect:
+        serializedVersion: 2
+        x: 666
+        y: 15
+        width: 27
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9a8ab6ebd553d5290800000000000000
+      internalID: -7900099494595024727
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WarriorWomanNoEffect-Sheet_25
+      rect:
+        serializedVersion: 2
+        x: 747
+        y: 15
+        width: 27
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 458cb6e206cdf7c90800000000000000
+      internalID: -7169769776096753580
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      WarriorWomanNoEffect-Sheet_0: 8466338972411107545
+      WarriorWomanNoEffect-Sheet_1: -7591370193891404316
+      WarriorWomanNoEffect-Sheet_10: 4814518340533988800
+      WarriorWomanNoEffect-Sheet_11: 5017035968410709298
+      WarriorWomanNoEffect-Sheet_12: 8411463405769551007
+      WarriorWomanNoEffect-Sheet_13: 4916079779492778933
+      WarriorWomanNoEffect-Sheet_14: 1517218237098285486
+      WarriorWomanNoEffect-Sheet_15: -389715966754524083
+      WarriorWomanNoEffect-Sheet_16: -4331657308174280754
+      WarriorWomanNoEffect-Sheet_17: -2781743607377074421
+      WarriorWomanNoEffect-Sheet_18: -3484208495459447833
+      WarriorWomanNoEffect-Sheet_19: 685963919777834572
+      WarriorWomanNoEffect-Sheet_2: 5790004606126060643
+      WarriorWomanNoEffect-Sheet_20: -1474343334236093901
+      WarriorWomanNoEffect-Sheet_21: -5365426123598204387
+      WarriorWomanNoEffect-Sheet_22: -9212856055214608839
+      WarriorWomanNoEffect-Sheet_23: -785058968984197780
+      WarriorWomanNoEffect-Sheet_24: -7900099494595024727
+      WarriorWomanNoEffect-Sheet_25: -7169769776096753580
+      WarriorWomanNoEffect-Sheet_3: -4521726667292783024
+      WarriorWomanNoEffect-Sheet_4: -9131085626817123811
+      WarriorWomanNoEffect-Sheet_5: 8114489766835503122
+      WarriorWomanNoEffect-Sheet_6: 5969927325010381641
+      WarriorWomanNoEffect-Sheet_7: 2036831123744707048
+      WarriorWomanNoEffect-Sheet_8: 7465681916082089281
+      WarriorWomanNoEffect-Sheet_9: -4257130292616987878
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

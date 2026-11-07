@@ -89,7 +89,10 @@ public class BattleBossController : MonoBehaviour, IBattleDamageable
     [SerializeField] private int expReward = 30;
 
     [Header("动画（可选）")]
-    [Tooltip("参数：Speed（float），Windup、Dead（bool），Charge、Jump、Beam、Hurt（trigger）。")]
+    [Tooltip("素材本身朝左时勾选（Demon 要勾）。")]
+    [SerializeField] private bool spriteFacesLeft;
+
+    [Tooltip("参数：Speed（float），Windup、Attacking、Dead（bool），Charge、Jump、Beam、Hurt（trigger）。没有 Dead 参数时死亡直接隐藏。")]
     [SerializeField] private Animator animator;
     [Min(0f)]
     [SerializeField] private float deathAnimDuration = 1f;
@@ -189,12 +192,14 @@ public class BattleBossController : MonoBehaviour, IBattleDamageable
         else
             spriteRenderer.color = baseColor;
 
-        spriteRenderer.flipX = facing < 0;
+        spriteRenderer.flipX = (facing < 0) != spriteFacesLeft;
 
         if (animator != null)
         {
             BattleSceneController.AnimFloat(animator, "Speed", Mathf.Abs(rb.linearVelocity.x));
             BattleSceneController.AnimBool(animator, "Windup", state == BossState.Windup);
+            BattleSceneController.AnimBool(animator, "Attacking",
+                state == BossState.Charging || state == BossState.Jumping || state == BossState.Beaming);
         }
 
         if (shockwaveVisual != null &&
@@ -537,7 +542,7 @@ public class BattleBossController : MonoBehaviour, IBattleDamageable
         BattleSceneController.PlaySfx(deathSfx);
 
         // 有死亡动画时先播完再隐藏；只隐藏不销毁，场景控制器还引用着它。
-        if (animator != null && deathAnimDuration > 0f)
+        if (deathAnimDuration > 0f && BattleSceneController.HasParam(animator, "Dead"))
         {
             spriteRenderer.color = baseColor;
             bodyCollider.enabled = false;

@@ -1,0 +1,1729 @@
+fileFormatVersion: 2
+guid: ba2607ef6b289074c878161ab9efc039
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -8586650436954033937
+    second: explosion-animation copy_0
+  - first:
+      213: -758687856363616408
+    second: explosion-animation copy_1
+  - first:
+      213: 8032336423987790960
+    second: explosion-animation copy_2
+  - first:
+      213: -8626644778052364405
+    second: explosion-animation copy_3
+  - first:
+      213: 6205548849364128510
+    second: explosion-animation copy_4
+  - first:
+      213: 4336683065316536084
+    second: explosion-animation copy_5
+  - first:
+      213: -5749981190924669130
+    second: explosion-animation copy_6
+  - first:
+      213: -4494137278092585687
+    second: explosion-animation copy_7
+  - first:
+      213: 4072362553360174670
+    second: explosion-animation copy_8
+  - first:
+      213: -8413330364703489018
+    second: explosion-animation copy_9
+  - first:
+      213: -5122254180254341112
+    second: explosion-animation copy_10
+  - first:
+      213: 1202711322509971665
+    second: explosion-animation copy_11
+  - first:
+      213: -4374532092569426911
+    second: explosion-animation copy_12
+  - first:
+      213: 2124492198484045045
+    second: explosion-animation copy_13
+  - first:
+      213: 4273841175094288412
+    second: explosion-animation copy_14
+  - first:
+      213: -5214706588349947667
+    second: explosion-animation copy_15
+  - first:
+      213: -491347586448013260
+    second: explosion-animation copy_16
+  - first:
+      213: 5221500187594699140
+    second: explosion-animation copy_17
+  - first:
+      213: 3961116920095073451
+    second: explosion-animation copy_18
+  - first:
+      213: -1862403151359581486
+    second: explosion-animation copy_19
+  - first:
+      213: -3927163757979001862
+    second: explosion-animation copy_20
+  - first:
+      213: 580999374418618508
+    second: explosion-animation copy_21
+  - first:
+      213: -5030384824732721009
+    second: explosion-animation copy_22
+  - first:
+      213: 5088411783162518047
+    second: explosion-animation copy_23
+  - first:
+      213: 708363500320208580
+    second: explosion-animation copy_24
+  - first:
+      213: 7025453919779478009
+    second: explosion-animation copy_25
+  - first:
+      213: -9163786643510432582
+    second: explosion-animation copy_26
+  - first:
+      213: -360895101695413389
+    second: explosion-animation copy_27
+  - first:
+      213: -8662961507768598662
+    second: explosion-animation copy_28
+  - first:
+      213: -2215502723158572859
+    second: explosion-animation copy_29
+  - first:
+      213: 9214451482354909449
+    second: explosion-animation copy_30
+  - first:
+      213: -5976308885170653963
+    second: explosion-animation copy_31
+  - first:
+      213: 3567352303383361953
+    second: explosion-animation copy_32
+  - first:
+      213: -2707470170438067154
+    second: explosion-animation copy_33
+  - first:
+      213: -705723580084417938
+    second: explosion-animation copy_34
+  - first:
+      213: -4747210372329985633
+    second: explosion-animation copy_35
+  - first:
+      213: -2005096955698308819
+    second: explosion-animation copy_36
+  - first:
+      213: 7910395351242872369
+    second: explosion-animation copy_37
+  - first:
+      213: -5991455371086884747
+    second: explosion-animation copy_38
+  - first:
+      213: 3340069253830901442
+    second: explosion-animation copy_39
+  - first:
+      213: -5333470066081096750
+    second: explosion-animation copy_40
+  - first:
+      213: -2631409893335187566
+    second: explosion-animation copy_41
+  - first:
+      213: -1231178256498504616
+    second: explosion-animation copy_42
+  - first:
+      213: -2110209320744012564
+    second: explosion-animation copy_43
+  - first:
+      213: 2366053305026982167
+    second: explosion-animation copy_44
+  - first:
+      213: 4820743412933705401
+    second: explosion-animation copy_45
+  - first:
+      213: -7776812525560242759
+    second: explosion-animation copy_46
+  - first:
+      213: -1852039062771434032
+    second: explosion-animation copy_47
+  - first:
+      213: -1831523827690881610
+    second: explosion-animation copy_48
+  - first:
+      213: -2642240276314793928
+    second: explosion-animation copy_49
+  - first:
+      213: 3317244800846403414
+    second: explosion-animation copy_50
+  - first:
+      213: 3148172455087157869
+    second: explosion-animation copy_51
+  - first:
+      213: 4688589089768218109
+    second: explosion-animation copy_52
+  - first:
+      213: -9109808479108519879
+    second: explosion-animation copy_53
+  - first:
+      213: 2499456026475034478
+    second: explosion-animation copy_54
+  - first:
+      213: -1709705889827095205
+    second: explosion-animation copy_55
+  - first:
+      213: 8605143720452697396
+    second: explosion-animation copy_56
+  - first:
+      213: -7042090135215340373
+    second: explosion-animation copy_57
+  - first:
+      213: -4360685924098548159
+    second: explosion-animation copy_58
+  - first:
+      213: 7750221998740093297
+    second: explosion-animation copy_59
+  - first:
+      213: 7668433016478781261
+    second: explosion-animation copy_60
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: explosion-animation copy_0
+      rect:
+        serializedVersion: 2
+        x: 718
+        y: 107
+        width: 19
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fe0f6eeebe616d880800000000000000
+      internalID: -8586650436954033937
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_1
+      rect:
+        serializedVersion: 2
+        x: 819
+        y: 106
+        width: 10
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8674b021a699875f0800000000000000
+      internalID: -758687856363616408
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_2
+      rect:
+        serializedVersion: 2
+        x: 831
+        y: 113
+        width: 13
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0744934ab67987f60800000000000000
+      internalID: 8032336423987790960
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_3
+      rect:
+        serializedVersion: 2
+        x: 848
+        y: 104
+        width: 22
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b87d5b0c740084880800000000000000
+      internalID: -8626644778052364405
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_4
+      rect:
+        serializedVersion: 2
+        x: 931
+        y: 109
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ef2dea2dcc98e1650800000000000000
+      internalID: 6205548849364128510
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_5
+      rect:
+        serializedVersion: 2
+        x: 946
+        y: 116
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 41fe4ab654efe2c30800000000000000
+      internalID: 4336683065316536084
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_6
+      rect:
+        serializedVersion: 2
+        x: 972
+        y: 110
+        width: 11
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 63fe1c15296f330b0800000000000000
+      internalID: -5749981190924669130
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_7
+      rect:
+        serializedVersion: 2
+        x: 560
+        y: 26
+        width: 110
+        height: 85
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 925537fd4fd91a1c0800000000000000
+      internalID: -4494137278092585687
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_8
+      rect:
+        serializedVersion: 2
+        x: 678
+        y: 26
+        width: 100
+        height: 89
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e4ec2ad7a20f38830800000000000000
+      internalID: 4072362553360174670
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_9
+      rect:
+        serializedVersion: 2
+        x: 795
+        y: 97
+        width: 16
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 60447d9eb98dd3b80800000000000000
+      internalID: -8413330364703489018
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_10
+      rect:
+        serializedVersion: 2
+        x: 814
+        y: 106
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8082ea046f81ae8b0800000000000000
+      internalID: -5122254180254341112
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_11
+      rect:
+        serializedVersion: 2
+        x: 908
+        y: 103
+        width: 8
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1d01c895393e0b010800000000000000
+      internalID: 1202711322509971665
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_12
+      rect:
+        serializedVersion: 2
+        x: 937
+        y: 96
+        width: 17
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1246ad33d3a8a43c0800000000000000
+      internalID: -4374532092569426911
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_13
+      rect:
+        serializedVersion: 2
+        x: 136
+        y: 37
+        width: 58
+        height: 53
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5fceab20666bb7d10800000000000000
+      internalID: 2124492198484045045
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_14
+      rect:
+        serializedVersion: 2
+        x: 236
+        y: 32
+        width: 81
+        height: 71
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c10eeeba7ebbf4b30800000000000000
+      internalID: 4273841175094288412
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_15
+      rect:
+        serializedVersion: 2
+        x: 344
+        y: 28
+        width: 93
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: de023819cf3a1a7b0800000000000000
+      internalID: -5214706588349947667
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_16
+      rect:
+        serializedVersion: 2
+        x: 451
+        y: 28
+        width: 104
+        height: 77
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 438458039f16e29f0800000000000000
+      internalID: -491347586448013260
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_17
+      rect:
+        serializedVersion: 2
+        x: 790
+        y: 78
+        width: 15
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 481b73481ce767840800000000000000
+      internalID: 5221500187594699140
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_18
+      rect:
+        serializedVersion: 2
+        x: 809
+        y: 87
+        width: 14
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ba46e081ad6b8f630800000000000000
+      internalID: 3961116920095073451
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_19
+      rect:
+        serializedVersion: 2
+        x: 818
+        y: 86
+        width: 19
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2d2e4a6833a6726e0800000000000000
+      internalID: -1862403151359581486
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_20
+      rect:
+        serializedVersion: 2
+        x: 824
+        y: 78
+        width: 20
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: afb9fde7e59ef79c0800000000000000
+      internalID: -3927163757979001862
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_21
+      rect:
+        serializedVersion: 2
+        x: 846
+        y: 81
+        width: 20
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c8822fe4adf101800800000000000000
+      internalID: 580999374418618508
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_22
+      rect:
+        serializedVersion: 2
+        x: 867
+        y: 66
+        width: 27
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f806a4e67ab703ab0800000000000000
+      internalID: -5030384824732721009
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_23
+      rect:
+        serializedVersion: 2
+        x: 873
+        y: 89
+        width: 16
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f1a5056ae8bad9640800000000000000
+      internalID: 5088411783162518047
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_24
+      rect:
+        serializedVersion: 2
+        x: 901
+        y: 84
+        width: 8
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4c63078b9dc94d900800000000000000
+      internalID: 708363500320208580
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_25
+      rect:
+        serializedVersion: 2
+        x: 905
+        y: 91
+        width: 9
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9f9d45a1e1d6f7160800000000000000
+      internalID: 7025453919779478009
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_26
+      rect:
+        serializedVersion: 2
+        x: 920
+        y: 87
+        width: 13
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: abc671c7990b3d080800000000000000
+      internalID: -9163786643510432582
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_27
+      rect:
+        serializedVersion: 2
+        x: 939
+        y: 86
+        width: 13
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 373344e21d7ddfaf0800000000000000
+      internalID: -360895101695413389
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_28
+      rect:
+        serializedVersion: 2
+        x: 959
+        y: 85
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a7ff192386af6c780800000000000000
+      internalID: -8662961507768598662
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_29
+      rect:
+        serializedVersion: 2
+        x: 970
+        y: 86
+        width: 10
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5c00933f204f041e0800000000000000
+      internalID: -2215502723158572859
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_30
+      rect:
+        serializedVersion: 2
+        x: 980
+        y: 79
+        width: 22
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 90106dd8dce40ef70800000000000000
+      internalID: 9214451482354909449
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_31
+      rect:
+        serializedVersion: 2
+        x: 341
+        y: 76
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5f474679bb2ef0da0800000000000000
+      internalID: -5976308885170653963
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_32
+      rect:
+        serializedVersion: 2
+        x: 786
+        y: 61
+        width: 14
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1a936dfe408c18130800000000000000
+      internalID: 3567352303383361953
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_33
+      rect:
+        serializedVersion: 2
+        x: 797
+        y: 67
+        width: 19
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e2c921b89322d6ad0800000000000000
+      internalID: -2707470170438067154
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_34
+      rect:
+        serializedVersion: 2
+        x: 839
+        y: 61
+        width: 21
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e6a837b9424c436f0800000000000000
+      internalID: -705723580084417938
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_35
+      rect:
+        serializedVersion: 2
+        x: 897
+        y: 66
+        width: 17
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f99a83371558e1eb0800000000000000
+      internalID: -4747210372329985633
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_36
+      rect:
+        serializedVersion: 2
+        x: 917
+        y: 77
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d29926731f67c24e0800000000000000
+      internalID: -2005096955698308819
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_37
+      rect:
+        serializedVersion: 2
+        x: 959
+        y: 69
+        width: 13
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1369bbf29ae57cd60800000000000000
+      internalID: 7910395351242872369
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_38
+      rect:
+        serializedVersion: 2
+        x: 994
+        y: 68
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 57092c685131adca0800000000000000
+      internalID: -5991455371086884747
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_39
+      rect:
+        serializedVersion: 2
+        x: 998
+        y: 76
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2ce7bc73a4f4a5e20800000000000000
+      internalID: 3340069253830901442
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_40
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 41
+        width: 34
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2db9e0b9b35bbf5b0800000000000000
+      internalID: -5333470066081096750
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_41
+      rect:
+        serializedVersion: 2
+        x: 785
+        y: 42
+        width: 22
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 29fbe41d4aa5b7bd0800000000000000
+      internalID: -2631409893335187566
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_42
+      rect:
+        serializedVersion: 2
+        x: 798
+        y: 56
+        width: 14
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 85cc83616e9f9eee0800000000000000
+      internalID: -1231178256498504616
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_43
+      rect:
+        serializedVersion: 2
+        x: 798
+        y: 34
+        width: 8
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ce4b55b9dc707b2e0800000000000000
+      internalID: -2110209320744012564
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_44
+      rect:
+        serializedVersion: 2
+        x: 807
+        y: 46
+        width: 16
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 711b5cde1f8e5d020800000000000000
+      internalID: 2366053305026982167
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_45
+      rect:
+        serializedVersion: 2
+        x: 814
+        y: 35
+        width: 7
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9beb739b798b6e240800000000000000
+      internalID: 4820743412933705401
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_46
+      rect:
+        serializedVersion: 2
+        x: 822
+        y: 59
+        width: 11
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9bd5c291636331490800000000000000
+      internalID: -7776812525560242759
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_47
+      rect:
+        serializedVersion: 2
+        x: 824
+        y: 49
+        width: 17
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0dd7c51f84c3c46e0800000000000000
+      internalID: -1852039062771434032
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_48
+      rect:
+        serializedVersion: 2
+        x: 834
+        y: 32
+        width: 20
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6bd32d458ce1596e0800000000000000
+      internalID: -1831523827690881610
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_49
+      rect:
+        serializedVersion: 2
+        x: 855
+        y: 51
+        width: 21
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 838d607c770e45bd0800000000000000
+      internalID: -2642240276314793928
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_50
+      rect:
+        serializedVersion: 2
+        x: 857
+        y: 36
+        width: 17
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 65716732298390e20800000000000000
+      internalID: 3317244800846403414
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_51
+      rect:
+        serializedVersion: 2
+        x: 879
+        y: 41
+        width: 14
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d62b32d0b2e80bb20800000000000000
+      internalID: 3148172455087157869
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_52
+      rect:
+        serializedVersion: 2
+        x: 897
+        y: 44
+        width: 11
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dfd18699fe6311140800000000000000
+      internalID: 4688589089768218109
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_53
+      rect:
+        serializedVersion: 2
+        x: 909
+        y: 42
+        width: 23
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 93825ee3475739180800000000000000
+      internalID: -9109808479108519879
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_54
+      rect:
+        serializedVersion: 2
+        x: 926
+        y: 39
+        width: 7
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e67f0cd630adfa220800000000000000
+      internalID: 2499456026475034478
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_55
+      rect:
+        serializedVersion: 2
+        x: 952
+        y: 45
+        width: 10
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b5d76763d87e548e0800000000000000
+      internalID: -1709705889827095205
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_56
+      rect:
+        serializedVersion: 2
+        x: 969
+        y: 45
+        width: 12
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 43d24ca2f9c9b6770800000000000000
+      internalID: 8605143720452697396
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_57
+      rect:
+        serializedVersion: 2
+        x: 971
+        y: 62
+        width: 15
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ba405362558754e90800000000000000
+      internalID: -7042090135215340373
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_58
+      rect:
+        serializedVersion: 2
+        x: 978
+        y: 43
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 14e5f05814bbb73c0800000000000000
+      internalID: -4360685924098548159
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_59
+      rect:
+        serializedVersion: 2
+        x: 993
+        y: 52
+        width: 10
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 179325d68d15e8b60800000000000000
+      internalID: 7750221998740093297
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion-animation copy_60
+      rect:
+        serializedVersion: 2
+        x: 795
+        y: 32
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d4f481b033fbb6a60800000000000000
+      internalID: 7668433016478781261
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      explosion-animation copy_0: -8586650436954033937
+      explosion-animation copy_1: -758687856363616408
+      explosion-animation copy_10: -5122254180254341112
+      explosion-animation copy_11: 1202711322509971665
+      explosion-animation copy_12: -4374532092569426911
+      explosion-animation copy_13: 2124492198484045045
+      explosion-animation copy_14: 4273841175094288412
+      explosion-animation copy_15: -5214706588349947667
+      explosion-animation copy_16: -491347586448013260
+      explosion-animation copy_17: 5221500187594699140
+      explosion-animation copy_18: 3961116920095073451
+      explosion-animation copy_19: -1862403151359581486
+      explosion-animation copy_2: 8032336423987790960
+      explosion-animation copy_20: -3927163757979001862
+      explosion-animation copy_21: 580999374418618508
+      explosion-animation copy_22: -5030384824732721009
+      explosion-animation copy_23: 5088411783162518047
+      explosion-animation copy_24: 708363500320208580
+      explosion-animation copy_25: 7025453919779478009
+      explosion-animation copy_26: -9163786643510432582
+      explosion-animation copy_27: -360895101695413389
+      explosion-animation copy_28: -8662961507768598662
+      explosion-animation copy_29: -2215502723158572859
+      explosion-animation copy_3: -8626644778052364405
+      explosion-animation copy_30: 9214451482354909449
+      explosion-animation copy_31: -5976308885170653963
+      explosion-animation copy_32: 3567352303383361953
+      explosion-animation copy_33: -2707470170438067154
+      explosion-animation copy_34: -705723580084417938
+      explosion-animation copy_35: -4747210372329985633
+      explosion-animation copy_36: -2005096955698308819
+      explosion-animation copy_37: 7910395351242872369
+      explosion-animation copy_38: -5991455371086884747
+      explosion-animation copy_39: 3340069253830901442
+      explosion-animation copy_4: 6205548849364128510
+      explosion-animation copy_40: -5333470066081096750
+      explosion-animation copy_41: -2631409893335187566
+      explosion-animation copy_42: -1231178256498504616
+      explosion-animation copy_43: -2110209320744012564
+      explosion-animation copy_44: 2366053305026982167
+      explosion-animation copy_45: 4820743412933705401
+      explosion-animation copy_46: -7776812525560242759
+      explosion-animation copy_47: -1852039062771434032
+      explosion-animation copy_48: -1831523827690881610
+      explosion-animation copy_49: -2642240276314793928
+      explosion-animation copy_5: 4336683065316536084
+      explosion-animation copy_50: 3317244800846403414
+      explosion-animation copy_51: 3148172455087157869
+      explosion-animation copy_52: 4688589089768218109
+      explosion-animation copy_53: -9109808479108519879
+      explosion-animation copy_54: 2499456026475034478
+      explosion-animation copy_55: -1709705889827095205
+      explosion-animation copy_56: 8605143720452697396
+      explosion-animation copy_57: -7042090135215340373
+      explosion-animation copy_58: -4360685924098548159
+      explosion-animation copy_59: 7750221998740093297
+      explosion-animation copy_6: -5749981190924669130
+      explosion-animation copy_60: 7668433016478781261
+      explosion-animation copy_7: -4494137278092585687
+      explosion-animation copy_8: 4072362553360174670
+      explosion-animation copy_9: -8413330364703489018
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

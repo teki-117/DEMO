@@ -1,0 +1,819 @@
+fileFormatVersion: 2
+guid: 51c7fccf237393f4eb98a3abf447a63d
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 6114548867454884810
+    second: WarriorManNoEffect-Sheet_0
+  - first:
+      213: -8396251675428113050
+    second: WarriorManNoEffect-Sheet_1
+  - first:
+      213: 5030820563935172915
+    second: WarriorManNoEffect-Sheet_2
+  - first:
+      213: -2477507765354407289
+    second: WarriorManNoEffect-Sheet_3
+  - first:
+      213: 4215938271665883884
+    second: WarriorManNoEffect-Sheet_4
+  - first:
+      213: 7020227976554784112
+    second: WarriorManNoEffect-Sheet_5
+  - first:
+      213: -2389581107171626851
+    second: WarriorManNoEffect-Sheet_6
+  - first:
+      213: -8444149350499100657
+    second: WarriorManNoEffect-Sheet_7
+  - first:
+      213: 593525611807757642
+    second: WarriorManNoEffect-Sheet_8
+  - first:
+      213: 5656432791020527439
+    second: WarriorManNoEffect-Sheet_9
+  - first:
+      213: -2420207343338727426
+    second: WarriorManNoEffect-Sheet_10
+  - first:
+      213: 7516501567687369083
+    second: WarriorManNoEffect-Sheet_11
+  - first:
+      213: 4196159744086903136
+    second: WarriorManNoEffect-Sheet_12
+  - first:
+      213: -2548316998085617840
+    second: WarriorManNoEffect-Sheet_13
+  - first:
+      213: 554138778566105630
+    second: WarriorManNoEffect-Sheet_14
+  - first:
+      213: -7971321319670368752
+    second: WarriorManNoEffect-Sheet_15
+  - first:
+      213: -8473279577733708703
+    second: WarriorManNoEffect-Sheet_16
+  - first:
+      213: -1164802005793594506
+    second: WarriorManNoEffect-Sheet_17
+  - first:
+      213: 9022881582655724851
+    second: WarriorManNoEffect-Sheet_18
+  - first:
+      213: -3263942456152916485
+    second: WarriorManNoEffect-Sheet_19
+  - first:
+      213: -2982182218608614813
+    second: WarriorManNoEffect-Sheet_20
+  - first:
+      213: 2861659965714323839
+    second: WarriorManNoEffect-Sheet_21
+  - first:
+      213: -8820910305535904000
+    second: WarriorManNoEffect-Sheet_22
+  - first:
+      213: 4160741373525923795
+    second: WarriorManNoEffect-Sheet_23
+  - first:
+      213: -8702167924756704010
+    second: WarriorManNoEffect-Sheet_24
+  - first:
+      213: 2096646558034432492
+    second: WarriorManNoEffect-Sheet_25
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: WarriorManNoEffect-Sheet_0
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 143
+        width: 27
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: acb5a667ccd3bd450800000000000000
+      internalID: 6114548867454884810
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WarriorManNoEffect-Sheet_1
+      rect:
+        serializedVersion: 2
+        x: 115
+        y: 143
+        width: 24
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 665345126958a7b80800000000000000
+      internalID: -8396251675428113050
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WarriorManNoEffect-Sheet_2
+      rect:
+        serializedVersion: 2
+        x: 195
+        y: 143
+        width: 24
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 339161206a011d540800000000000000
+      internalID: 5030820563935172915
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WarriorManNoEffect-Sheet_3
+      rect:
+        serializedVersion: 2
+        x: 275
+        y: 143
+        width: 25
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 78a57c550df1e9dd0800000000000000
+      internalID: -2477507765354407289
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WarriorManNoEffect-Sheet_4
+      rect:
+        serializedVersion: 2
+        x: 355
+        y: 143
+        width: 26
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cea8e956585028a30800000000000000
+      internalID: 4215938271665883884
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WarriorManNoEffect-Sheet_5
+      rect:
+        serializedVersion: 2
+        x: 435
+        y: 143
+        width: 27
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 075aec0662cdc6160800000000000000
+      internalID: 7020227976554784112
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WarriorManNoEffect-Sheet_6
+      rect:
+        serializedVersion: 2
+        x: 27
+        y: 79
+        width: 27
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d90fc01c4a086ded0800000000000000
+      internalID: -2389581107171626851
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WarriorManNoEffect-Sheet_7
+      rect:
+        serializedVersion: 2
+        x: 106
+        y: 79
+        width: 27
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f08d72d97ea50da80800000000000000
+      internalID: -8444149350499100657
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WarriorManNoEffect-Sheet_8
+      rect:
+        serializedVersion: 2
+        x: 185
+        y: 79
+        width: 26
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a45d5e83660ac3800800000000000000
+      internalID: 593525611807757642
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WarriorManNoEffect-Sheet_9
+      rect:
+        serializedVersion: 2
+        x: 265
+        y: 79
+        width: 26
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f4f56a487afaf7e40800000000000000
+      internalID: 5656432791020527439
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WarriorManNoEffect-Sheet_10
+      rect:
+        serializedVersion: 2
+        x: 345
+        y: 79
+        width: 26
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ef7d0897e32b96ed0800000000000000
+      internalID: -2420207343338727426
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WarriorManNoEffect-Sheet_11
+      rect:
+        serializedVersion: 2
+        x: 425
+        y: 79
+        width: 26
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b712ca70a5aff4860800000000000000
+      internalID: 7516501567687369083
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WarriorManNoEffect-Sheet_12
+      rect:
+        serializedVersion: 2
+        x: 505
+        y: 79
+        width: 26
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 06908171e01cb3a30800000000000000
+      internalID: 4196159744086903136
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WarriorManNoEffect-Sheet_13
+      rect:
+        serializedVersion: 2
+        x: 585
+        y: 79
+        width: 26
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 057540a113f82acd0800000000000000
+      internalID: -2548316998085617840
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WarriorManNoEffect-Sheet_14
+      rect:
+        serializedVersion: 2
+        x: 666
+        y: 79
+        width: 27
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e1a93bc7842b0b700800000000000000
+      internalID: 554138778566105630
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WarriorManNoEffect-Sheet_15
+      rect:
+        serializedVersion: 2
+        x: 747
+        y: 79
+        width: 27
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 016bc8e5e7d206190800000000000000
+      internalID: -7971321319670368752
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WarriorManNoEffect-Sheet_16
+      rect:
+        serializedVersion: 2
+        x: 27
+        y: 15
+        width: 27
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1644c9e0e1dd86a80800000000000000
+      internalID: -8473279577733708703
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WarriorManNoEffect-Sheet_17
+      rect:
+        serializedVersion: 2
+        x: 106
+        y: 15
+        width: 27
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 673a2034fbac5dfe0800000000000000
+      internalID: -1164802005793594506
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WarriorManNoEffect-Sheet_18
+      rect:
+        serializedVersion: 2
+        x: 185
+        y: 15
+        width: 26
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 33ddb908ef6b73d70800000000000000
+      internalID: 9022881582655724851
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WarriorManNoEffect-Sheet_19
+      rect:
+        serializedVersion: 2
+        x: 265
+        y: 15
+        width: 26
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bfd70b511a524b2d0800000000000000
+      internalID: -3263942456152916485
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WarriorManNoEffect-Sheet_20
+      rect:
+        serializedVersion: 2
+        x: 345
+        y: 15
+        width: 26
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 362e85c82192d96d0800000000000000
+      internalID: -2982182218608614813
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WarriorManNoEffect-Sheet_21
+      rect:
+        serializedVersion: 2
+        x: 425
+        y: 15
+        width: 26
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f79db5cb398a6b720800000000000000
+      internalID: 2861659965714323839
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WarriorManNoEffect-Sheet_22
+      rect:
+        serializedVersion: 2
+        x: 505
+        y: 15
+        width: 26
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 00733f2ffc4d59580800000000000000
+      internalID: -8820910305535904000
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WarriorManNoEffect-Sheet_23
+      rect:
+        serializedVersion: 2
+        x: 585
+        y: 15
+        width: 26
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3d798431c3cedb930800000000000000
+      internalID: 4160741373525923795
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WarriorManNoEffect-Sheet_24
+      rect:
+        serializedVersion: 2
+        x: 666
+        y: 15
+        width: 27
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6f41415e060bb3780800000000000000
+      internalID: -8702167924756704010
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WarriorManNoEffect-Sheet_25
+      rect:
+        serializedVersion: 2
+        x: 747
+        y: 15
+        width: 27
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ce1103f9fe8c81d10800000000000000
+      internalID: 2096646558034432492
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      WarriorManNoEffect-Sheet_0: 6114548867454884810
+      WarriorManNoEffect-Sheet_1: -8396251675428113050
+      WarriorManNoEffect-Sheet_10: -2420207343338727426
+      WarriorManNoEffect-Sheet_11: 7516501567687369083
+      WarriorManNoEffect-Sheet_12: 4196159744086903136
+      WarriorManNoEffect-Sheet_13: -2548316998085617840
+      WarriorManNoEffect-Sheet_14: 554138778566105630
+      WarriorManNoEffect-Sheet_15: -7971321319670368752
+      WarriorManNoEffect-Sheet_16: -8473279577733708703
+      WarriorManNoEffect-Sheet_17: -1164802005793594506
+      WarriorManNoEffect-Sheet_18: 9022881582655724851
+      WarriorManNoEffect-Sheet_19: -3263942456152916485
+      WarriorManNoEffect-Sheet_2: 5030820563935172915
+      WarriorManNoEffect-Sheet_20: -2982182218608614813
+      WarriorManNoEffect-Sheet_21: 2861659965714323839
+      WarriorManNoEffect-Sheet_22: -8820910305535904000
+      WarriorManNoEffect-Sheet_23: 4160741373525923795
+      WarriorManNoEffect-Sheet_24: -8702167924756704010
+      WarriorManNoEffect-Sheet_25: 2096646558034432492
+      WarriorManNoEffect-Sheet_3: -2477507765354407289
+      WarriorManNoEffect-Sheet_4: 4215938271665883884
+      WarriorManNoEffect-Sheet_5: 7020227976554784112
+      WarriorManNoEffect-Sheet_6: -2389581107171626851
+      WarriorManNoEffect-Sheet_7: -8444149350499100657
+      WarriorManNoEffect-Sheet_8: 593525611807757642
+      WarriorManNoEffect-Sheet_9: 5656432791020527439
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

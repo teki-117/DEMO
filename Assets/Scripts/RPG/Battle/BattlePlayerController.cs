@@ -132,6 +132,9 @@ public class BattlePlayerController : MonoBehaviour
     private float nextHealTime;
 
     [Header("动画（可选）")]
+    [Tooltip("素材本身朝左时勾选。")]
+    [SerializeField] private bool spriteFacesLeft;
+
     [Tooltip("参数：Speed、VelocityY（float），Grounded、Dead（bool），Attack、Dash、Cast、Heal、Hurt（trigger）。没有的参数会自动跳过。")]
     [SerializeField] private Animator animator;
 
@@ -281,7 +284,7 @@ public class BattlePlayerController : MonoBehaviour
         // 冲刺和击退时不改朝向。
         if (isDashing || Time.time < knockbackEndTime)
         {
-            spriteRenderer.flipX = !facingRight;
+            spriteRenderer.flipX = facingRight == spriteFacesLeft;
             return;
         }
 
@@ -295,7 +298,7 @@ public class BattlePlayerController : MonoBehaviour
         }
 
         // 默认角色素材朝右，只翻转图片，不翻转碰撞体。
-        spriteRenderer.flipX = !facingRight;
+        spriteRenderer.flipX = facingRight == spriteFacesLeft;
     }
 
     private void UpdateColor()

@@ -67,7 +67,10 @@ public class BattleEnemyController : MonoBehaviour, IBattleDamageable
     [SerializeField] private bool dropsKey;
 
     [Header("动画（可选）")]
-    [Tooltip("参数：Speed（float），Windup、Dead（bool），Attack、Hurt（trigger）。")]
+    [Tooltip("素材本身朝左时勾选。")]
+    [SerializeField] private bool spriteFacesLeft;
+
+    [Tooltip("参数：Speed（float），Windup、Dead（bool），Attack、Hurt（trigger）。没有 Dead 参数时死亡直接消失。")]
     [SerializeField] private Animator animator;
     [Tooltip("有 Animator 时，死亡后等多久再消失，用来播死亡动画。")]
     [Min(0f)]
@@ -97,6 +100,7 @@ public class BattleEnemyController : MonoBehaviour, IBattleDamageable
     private bool isWindingUp;
     private float windupEndTime;
     private float knockbackEndTime;
+    private bool facingLeft;
 
     private float patrolCenterX;
     private int patrolDirection = 1;
@@ -293,8 +297,8 @@ public class BattleEnemyController : MonoBehaviour, IBattleDamageable
         BattleSceneController.AnimTrigger(animator, "Attack");
         BattleSceneController.SpawnEffect(
             attackEffect,
-            bodyCollider.bounds.center + Vector3.right * (spriteRenderer.flipX ? -attackRange * 0.5f : attackRange * 0.5f),
-            spriteRenderer.flipX);
+            bodyCollider.bounds.center + Vector3.right * (facingLeft ? -attackRange * 0.5f : attackRange * 0.5f),
+            facingLeft);
         BattleSceneController.PlaySfx(attackSfx);
 
         // 出手瞬间再判一次距离：玩家在前摇期间躲开就打空。
@@ -343,7 +347,8 @@ public class BattleEnemyController : MonoBehaviour, IBattleDamageable
 
     private void FaceDirection(int direction)
     {
-        spriteRenderer.flipX = direction < 0;
+        facingLeft = direction < 0;
+        spriteRenderer.flipX = facingLeft != spriteFacesLeft;
     }
 
     // sourcePosition：攻击来源的位置，用来决定击退方向。
@@ -400,11 +405,11 @@ public class BattleEnemyController : MonoBehaviour, IBattleDamageable
             BattleSceneController.Current.ReportEnemyDefeated(this);
         }
 
-        BattleSceneController.SpawnEffect(deathEffect, bodyCollider.bounds.center, spriteRenderer.flipX);
+        BattleSceneController.SpawnEffect(deathEffect, bodyCollider.bounds.center, facingLeft);
         BattleSceneController.PlaySfx(deathSfx);
 
         // 有死亡动画时先播完再消失；身体碰撞先关掉，不再挡路。
-        if (animator != null && deathAnimDuration > 0f)
+        if (deathAnimDuration > 0f && BattleSceneController.HasParam(animator, "Dead"))
         {
             spriteRenderer.color = originalColor;
             bodyCollider.enabled = false;

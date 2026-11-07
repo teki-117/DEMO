@@ -307,7 +307,7 @@ public class BattleSceneController : MonoBehaviour
             AudioManager.Instance.PlaySFX(clip, volume);
     }
 
-    private static bool HasParam(Animator animator, string name)
+    public static bool HasParam(Animator animator, string name)
     {
         if (animator == null || animator.runtimeAnimatorController == null)
             return false;
