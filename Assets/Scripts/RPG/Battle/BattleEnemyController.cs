@@ -66,6 +66,21 @@ public class BattleEnemyController : MonoBehaviour, IBattleDamageable
     [Tooltip("勾选后，这个敌人被击败时掉出 Boss 房钥匙。")]
     [SerializeField] private bool dropsKey;
 
+    [Header("动画（可选）")]
+    [Tooltip("参数：Speed（float），Windup、Dead（bool），Attack、Hurt（trigger）。")]
+    [SerializeField] private Animator animator;
+    [Tooltip("有 Animator 时，死亡后等多久再消失，用来播死亡动画。")]
+    [Min(0f)]
+    [SerializeField] private float deathAnimDuration = 0.6f;
+
+    [Header("特效 Prefab（可选）")]
+    [SerializeField] private GameObject attackEffect;
+    [SerializeField] private GameObject deathEffect;
+
+    [Header("音效（可选）")]
+    [SerializeField] private AudioClip attackSfx;
+    [SerializeField] private AudioClip deathSfx;
+
     [Header("运行状态（观察用）")]
     [SerializeField] private int currentHP;
     [SerializeField] private bool isDead;
@@ -118,6 +133,12 @@ public class BattleEnemyController : MonoBehaviour, IBattleDamageable
             spriteRenderer.color = windupColor;
         else
             spriteRenderer.color = originalColor;
+
+        if (animator != null)
+        {
+            BattleSceneController.AnimFloat(animator, "Speed", Mathf.Abs(rb.linearVelocity.x));
+            BattleSceneController.AnimBool(animator, "Windup", isWindingUp);
+        }
     }
 
     private void FixedUpdate()
@@ -269,6 +290,13 @@ public class BattleEnemyController : MonoBehaviour, IBattleDamageable
         nextAttackTime = Time.time + attackInterval;
         currentState = EnemyState.Attack;
 
+        BattleSceneController.AnimTrigger(animator, "Attack");
+        BattleSceneController.SpawnEffect(
+            attackEffect,
+            bodyCollider.bounds.center + Vector3.right * (spriteRenderer.flipX ? -attackRange * 0.5f : attackRange * 0.5f),
+            spriteRenderer.flipX);
+        BattleSceneController.PlaySfx(attackSfx);
+
         // 出手瞬间再判一次距离：玩家在前摇期间躲开就打空。
         if (IsPlayerInAttackRange())
         {
@@ -330,6 +358,9 @@ public class BattleEnemyController : MonoBehaviour, IBattleDamageable
             $"{name} 受到 {damage} 点伤害，HP：{currentHP}/{maxHP}",
             this);
 
+        if (BattleSceneController.Current != null)
+            BattleSceneController.Current.OnEnemyHit(bodyCollider.bounds.center, damage, false);
+
         if (currentHP <= 0)
         {
             Die();
@@ -338,6 +369,7 @@ public class BattleEnemyController : MonoBehaviour, IBattleDamageable
 
         flashEndTime = Time.time + hitFlashDuration;
         spriteRenderer.color = Color.white;
+        BattleSceneController.AnimTrigger(animator, "Hurt");
 
         // 朝远离攻击来源的方向击退。
         float direction =
@@ -368,6 +400,20 @@ public class BattleEnemyController : MonoBehaviour, IBattleDamageable
             BattleSceneController.Current.ReportEnemyDefeated(this);
         }
 
-        Destroy(gameObject);
+        BattleSceneController.SpawnEffect(deathEffect, bodyCollider.bounds.center, spriteRenderer.flipX);
+        BattleSceneController.PlaySfx(deathSfx);
+
+        // 有死亡动画时先播完再消失；身体碰撞先关掉，不再挡路。
+        if (animator != null && deathAnimDuration > 0f)
+        {
+            spriteRenderer.color = originalColor;
+            bodyCollider.enabled = false;
+            BattleSceneController.AnimBool(animator, "Dead", true);
+            Destroy(gameObject, deathAnimDuration);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 }

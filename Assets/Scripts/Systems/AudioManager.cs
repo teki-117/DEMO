@@ -8,8 +8,12 @@ public class AudioManager : MonoBehaviour
     public AudioMixerGroup musicGroup;
     public AudioMixerGroup voiceGroup;
 
+    [Tooltip("战斗音效走的混音组（可选）。留空时直接输出，受主音量控制。")]
+    public AudioMixerGroup sfxGroup;
+
     private AudioSource musicSource;
     private AudioSource voiceSource;
+    private AudioSource sfxSource;
 
     public static AudioManager Instance { get; private set; }
 
@@ -27,6 +31,11 @@ public class AudioManager : MonoBehaviour
             voiceSource = gameObject.AddComponent<AudioSource>();
             voiceSource.outputAudioMixerGroup = voiceGroup;
             voiceSource.loop = false;
+
+            sfxSource = gameObject.AddComponent<AudioSource>();
+            sfxSource.outputAudioMixerGroup = sfxGroup != null ? sfxGroup : null;
+            sfxSource.loop = false;
+            sfxSource.playOnAwake = false;
 
             LoadVolumeSettings();
             SceneManager.sceneLoaded += OnSceneLoaded;
@@ -85,6 +94,15 @@ public class AudioManager : MonoBehaviour
         voiceSource.clip = clip;
         voiceSource.Play();
     }
+    // 战斗音效：可以重叠播放，clip 为空时什么都不做。
+    public void PlaySFX(AudioClip clip, float volume = 1f)
+    {
+        if (clip == null || sfxSource == null)
+            return;
+
+        sfxSource.PlayOneShot(clip, Mathf.Clamp01(volume));
+    }
+
     private void LoadVolumeSettings()
     {
         float m = PlayerPrefs.GetFloat(Constants.MASTER_VOLUME, Constants.DEFAULT_VOLUME);

@@ -93,6 +93,60 @@ public class BattleSceneController : MonoBehaviour
     private BattleResult pendingResult;
     private int resultShownFrame;
 
+    [Header("打击感")]
+    [Tooltip("打中小怪时画面停顿的秒数（真实时间）。")]
+    [Min(0f)]
+    [SerializeField] private float hitStopEnemy = 0.05f;
+    [Min(0f)]
+    [SerializeField] private float hitStopBoss = 0.08f;
+    [Tooltip("停顿期间的时间流速，0.05 = 几乎停住。")]
+    [Range(0f, 1f)]
+    [SerializeField] private float hitStopTimeScale = 0.05f;
+
+    [SerializeField] private float shakeOnPlayerHurt = 0.25f;
+    [SerializeField] private float shakeOnBossHit = 0.08f;
+    [SerializeField] private float shakeOnBossSlam = 0.4f;
+    [Min(0.01f)]
+    [SerializeField] private float shakeDuration = 0.2f;
+
+    [Header("伤害数字")]
+    [SerializeField] private bool showDamageNumbers = true;
+    [Tooltip("留空用 TextMeshPro 默认字体。")]
+    [SerializeField] private TMP_FontAsset damageFont;
+    [SerializeField] private float damageFontSize = 5f;
+    [SerializeField] private float damageRiseDistance = 1f;
+    [SerializeField] private float damageDuration = 0.7f;
+    [SerializeField] private Color enemyDamageColor = Color.white;
+    [SerializeField] private Color playerDamageColor = new Color(1f, 0.3f, 0.3f);
+    [SerializeField] private Color healColor = new Color(0.4f, 1f, 0.4f);
+
+    [Header("场景音效（可选）")]
+    [SerializeField] private AudioClip keyPickupSfx;
+    [SerializeField] private AudioClip doorOpenSfx;
+    [SerializeField] private AudioClip resultSfx;
+
+    private float hitStopEndTime;
+    private bool hitStopActive;
+
+    private float shakeEndTime;
+    private float shakeStrength;
+    private float cameraFollowX;
+
+    private class FloatingNumber
+    {
+        public TextMeshPro text;
+        public Vector3 start;
+        public float startTime;
+        public Color color;
+    }
+
+    private readonly System.Collections.Generic.List<FloatingNumber> floatingNumbers =
+        new System.Collections.Generic.List<FloatingNumber>();
+
+    // 动画参数缓存：只设置 Animator 里真的有的参数，避免刷警告。
+    private static readonly System.Collections.Generic.Dictionary<Animator, System.Collections.Generic.HashSet<int>> animatorParams =
+        new System.Collections.Generic.Dictionary<Animator, System.Collections.Generic.HashSet<int>>();
+
     private void Awake()
     {
         Current = this;
@@ -103,9 +157,188 @@ public class BattleSceneController : MonoBehaviour
         if (Current == this)
             Current = null;
 
-        // 防止结算画面中途离开场景时游戏一直暂停。
-        if (isShowingResult)
+        // 防止结算画面或命中停顿中途离开场景时游戏一直暂停。
+        if (isShowingResult || hitStopActive)
             Time.timeScale = 1f;
+
+        animatorParams.Clear();
+    }
+
+    // ---------- 打击感：给各控制器调用 ----------
+
+    // 敌人或 Boss 被打中：伤害数字 + 命中停顿（Boss 再加轻微震动）。
+    public void OnEnemyHit(Vector3 position, int damage, bool isBoss)
+    {
+        ShowNumber(position, damage.ToString(), enemyDamageColor);
+        HitStop(isBoss ? hitStopBoss : hitStopEnemy);
+
+        if (isBoss)
+            Shake(shakeOnBossHit);
+    }
+
+    public void OnPlayerHurt(Vector3 position, int damage)
+    {
+        ShowNumber(position, damage.ToString(), playerDamageColor);
+        Shake(shakeOnPlayerHurt);
+    }
+
+    public void OnPlayerHeal(Vector3 position, int amount)
+    {
+        ShowNumber(position, "+" + amount, healColor);
+    }
+
+    public void OnBossSlam()
+    {
+        Shake(shakeOnBossSlam);
+    }
+
+    public void HitStop(float duration)
+    {
+        if (duration <= 0f || isShowingResult || isReturning)
+            return;
+
+        hitStopEndTime = Mathf.Max(hitStopEndTime, Time.unscaledTime + duration);
+
+        if (!hitStopActive)
+        {
+            hitStopActive = true;
+            Time.timeScale = hitStopTimeScale;
+        }
+    }
+
+    public void Shake(float strength)
+    {
+        if (strength <= 0f)
+            return;
+
+        shakeStrength = Mathf.Max(strength,
+            Time.unscaledTime < shakeEndTime ? shakeStrength : 0f);
+        shakeEndTime = Time.unscaledTime + shakeDuration;
+    }
+
+    private void ShowNumber(Vector3 position, string content, Color color)
+    {
+        if (!showDamageNumbers)
+            return;
+
+        var go = new GameObject("DamageNumber");
+        go.transform.position = position + new Vector3(Random.Range(-0.2f, 0.2f), 0.6f, 0f);
+
+        var text = go.AddComponent<TextMeshPro>();
+        if (damageFont != null)
+            text.font = damageFont;
+
+        text.text = content;
+        text.fontSize = damageFontSize;
+        text.alignment = TextAlignmentOptions.Center;
+        text.color = color;
+        text.sortingOrder = 100;
+
+        floatingNumbers.Add(new FloatingNumber
+        {
+            text = text,
+            start = go.transform.position,
+            startTime = Time.unscaledTime,
+            color = color
+        });
+    }
+
+    private void UpdateFeedback()
+    {
+        // 命中停顿用真实时间计时，结束后恢复正常速度。
+        if (hitStopActive && Time.unscaledTime >= hitStopEndTime)
+        {
+            hitStopActive = false;
+
+            if (!isShowingResult)
+                Time.timeScale = 1f;
+        }
+
+        for (int i = floatingNumbers.Count - 1; i >= 0; i--)
+        {
+            FloatingNumber n = floatingNumbers[i];
+
+            if (n.text == null)
+            {
+                floatingNumbers.RemoveAt(i);
+                continue;
+            }
+
+            float t = (Time.unscaledTime - n.startTime) / damageDuration;
+
+            if (t >= 1f)
+            {
+                Destroy(n.text.gameObject);
+                floatingNumbers.RemoveAt(i);
+                continue;
+            }
+
+            n.text.transform.position = n.start + Vector3.up * (damageRiseDistance * t);
+
+            Color c = n.color;
+            c.a = 1f - t * t;
+            n.text.color = c;
+        }
+    }
+
+    // ---------- 特效、音效、动画：通用工具 ----------
+
+    // 生成特效 Prefab，facingLeft 时左右翻转，lifetime 秒后自动销毁。
+    public static void SpawnEffect(GameObject prefab, Vector3 position, bool facingLeft, float lifetime = 1.5f)
+    {
+        if (prefab == null)
+            return;
+
+        GameObject fx = Instantiate(prefab, position, Quaternion.identity);
+
+        if (facingLeft)
+        {
+            Vector3 scale = fx.transform.localScale;
+            scale.x = -Mathf.Abs(scale.x);
+            fx.transform.localScale = scale;
+        }
+
+        Destroy(fx, lifetime);
+    }
+
+    public static void PlaySfx(AudioClip clip, float volume = 1f)
+    {
+        if (clip != null && AudioManager.Instance != null)
+            AudioManager.Instance.PlaySFX(clip, volume);
+    }
+
+    private static bool HasParam(Animator animator, string name)
+    {
+        if (animator == null || animator.runtimeAnimatorController == null)
+            return false;
+
+        if (!animatorParams.TryGetValue(animator, out var set))
+        {
+            set = new System.Collections.Generic.HashSet<int>();
+            foreach (var p in animator.parameters)
+                set.Add(p.nameHash);
+            animatorParams[animator] = set;
+        }
+
+        return set.Contains(Animator.StringToHash(name));
+    }
+
+    public static void AnimTrigger(Animator animator, string name)
+    {
+        if (HasParam(animator, name))
+            animator.SetTrigger(name);
+    }
+
+    public static void AnimBool(Animator animator, string name, bool value)
+    {
+        if (HasParam(animator, name))
+            animator.SetBool(name, value);
+    }
+
+    public static void AnimFloat(Animator animator, string name, float value)
+    {
+        if (HasParam(animator, name))
+            animator.SetFloat(name, value);
     }
 
     private void Start()
@@ -146,8 +379,10 @@ public class BattleSceneController : MonoBehaviour
         fixedCameraZ = position.z;
 
         // 开场直接对准主角，避免从远处滑过来。
+        cameraFollowX = player.position.x + horizontalOffset;
+
         battleCamera.transform.position = new Vector3(
-            player.position.x + horizontalOffset,
+            cameraFollowX,
             fixedCameraY,
             fixedCameraZ
         );
@@ -197,6 +432,8 @@ public class BattleSceneController : MonoBehaviour
 
     private void Update()
     {
+        UpdateFeedback();
+
         // 结算画面显示时游戏暂停，只等待确认键。
         if (isShowingResult)
         {
@@ -309,6 +546,7 @@ public class BattleSceneController : MonoBehaviour
         {
             entranceOpened = true;
             bossDoor.SetActive(false);
+            PlaySfx(doorOpenSfx);
             Debug.Log("用钥匙打开了 Boss 房的门。", this);
         }
     }
@@ -344,16 +582,25 @@ public class BattleSceneController : MonoBehaviour
 
         float targetX = player.position.x + horizontalOffset;
 
-        float nextX = Mathf.SmoothDamp(
-            battleCamera.transform.position.x,
+        // 跟随位置单独记录，震动只加在最终画面上，不影响平滑跟随。
+        cameraFollowX = Mathf.SmoothDamp(
+            cameraFollowX,
             targetX,
             ref cameraVelocityX,
             followSmoothTime
         );
 
+        Vector2 shake = Vector2.zero;
+
+        if (Time.unscaledTime < shakeEndTime)
+        {
+            float remaining = (shakeEndTime - Time.unscaledTime) / shakeDuration;
+            shake = Random.insideUnitCircle * (shakeStrength * remaining);
+        }
+
         battleCamera.transform.position = new Vector3(
-            nextX,
-            fixedCameraY,
+            cameraFollowX + shake.x,
+            fixedCameraY + shake.y,
             fixedCameraZ
         );
     }
@@ -397,6 +644,7 @@ public class BattleSceneController : MonoBehaviour
 
         hasKey = true;
         keyPickup.SetActive(false);
+        PlaySfx(keyPickupSfx);
 
         Debug.Log("捡到 Boss 房钥匙，到门前按 E 开门。", this);
     }
@@ -568,8 +816,10 @@ public class BattleSceneController : MonoBehaviour
 
         isShowingResult = true;
         resultShownFrame = Time.frameCount;
+        PlaySfx(resultSfx);
 
-        // 暂停敌人和主角，等玩家看完再返回。
+        // 暂停敌人和主角，等玩家看完再返回；命中停顿也一并结束。
+        hitStopActive = false;
         Time.timeScale = 0f;
     }
 

@@ -88,6 +88,27 @@ public class BattleBossController : MonoBehaviour, IBattleDamageable
     [Min(0)]
     [SerializeField] private int expReward = 30;
 
+    [Header("动画（可选）")]
+    [Tooltip("参数：Speed（float），Windup、Dead（bool），Charge、Jump、Beam、Hurt（trigger）。")]
+    [SerializeField] private Animator animator;
+    [Min(0f)]
+    [SerializeField] private float deathAnimDuration = 1f;
+
+    [Header("特效 Prefab（可选）")]
+    [SerializeField] private GameObject chargeEffect;
+    [SerializeField] private GameObject slamEffect;
+    [SerializeField] private GameObject beamStartEffect;
+    [SerializeField] private GameObject deathEffect;
+
+    [Header("音效（可选）")]
+    [Tooltip("开战时的吼叫。")]
+    [SerializeField] private AudioClip roarSfx;
+    [SerializeField] private AudioClip windupSfx;
+    [SerializeField] private AudioClip chargeSfx;
+    [SerializeField] private AudioClip slamSfx;
+    [SerializeField] private AudioClip beamSfx;
+    [SerializeField] private AudioClip deathSfx;
+
     [Header("运行状态（观察用）")]
     [SerializeField] private int currentHP;
     [SerializeField] private BossState state = BossState.Inactive;
@@ -153,6 +174,7 @@ public class BattleBossController : MonoBehaviour, IBattleDamageable
 
         state = BossState.Idle;
         nextAttackTime = Time.time + attackInterval;
+        BattleSceneController.PlaySfx(roarSfx);
     }
 
     private void Update()
@@ -168,6 +190,12 @@ public class BattleBossController : MonoBehaviour, IBattleDamageable
             spriteRenderer.color = baseColor;
 
         spriteRenderer.flipX = facing < 0;
+
+        if (animator != null)
+        {
+            BattleSceneController.AnimFloat(animator, "Speed", Mathf.Abs(rb.linearVelocity.x));
+            BattleSceneController.AnimBool(animator, "Windup", state == BossState.Windup);
+        }
 
         if (shockwaveVisual != null &&
             shockwaveVisual.gameObject.activeSelf &&
@@ -265,6 +293,7 @@ public class BattleBossController : MonoBehaviour, IBattleDamageable
         state = BossState.Windup;
         stateEndTime = Time.time + windup * TimeFactor;
         SetHorizontalSpeed(0f);
+        BattleSceneController.PlaySfx(windupSfx);
     }
 
     private void StartAttack()
@@ -276,15 +305,28 @@ public class BattleBossController : MonoBehaviour, IBattleDamageable
             case BossAttack.Charge:
                 state = BossState.Charging;
                 stateEndTime = Time.time + chargeMaxDuration;
+                BattleSceneController.AnimTrigger(animator, "Charge");
+                BattleSceneController.SpawnEffect(chargeEffect, transform.position, facing < 0);
+                BattleSceneController.PlaySfx(chargeSfx);
                 break;
 
             case BossAttack.JumpSlam:
+                BattleSceneController.AnimTrigger(animator, "Jump");
                 StartJump();
                 break;
 
             case BossAttack.Beam:
                 state = BossState.Beaming;
                 stateEndTime = Time.time + beamDuration;
+                BattleSceneController.AnimTrigger(animator, "Beam");
+                BattleSceneController.SpawnEffect(
+                    beamStartEffect,
+                    new Vector3(
+                        bodyCollider.bounds.center.x + facing * bodyCollider.bounds.extents.x,
+                        bodyCollider.bounds.center.y + beamHeightOffset,
+                        0f),
+                    facing < 0);
+                BattleSceneController.PlaySfx(beamSfx);
                 break;
         }
     }
@@ -364,6 +406,12 @@ public class BattleBossController : MonoBehaviour, IBattleDamageable
 
         if (OverlapsPlayer(center, size))
             player.ReceiveAttack(attackPower, transform.position);
+
+        BattleSceneController.SpawnEffect(slamEffect, new Vector3(center.x, bounds.min.y, 0f), facing < 0);
+        BattleSceneController.PlaySfx(slamSfx);
+
+        if (BattleSceneController.Current != null)
+            BattleSceneController.Current.OnBossSlam();
 
         if (shockwaveVisual != null)
         {
@@ -449,6 +497,12 @@ public class BattleBossController : MonoBehaviour, IBattleDamageable
 
         Debug.Log($"{bossName} 受到 {damage} 点伤害，HP：{currentHP}/{maxHP}", this);
 
+        if (BattleSceneController.Current != null)
+            BattleSceneController.Current.OnEnemyHit(bodyCollider.bounds.center, damage, true);
+
+        if (currentHP > 0)
+            BattleSceneController.AnimTrigger(animator, "Hurt");
+
         // 没进房就被打到（比如法术飞进去）也直接开战。
         if (state == BossState.Inactive)
             Activate();
@@ -479,7 +533,25 @@ public class BattleBossController : MonoBehaviour, IBattleDamageable
         if (BattleSceneController.Current != null)
             BattleSceneController.Current.ReportBossDefeated(this);
 
-        // 只隐藏不销毁，场景控制器还引用着它。
+        BattleSceneController.SpawnEffect(deathEffect, bodyCollider.bounds.center, facing < 0, 3f);
+        BattleSceneController.PlaySfx(deathSfx);
+
+        // 有死亡动画时先播完再隐藏；只隐藏不销毁，场景控制器还引用着它。
+        if (animator != null && deathAnimDuration > 0f)
+        {
+            spriteRenderer.color = baseColor;
+            bodyCollider.enabled = false;
+            BattleSceneController.AnimBool(animator, "Dead", true);
+            Invoke(nameof(HideAfterDeath), deathAnimDuration);
+        }
+        else
+        {
+            HideAfterDeath();
+        }
+    }
+
+    private void HideAfterDeath()
+    {
         gameObject.SetActive(false);
     }
 

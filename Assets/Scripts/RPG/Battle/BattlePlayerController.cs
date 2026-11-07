@@ -130,6 +130,28 @@ public class BattlePlayerController : MonoBehaviour
     [SerializeField] private Color healFlashColor = new Color(0.4f, 1f, 0.4f);
 
     private float nextHealTime;
+
+    [Header("动画（可选）")]
+    [Tooltip("参数：Speed、VelocityY（float），Grounded、Dead（bool），Attack、Dash、Cast、Heal、Hurt（trigger）。没有的参数会自动跳过。")]
+    [SerializeField] private Animator animator;
+
+    [Header("特效 Prefab（可选）")]
+    [SerializeField] private GameObject attackEffect;
+    [SerializeField] private GameObject dashEffect;
+    [SerializeField] private GameObject spellCastEffect;
+    [SerializeField] private GameObject healEffect;
+    [SerializeField] private GameObject hurtEffect;
+    [Tooltip("打中敌人时在敌人身上出现的特效。")]
+    [SerializeField] private GameObject hitEffect;
+
+    [Header("音效（可选）")]
+    [SerializeField] private AudioClip jumpSfx;
+    [SerializeField] private AudioClip attackSfx;
+    [SerializeField] private AudioClip hitSfx;
+    [SerializeField] private AudioClip dashSfx;
+    [SerializeField] private AudioClip spellSfx;
+    [SerializeField] private AudioClip healSfx;
+    [SerializeField] private AudioClip hurtSfx;
     private float healFlashEndTime;
 
 
@@ -174,7 +196,21 @@ public class BattlePlayerController : MonoBehaviour
 
         UpdateSpell();
         UpdateColor();
+        UpdateAnimator();
     }
+
+    private void UpdateAnimator()
+    {
+        if (animator == null)
+            return;
+
+        BattleSceneController.AnimFloat(animator, "Speed", Mathf.Abs(rb.linearVelocity.x));
+        BattleSceneController.AnimFloat(animator, "VelocityY", rb.linearVelocity.y);
+        BattleSceneController.AnimBool(animator, "Grounded", isGrounded);
+        BattleSceneController.AnimBool(animator, "Dead", isDefeated);
+    }
+
+    private bool FacingLeft => !facingRight;
 
     private void FixedUpdate()
     {
@@ -202,6 +238,7 @@ public class BattlePlayerController : MonoBehaviour
         {
             velocity.y = jumpSpeed;
             isGrounded = false;
+            BattleSceneController.PlaySfx(jumpSfx);
         }
 
         rb.linearVelocity = velocity;
@@ -363,6 +400,10 @@ public class BattlePlayerController : MonoBehaviour
 
         hitEnemies.Clear();
 
+        BattleSceneController.AnimTrigger(animator, "Attack");
+        BattleSceneController.SpawnEffect(attackEffect, GetAttackCenter(), FacingLeft);
+        BattleSceneController.PlaySfx(attackSfx);
+
         HitEnemiesInBox(GetAttackCenter(), attackSize, damage, hitEnemies, true);
     }
 
@@ -393,6 +434,9 @@ public class BattlePlayerController : MonoBehaviour
             if (alreadyHit.Add(enemy))
             {
                 enemy.TakeDamage(damage, transform.position);
+
+                BattleSceneController.SpawnEffect(hitEffect, hit.bounds.center, FacingLeft, 0.8f);
+                BattleSceneController.PlaySfx(hitSfx);
 
                 PartyManager party = PartyManager.Instance;
 
@@ -425,6 +469,10 @@ public class BattlePlayerController : MonoBehaviour
         rb.gravityScale = 0f;
 
         dashHitEnemies.Clear();
+
+        BattleSceneController.AnimTrigger(animator, "Dash");
+        BattleSceneController.SpawnEffect(dashEffect, transform.position, FacingLeft);
+        BattleSceneController.PlaySfx(dashSfx);
     }
 
     private void UpdateDash()
@@ -492,6 +540,10 @@ public class BattlePlayerController : MonoBehaviour
 
             spellVisual.gameObject.SetActive(true);
         }
+
+        BattleSceneController.AnimTrigger(animator, "Cast");
+        BattleSceneController.SpawnEffect(spellCastEffect, spellPosition, FacingLeft);
+        BattleSceneController.PlaySfx(spellSfx);
     }
 
     private void UpdateSpell()
@@ -550,10 +602,18 @@ public class BattlePlayerController : MonoBehaviour
             return;
         }
 
+        int healed = Mathf.Min(healAmount, hero.MaxHP - hero.CurrentHP);
         party.RestoreHP(party.MainCharacterId, healAmount);
 
         nextHealTime = Time.time + healCooldown;
         healFlashEndTime = Time.time + 0.25f;
+
+        BattleSceneController.AnimTrigger(animator, "Heal");
+        BattleSceneController.SpawnEffect(healEffect, transform.position, FacingLeft);
+        BattleSceneController.PlaySfx(healSfx);
+
+        if (BattleSceneController.Current != null)
+            BattleSceneController.Current.OnPlayerHeal(transform.position, healed);
     }
 
     private void OnDrawGizmosSelected()
@@ -621,9 +681,16 @@ public class BattlePlayerController : MonoBehaviour
             $"主角受到 {damage} 点伤害，HP：{hero.CurrentHP}/{hero.MaxHP}",
             this);
 
+        BattleSceneController.SpawnEffect(hurtEffect, transform.position, FacingLeft);
+        BattleSceneController.PlaySfx(hurtSfx);
+
+        if (BattleSceneController.Current != null)
+            BattleSceneController.Current.OnPlayerHurt(transform.position, damage);
+
         if (hero.CurrentHP <= 0)
         {
             isDefeated = true;
+            UpdateAnimator();
 
             rb.linearVelocity = Vector2.zero;
             rb.simulated = false;
@@ -645,6 +712,7 @@ public class BattlePlayerController : MonoBehaviour
         );
 
         knockbackEndTime = Time.time + hurtKnockbackDuration;
+        BattleSceneController.AnimTrigger(animator, "Hurt");
 
         return true;
     }
