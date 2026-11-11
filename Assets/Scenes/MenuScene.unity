@@ -1417,7 +1417,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1162041277}
   - component: {fileID: 1162041276}
-  - component: {fileID: 1162041275}
   m_Layer: 0
   m_Name: PartyManager
   m_TagString: Untagged
@@ -1425,19 +1424,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1162041275
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1162041274}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa683748a09e8014c90db378d324915f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PartyDebugTools
-  testMember: {fileID: 11400000, guid: a71afacfbce50ca4cad30c2ce7b34b9c, type: 2}
 --- !u!114 &1162041276
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1586,7 +1572,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1318522805}
   - component: {fileID: 1318522804}
-  - component: {fileID: 1318522803}
   m_Layer: 0
   m_Name: InventoryManager
   m_TagString: Untagged
@@ -1594,18 +1579,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1318522803
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1318522802}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 097ffb98e1a9a114aabb2fb37b5e3613, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::InventoryDebugTools
 --- !u!114 &1318522804
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1701,63 +1674,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1768115500
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1768115502}
-  - component: {fileID: 1768115501}
-  - component: {fileID: 1768115503}
-  m_Layer: 0
-  m_Name: PlayerStateManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1768115501
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1768115500}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d2b27d20e7ab4b45bbd77de63c5cec0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerStateManager
---- !u!4 &1768115502
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1768115500}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.30646, y: 0.53202, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1768115503
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1768115500}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d4ed9bd13705024d835946e442623b2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerDebugTools
 --- !u!1 &1782502164
 GameObject:
   m_ObjectHideFlags: 0
@@ -2520,7 +2436,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2003278404}
   - component: {fileID: 2003278403}
-  - component: {fileID: 2003278402}
   m_Layer: 0
   m_Name: QuestManager
   m_TagString: Untagged
@@ -2528,19 +2443,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &2003278402
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2003278401}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af18ebeac54f28148bd9417860903b09, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::QuestDebugTools
-  testQuest: {fileID: 11400000, guid: 62195cd125c88644fa6c6724ba9e845e, type: 2}
 --- !u!114 &2003278403
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3118,6 +3020,5 @@ SceneRoots:
   - {fileID: 2079661226}
   - {fileID: 1822564513}
   - {fileID: 2003278404}
-  - {fileID: 1768115502}
   - {fileID: 1318522805}
   - {fileID: 1162041277}
