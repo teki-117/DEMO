@@ -23,7 +23,17 @@ Unity 6000.4.4f1 · URP · Input System（只用键盘）· TextMeshPro · DOTwe
 - 正式运行要从 MenuScene 启动（Manager 在前面的场景里 DontDestroyOnLoad）。
 - 战斗结算（WorldManager.FinishBattle）：完成 = 时段+1 并报告任务；撤退 = 不耗时；失败 = HP 设为 25% 且时段+1；HP 为 0 不能进关。
 
-## 战斗代码位置（Assets/Scripts/RPG/Battle）
+## 脚本文件夹（Assets/Scripts，11-11 整理后）
+
+- Core：GameManager、Constants、存档数据、音频、本地化、Excel 读取
+- VN：VNManager（已合成一个文件）、选项、角色显示、菜单/设置/存读档/画廊等界面
+- RPG：World、时间、队伍、背包、任务的 Manager 和数据
+- RPG/UI：地图、手机各页面、商店、任务界面
+- Battle：4 个战斗控制器
+- Editor：BattleArtImporter
+- 挂在物体或 Prefab 上的脚本必须一个文件一个类，不能合并；移动脚本要连 .meta 一起移。
+
+## 战斗代码位置（Assets/Scripts/Battle）
 
 - BattleSceneController：相机、HUD、目标提示、Boss 房与出口、结束入口、奖励累计
 - BattlePlayerController：移动、跳跃、攻击、受伤、技能

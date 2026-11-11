@@ -1,6 +1,6 @@
-﻿using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 public class CharacterManager : MonoBehaviour
 {
@@ -110,4 +110,36 @@ public class CharacterManager : MonoBehaviour
         active.Clear();
     }
 
+}
+
+public interface ICharacterDisplay
+{
+    GameObject gameObject { get; }
+
+    Transform RootTransform { get; }
+
+    void Setup(CharacterData data, Vector2 anchoredPos, Vector2 scale);
+
+    void SetExpression(string key);
+
+    void PlayMotion(string key, bool loop = false);
+
+    void MoveToX(float x, float duration = 0.2f);
+
+    void Hide();
+}
+
+public static class SpriteCache
+{
+    private static readonly Dictionary<string, Sprite> cache = new();
+
+    public static Sprite Get(string path)
+    {
+        if (cache.TryGetValue(path, out var s) && s != null) return s;
+
+        var sprite = Resources.Load<Sprite>(path);
+        if (sprite == null) { Debug.LogError($"{Constants.IMAGE_LOAD_FAILED}{path}"); return null; }
+
+        cache[path] = sprite; return sprite;
+    }
 }
