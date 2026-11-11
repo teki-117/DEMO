@@ -90,6 +90,9 @@ public class PhoneUIController : MonoBehaviour
     {
         if (!initialized) return;
 
+        // 商店打开时不弹出手机。
+        if (!isOpen && ShopUI.IsOpen) return;
+
         if (isOpen)
             ClosePhone();
         else

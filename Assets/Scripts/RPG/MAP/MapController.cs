@@ -15,6 +15,9 @@ public class MapController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI hintText;
     [SerializeField] private float hintDuration = 2f;
 
+    [Header("商店")]
+    [SerializeField] private ShopUI shopUI;
+
     private float hintHideTime;
     private bool isOpeningSave;
 
@@ -65,8 +68,23 @@ public class MapController : MonoBehaviour
             return;
         }
 
+        // 商店开着时不响应其他地点。
+        if (ShopUI.IsOpen)
+            return;
+
         if (!WorldManager.Instance.EnterLocation(locationId))
+        {
             ShowHint("这里现在还不能去。");
+            return;
+        }
+
+        if (locationId == "Shop")
+        {
+            if (shopUI != null)
+                shopUI.Open();
+            else
+                Debug.LogError("MapController 没有配置 shopUI。", this);
+        }
     }
 
     private void ShowHint(string message)

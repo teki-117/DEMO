@@ -1628,10 +1628,6 @@ MonoBehaviour:
     quantity: 3
   - itemId: training_sword
     quantity: 1
-  - itemId: iron_sword
-    quantity: 1
-  - itemId: training_armor
-    quantity: 1
   state:
     items: []
 --- !u!4 &1318522805

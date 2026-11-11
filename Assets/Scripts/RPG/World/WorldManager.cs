@@ -172,14 +172,24 @@ public class WorldManager : MonoBehaviour
                 EnterBattle();
                 break;
 
-            case "Home":
             case "Shop":
+                // 商店面板由 MapController 打开；购物不推进时间。
+                currentLocationId = locationId;
+                break;
+
+            case "Home":
                 currentLocationId = locationId;
                 Debug.Log($"当前地点：{currentLocationId}，地点内容待接入。");
                 break;
         }
 
         return true;
+    }
+
+    // 关闭商店等地图内的界面后回到地图，不推进时间。
+    public void LeaveLocation()
+    {
+        currentLocationId = "Map";
     }
 
     private void EnterSchool()

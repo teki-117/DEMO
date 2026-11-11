@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ItemData
   itemId: iron_sword
   itemName: "\u5347\u7EA7\u5251"
-  description: "\u5347\u7EA7\u540E\u7684\u5251"
+  description: "\u653B\u51FB+8\u7684\u5347\u7EA7\u5251"
   icon: {fileID: -6896021082027889209, guid: eaab68aad359a0342a0a246547135101, type: 3}
   itemType: 1
   restoreHP: 0
