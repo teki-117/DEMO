@@ -40,7 +40,7 @@ public class RpgSaveData
     public TimePeriod period = TimePeriod.Morning;
 
     // 世界
-    public string locationId = "Map";
+    public string locationId = Constants.LOCATION_MAP;
     public bool hasPendingAction;
     public List<string> unlockedLocations = new List<string>();
     public bool afterBattleStoryPlayed;

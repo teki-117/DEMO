@@ -36,9 +36,6 @@ public class CharacterManager : MonoBehaviour
         var data = allCharacters.FirstOrDefault(c => c.characterID == characterID);
         if (data == null) return;
 
-        Debug.Log($"Showing character {characterID} at position {position}");
-        Debug.Log($"Expression: {expressionKey}, Motion: {motionKey}, Loop: {motionLoop}");
-
         var pos = position ?? Vector2.zero;
         var sca = scale ?? Vector2.one;
 

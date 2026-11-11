@@ -160,6 +160,10 @@ public class BattleBossController : MonoBehaviour, IBattleDamageable
         groundFilter.SetLayerMask(groundLayer);
         groundFilter.useTriggers = false;
 
+        // 没拖主角引用时自动找场景里的主角。
+        if (player == null)
+            player = FindAnyObjectByType<BattlePlayerController>();
+
         if (player != null)
             playerCollider = player.GetComponent<Collider2D>();
         else
@@ -499,8 +503,6 @@ public class BattleBossController : MonoBehaviour, IBattleDamageable
 
         currentHP = Mathf.Max(0, currentHP - damage);
         flashEndTime = Time.time + hitFlashDuration;
-
-        Debug.Log($"{bossName} 受到 {damage} 点伤害，HP：{currentHP}/{maxHP}", this);
 
         if (BattleSceneController.Current != null)
             BattleSceneController.Current.OnEnemyHit(bodyCollider.bounds.center, damage, true);

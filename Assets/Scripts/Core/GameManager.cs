@@ -16,9 +16,6 @@ public class GameManager : MonoBehaviour
     public string currentBackgroundMusic;
     public List<CharacterSaveData> currentCharacterData = new List<CharacterSaveData>(); // 当前场景的角色数据
 
-    public string WinStoryFileName;
-    public string LoseStoryFileName;
-
     public bool hasStarted;
     public HashSet<string> unlockedBackgrounds = new HashSet<string>(); // 保存已解锁的背景
     public Dictionary<string, int> maxReachedLineIndices = new Dictionary<string, int>(); // 全局存储每个文件的最远行索引

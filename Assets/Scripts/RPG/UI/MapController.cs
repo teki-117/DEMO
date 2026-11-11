@@ -26,15 +26,9 @@ public class MapController : MonoBehaviour
         // 记录当前所在的地图场景，供设置等界面返回使用。
         if (GameManager.Instance != null)
         {
-            GameManager.Instance.currentScene = "MapScene";
+            GameManager.Instance.currentScene = Constants.MAP_SCENE;
         }
 
-        if (WorldManager.Instance != null)
-        {
-            Debug.Log(
-                $"地图已打开，当前地点：{WorldManager.Instance.CurrentLocationId}"
-            );
-        }
         if (timeText != null && GameTimeManager.Instance != null)
         {
             timeText.text = GameTimeManager.Instance.GetDisplayText();
@@ -78,7 +72,7 @@ public class MapController : MonoBehaviour
             return;
         }
 
-        if (locationId == "Shop")
+        if (locationId == Constants.LOCATION_SHOP)
         {
             if (shopUI != null)
                 shopUI.Open();
@@ -133,7 +127,7 @@ public class MapController : MonoBehaviour
 
         gm.pendingData = new SaveData
         {
-            savedScene = "MapScene",
+            savedScene = Constants.MAP_SCENE,
             savedScreenshotData = png,
             savedHistoryRecords = new LinkedList<ExcelData>(gm.historyRecords),
             savedPlayerName = gm.playerName,
@@ -145,7 +139,7 @@ public class MapController : MonoBehaviour
             rpg = WorldManager.Instance.CaptureRpgSave()
         };
 
-        gm.currentScene = "MapScene";
+        gm.currentScene = Constants.MAP_SCENE;
         gm.currentSaveLoadMode = GameManager.SaveLoadMode.Save;
         SceneManager.LoadScene(Constants.SAVE_LOAD_SCENE);
     }

@@ -56,7 +56,7 @@ public class SaveSlot : MonoBehaviour
             tex.LoadImage(data.savedScreenshotData);
             thumbnail.texture = tex;
         }
-        if (data.savedScene == "MapScene" && data.rpg != null)
+        if (data.savedScene == Constants.MAP_SCENE && data.rpg != null)
         {
             topText.text = $"地图 · 第 {data.rpg.day} 天";
         }

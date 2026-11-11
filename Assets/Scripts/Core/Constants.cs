@@ -3,7 +3,7 @@ using UnityEngine;
 public class Constants : MonoBehaviour
 
 {
-    public static string MENU_SCENE = "MenuScene";
+    public const string MENU_SCENE = "MenuScene";
     public static string GAME_SCENE = "GameScene";
     public static string INPUT_SCENE = "InputScene";
     public static string SETTING_SCENE = "SettingScene";
@@ -11,6 +11,15 @@ public class Constants : MonoBehaviour
     public static string GALLERY_SCENE = "GalleryScene";
     public static string HISTORY_SCENE = "HistoryScene";
     public static string LIVE2D_GAME_SCENE = "MuScene";
+    public const string MAP_SCENE = "MapScene";
+    public const string BATTLE_SCENE = "BattleScene";
+
+    // 地图上的地点 ID（地图按钮的参数、存档、任务目标都用这些）。
+    public const string LOCATION_MAP = "Map";
+    public const string LOCATION_SCHOOL = "School";
+    public const string LOCATION_RPG = "RPG";
+    public const string LOCATION_SHOP = "Shop";
+    public const string LOCATION_HOME = "Home";
 
     //文本
     public static string STORY_PATH = "story";
@@ -21,8 +30,6 @@ public class Constants : MonoBehaviour
     //图片
     public static string AVATAR_PATH = "image/avatar/";
     public static string BACKGROUND_PATH = "image/background/";
-    public static string BUTTON_PATH = "image/button/";
-    public static string CHARACTER_PATH  = "image/character/";
     public static string THUMBNAIL_PATH = "image/thumbnail/";
     public static string IMAGE_LOAD_FAILED = "Failed to load image: ";
     public static string BIG_IMAGE_LOAD_FAILED = "Failed to load big image:";
@@ -31,28 +38,21 @@ public class Constants : MonoBehaviour
     public static float DEFAULT_TYPING_SPEED = 0.05f;
     public static float SKIP_MODE_TYPING_SPEED = 0.005f;
 
-    public static string AUTO_ON = "Auto";
-    public static string AUTO_OFF = "Auto";
     public static float  DEFAULT_AUTO_WAITING_SECONDS = 0.8f;
 
-    public static string SKIP_ON = "Skip";
-    public static string SKIP_OFF = "Skip";
     public static float DEFAULT_SKIP_WAITING_SECONDS = 0.01f;
-    public static float DEFAULT_WAITING_SECONDS = 1.5f;
 
     //声音
     public static string VOCAL_PATH = "audio/vocal/";//配音文件夹
     public static string MUSIC_PATH = "audio/music/";//BGM文件夹
     public static string AUDIO_LOAD_FAILED = "Failed to load audio: ";
     public static string MENU_MUSIC_FILE_NAME = "menu";//主菜单播放
-    /*public static string CREDITS_MUSIC_FILE_NAME = "4";*/ //制作人员名单场景播放
 
     
     public static string NO_DATA_FOUND = "No data found";
     public static string END_OF_STORY = "End of story";
     public static string CHOICE = "choice";
     public static string GAME = "game";
-    public static string MAIN_GAME_SCENE = "MuScene";
 
     // 剧情中的任务指令。
     public const string QUEST_UNLOCK = "quest_unlock";
@@ -61,7 +61,6 @@ public class Constants : MonoBehaviour
 
     //立绘动画
     public static string APPEAR_AT = "appearAt";
-    public static string APPEAR_AT_INSTANTLY = "appearAtInstantly";
     public static string APPEAR_AT_WITH_L2D = "appearAtWithL2d";
     public static string L2D_DEFAULT_MOTION = "idle";
     public static string L2D_DEFAULT_LAYER = "Default";
@@ -70,7 +69,6 @@ public class Constants : MonoBehaviour
     public static string DISAPPEAR = "disappear";
     public static string MOVE_TO = "moveTo";
     public static int    DURATION_TIME = 1;
-    public static string COORDINATE_MISSING = "Coordinate missing";
 
     public static int DEFAULT_START_INDEX = 0;
     public static int SLOTS_PER_PAGE = 8;
@@ -84,14 +82,10 @@ public class Constants : MonoBehaviour
     public static string SAVE_FILE_PATH = "saves";
     public static string SAVE_FILE_EXTENSION = ".json";
 
-    public static string X = "x";
-
-    public static int MAX_LENGTH = 50;
     public static int GALLERY_SLOTS_PER_PAGE = 9;
     public static string GALLERY = "gallery";
     public static string GALLERY_PLACEHOLDER = "0";
     public static readonly string[] ALL_BACKGROUNDS = { "1", "2", "3","4" };
-    public static string UNLOCKED = "unlocked";
 
     //输入系统
     public static string CONFIRM = "confirm";
@@ -122,12 +116,6 @@ public class Constants : MonoBehaviour
     public static string VOICE_VOLUME = "VoiceVolume";
 
     public static float DEFAULT_VOLUME = 0.8f;
-
-    public static string CREDITS_PATH = "credits";
-    public static string CREDITS_FILE_EXTENSION = ".txt";
-    public static string CREDITS_LOAD_FAILED = "Failed to load credits file: ";
-    public static float CREDITS_SCROLL_SPEED = 100f;
-    public static float CREDITS_SCROLL_END_Y = 2000f;
 
     public static char ChoiceDelimiter = '\n';
 

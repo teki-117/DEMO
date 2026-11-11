@@ -257,16 +257,16 @@ public static class BattleArtImporter
     {
         int filled = 0;
 
-        foreach (var c in Object.FindObjectsByType<BattleBossController>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+        foreach (var c in Object.FindObjectsByType<BattleBossController>(FindObjectsInactive.Include))
             filled += Fill(c, BossDefaults);
 
-        foreach (var c in Object.FindObjectsByType<BattlePlayerController>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+        foreach (var c in Object.FindObjectsByType<BattlePlayerController>(FindObjectsInactive.Include))
             filled += Fill(c, PlayerDefaults);
 
-        foreach (var c in Object.FindObjectsByType<BattleEnemyController>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+        foreach (var c in Object.FindObjectsByType<BattleEnemyController>(FindObjectsInactive.Include))
             filled += Fill(c, EnemyDefaults);
 
-        foreach (var c in Object.FindObjectsByType<BattleSceneController>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+        foreach (var c in Object.FindObjectsByType<BattleSceneController>(FindObjectsInactive.Include))
             filled += Fill(c, SceneDefaults);
 
         Debug.Log($"战斗美术：填了 {filled} 个空槽位。已有内容的槽位没有改动。记得保存场景（Ctrl+S）。");

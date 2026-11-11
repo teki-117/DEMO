@@ -52,6 +52,6 @@ public class IntroManager : MonoBehaviour
         }
 
         hasChangedScene = true;
-        SceneManager.LoadScene("MenuScene");
+        SceneManager.LoadScene(Constants.MENU_SCENE);
     }
 }

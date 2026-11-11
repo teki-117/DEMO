@@ -83,7 +83,7 @@ public class SaveLoadManager : MonoBehaviour
         if (!string.IsNullOrEmpty(data.savedStoryReturnScene))
             gm.storyReturnScene = data.savedStoryReturnScene;
 
-        if (data.savedScene == "MapScene")
+        if (data.savedScene == Constants.MAP_SCENE)
         {
             // 地图存档：剧情画面数据用不到，这里直接恢复名字、好感度和历史记录。
             gm.pendingData = null;
@@ -96,8 +96,8 @@ public class SaveLoadManager : MonoBehaviour
                 CharacterStateManager.Instance.LoadStates(data.savedAffection);
 
             gm.hasStarted = true;
-            gm.currentScene = "MapScene";
-            SceneManager.LoadScene("MapScene");
+            gm.currentScene = Constants.MAP_SCENE;
+            SceneManager.LoadScene(Constants.MAP_SCENE);
             return;
         }
 

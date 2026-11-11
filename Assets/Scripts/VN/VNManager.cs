@@ -25,8 +25,6 @@ public class VNManager : MonoBehaviour
     [SerializeField] private Button skipButton;
     [SerializeField] private Button saveButton;
     [SerializeField] private Button loadButton;
-    //[SerializeField] private Button quickSaveButton;
-    //[SerializeField] private Button quickLoadButton;
     [SerializeField] private Button historyButton;
     [SerializeField] private Button settingButton;
     [SerializeField] private Button homeButton;
@@ -323,12 +321,6 @@ public class VNManager : MonoBehaviour
             }
         }
     }
-    private void ReturnToMenu()
-    {
-        GameManager.Instance.hasStarted = false;
-        SceneManager.LoadScene(Constants.MENU_SCENE);
-    }
-
     private void FinishStory()
     {
         // 结束自动播放或快进。
@@ -345,7 +337,7 @@ public class VNManager : MonoBehaviour
         // 返回地图时，游戏仍在进行。
         gm.hasStarted = targetScene != Constants.MENU_SCENE;
 
-        if (targetScene == "MapScene" && WorldManager.Instance != null)
+        if (targetScene == Constants.MAP_SCENE && WorldManager.Instance != null)
         {
             WorldManager.Instance.CompleteCurrentAction();
         }
@@ -413,9 +405,6 @@ public class VNManager : MonoBehaviour
     private void Choices_HandleSelect(string selected)
     {
         currentLine = Constants.DEFAULT_START_LINE;
-
-        //if (Constants.ALL_MEMORIES.Contains(selected))
-        //    GameManager.Instance.unlockedMemories.Add(selected);
 
         Flow_LoadStory(selected);
         Flow_Next();
@@ -579,7 +568,6 @@ public class VNManager : MonoBehaviour
         
         if (doFadeIn)
         {
-            var cg = target.canvasRenderer;
             target.DOKill();
             target.DOFade(1f, Constants.DURATION_TIME).From(0f).SetId(this);
         }
@@ -603,20 +591,11 @@ public class VNManager : MonoBehaviour
 
         saveButton.onClick.AddListener(UI_OnSave);
         loadButton.onClick.AddListener(UI_OnLoad);
-        //quickSaveButton.onClick.AddListener(UI_OnQuickSave);
-        //quickLoadButton.onClick.AddListener(UI_OnQuickLoad);
         historyButton.onClick.AddListener(() => SceneManager.LoadScene(Constants.HISTORY_SCENE));
         settingButton.onClick.AddListener(() => SceneManager.LoadScene(Constants.SETTING_SCENE));
         homeButton.onClick.AddListener(() => SceneManager.LoadScene(Constants.MENU_SCENE));
         closeButton.onClick.AddListener(UI_Close);
 
-        //if (GameManager.Instance.isMemoryMode)
-        //{
-        //    saveButton.gameObject.SetActive(false);
-        //    loadButton.gameObject.SetActive(false);
-        //    quickSaveButton.gameObject.SetActive(false);
-        //    quickLoadButton.gameObject.SetActive(false);
-        //}
     }
     private void UI_Open()
     {
@@ -711,23 +690,6 @@ public class VNManager : MonoBehaviour
         SceneManager.LoadScene(Constants.SAVE_LOAD_SCENE);
     }
 
-    //private void UI_OnQuickSave()
-    //{
-    //    Save_ToPending();
-    //    GameManager.Instance.Save(Constants.QUICK_SAVE_SLOT);
-    //}
-
-    //private void UI_OnQuickLoad()
-    //{
-    //    var gm = GameManager.Instance;
-    //    string dataPath = gm.GenerateDataPath(Constants.QUICK_SAVE_SLOT);
-
-    //    if (File.Exists(dataPath))
-    //    {
-    //        gm.Load(Constants.QUICK_SAVE_SLOT);
-    //        SceneManager.LoadScene(Constants.GAME_SCENE);
-    //    }
-    //}
     private void Save_ToPending()
     {
         UI_Close();

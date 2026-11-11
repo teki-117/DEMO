@@ -15,11 +15,11 @@ public class WorldManager : MonoBehaviour
     private bool hasPendingAction;
     public static WorldManager Instance { get; private set; }
 
-    [SerializeField] private string currentLocationId = "Map";
+    [SerializeField] private string currentLocationId = Constants.LOCATION_MAP;
 
     [Header("地点解锁")]
     [Tooltip("新游戏时锁住的地点，要由剧情里的 location_unlock 解锁。")]
-    [SerializeField] private string[] lockedAtStart = { "RPG" };
+    [SerializeField] private string[] lockedAtStart = { Constants.LOCATION_RPG };
 
     [Header("通关后剧情")]
     [Tooltip("第一次完成神社关卡后播放的剧情文件名（不含 .xlsx）。留空则直接回地图。")]
@@ -45,7 +45,7 @@ public class WorldManager : MonoBehaviour
     // 开始新游戏时重置世界状态。
     public void ResetWorld()
     {
-        currentLocationId = "Map";
+        currentLocationId = Constants.LOCATION_MAP;
         hasPendingAction = false;
         unlockedLocations.Clear();
         afterBattleStoryPlayed = false;
@@ -108,7 +108,7 @@ public class WorldManager : MonoBehaviour
             return;
         }
 
-        currentLocationId = string.IsNullOrEmpty(data.locationId) ? "Map" : data.locationId;
+        currentLocationId = string.IsNullOrEmpty(data.locationId) ? Constants.LOCATION_MAP : data.locationId;
         hasPendingAction = data.hasPendingAction;
         afterBattleStoryPlayed = data.afterBattleStoryPlayed;
 
@@ -164,20 +164,20 @@ public class WorldManager : MonoBehaviour
 
         switch (locationId)
         {
-            case "School":
+            case Constants.LOCATION_SCHOOL:
                 EnterSchool();
                 break;
 
-            case "RPG":
+            case Constants.LOCATION_RPG:
                 EnterBattle();
                 break;
 
-            case "Shop":
+            case Constants.LOCATION_SHOP:
                 // 商店面板由 MapController 打开；购物不推进时间。
                 currentLocationId = locationId;
                 break;
 
-            case "Home":
+            case Constants.LOCATION_HOME:
                 currentLocationId = locationId;
                 Debug.Log($"当前地点：{currentLocationId}，地点内容待接入。");
                 break;
@@ -189,7 +189,7 @@ public class WorldManager : MonoBehaviour
     // 关闭商店等地图内的界面后回到地图，不推进时间。
     public void LeaveLocation()
     {
-        currentLocationId = "Map";
+        currentLocationId = Constants.LOCATION_MAP;
     }
 
     private void EnterSchool()
@@ -202,10 +202,10 @@ public class WorldManager : MonoBehaviour
             return;
         }
 
-        currentLocationId = "School";
+        currentLocationId = Constants.LOCATION_SCHOOL;
 
         gm.PrepareStory(Constants.DEFAULT_STORY_FILE);
-        gm.storyReturnScene = "MapScene";
+        gm.storyReturnScene = Constants.MAP_SCENE;
         hasPendingAction = true;
 
         SceneManager.LoadScene(Constants.GAME_SCENE);
@@ -280,22 +280,16 @@ public class WorldManager : MonoBehaviour
             return;
         }
 
-        if (!Application.CanStreamedLevelBeLoaded("BattleScene"))
+        if (!Application.CanStreamedLevelBeLoaded(Constants.BATTLE_SCENE))
         {
             Debug.LogError("请把 BattleScene 加入构建场景列表并勾选。");
             return;
         }
 
-        currentLocationId = "RPG";
+        currentLocationId = Constants.LOCATION_RPG;
         hasPendingAction = true;
 
-        SceneManager.LoadScene("BattleScene");
-    }
-
-    // 临时测试出口：取消本次行动，不结算时间和任务。
-    public bool ReturnFromBattleForTesting()
-    {
-        return FinishBattle(BattleResult.Retreated);
+        SceneManager.LoadScene(Constants.BATTLE_SCENE);
     }
 
     // rewardMoney、rewardExp：本次战斗累计的奖励，只有完成时才发放。
@@ -306,10 +300,10 @@ public class WorldManager : MonoBehaviour
     {
         // 只有正在进行的 RPG 行动才能结算。
         // 第一次结算后，这个条件也会阻止重复调用。
-        if (currentLocationId != "RPG" || !hasPendingAction)
+        if (currentLocationId != Constants.LOCATION_RPG || !hasPendingAction)
             return false;
 
-        if (!Application.CanStreamedLevelBeLoaded("MapScene"))
+        if (!Application.CanStreamedLevelBeLoaded(Constants.MAP_SCENE))
         {
             Debug.LogError("找不到 MapScene，请检查构建场景列表。");
             return false;
@@ -401,7 +395,7 @@ public class WorldManager : MonoBehaviour
             party.MainCharacterId,
             hero.MaxSP - hero.CurrentSP);
 
-        currentLocationId = "Map";
+        currentLocationId = Constants.LOCATION_MAP;
 
         Debug.Log(
             $"战斗结束：{result}，返回地图。主角 HP："
@@ -418,13 +412,13 @@ public class WorldManager : MonoBehaviour
 
             GameManager gm = GameManager.Instance;
             gm.PrepareStory(afterBattleStoryFile.Trim());
-            gm.storyReturnScene = "MapScene";
+            gm.storyReturnScene = Constants.MAP_SCENE;
 
             SceneManager.LoadScene(Constants.GAME_SCENE);
             return true;
         }
 
-        SceneManager.LoadScene("MapScene");
+        SceneManager.LoadScene(Constants.MAP_SCENE);
         return true;
     }
 }

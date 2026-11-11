@@ -12,7 +12,7 @@ public class QuestData : ScriptableObject
     public string description;
 
     [Header("任务目标")]
-    public string targetLocationId = "School";
+    public string targetLocationId = Constants.LOCATION_SCHOOL;
 
     [Min(1)]
     public int requiredCount = 1;

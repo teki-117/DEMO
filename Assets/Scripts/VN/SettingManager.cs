@@ -88,12 +88,6 @@ public class SettingManager : MonoBehaviour
 
         foreach (var res in availableResolutions)
         {
-            //const float aspectRatio = 16f / 9f;
-            //const float epsilon = 0.01f;
-
-            //if (Mathf.Abs((float)res.width / res.height - aspectRatio) > epsilon)
-            //    continue;
-
             string option = res.width + "x" + res.height;
             if (!resolutionMap.ContainsKey(option))
             {

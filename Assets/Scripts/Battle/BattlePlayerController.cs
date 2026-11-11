@@ -680,10 +680,6 @@ public class BattlePlayerController : MonoBehaviour
 
         nextDamageTime = Time.time + hurtInvincibleDuration;
 
-        Debug.Log(
-            $"主角受到 {damage} 点伤害，HP：{hero.CurrentHP}/{hero.MaxHP}",
-            this);
-
         BattleSceneController.SpawnEffect(hurtEffect, transform.position, FacingLeft);
         BattleSceneController.PlaySfx(hurtSfx);
 

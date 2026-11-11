@@ -87,7 +87,9 @@ public class BattleEnemyController : MonoBehaviour, IBattleDamageable
     [Header("运行状态（观察用）")]
     [SerializeField] private int currentHP;
     [SerializeField] private bool isDead;
+#pragma warning disable CS0414 // 只在 Inspector 里观察，代码不读取
     [SerializeField] private EnemyState currentState;
+#pragma warning restore CS0414
 
     private SpriteRenderer spriteRenderer;
     private Rigidbody2D rb;
@@ -115,6 +117,10 @@ public class BattleEnemyController : MonoBehaviour, IBattleDamageable
         spriteRenderer = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
         bodyCollider = GetComponent<BoxCollider2D>();
+
+        // 没拖主角引用时自动找场景里的主角，加敌人不用逐个拖。
+        if (player == null)
+            player = FindAnyObjectByType<BattlePlayerController>();
 
         originalColor = spriteRenderer.color;
         currentHP = maxHP;
@@ -358,10 +364,6 @@ public class BattleEnemyController : MonoBehaviour, IBattleDamageable
             return;
 
         currentHP = Mathf.Max(0, currentHP - damage);
-
-        Debug.Log(
-            $"{name} 受到 {damage} 点伤害，HP：{currentHP}/{maxHP}",
-            this);
 
         if (BattleSceneController.Current != null)
             BattleSceneController.Current.OnEnemyHit(bodyCollider.bounds.center, damage, false);

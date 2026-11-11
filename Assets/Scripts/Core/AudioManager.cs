@@ -61,10 +61,6 @@ public class AudioManager : MonoBehaviour
                 PlayBackground(lastMusic);
             }
         }
-        //else if (scene.name == Constants.CREDITS_SCENE)
-        //{
-        //    PlayBackground(Constants.CREDITS_MUSIC_FILE_NAME);
-        //}
     }
     public void PlayBackground(string musicFileName)
     {
