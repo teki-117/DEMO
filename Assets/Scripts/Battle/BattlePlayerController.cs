@@ -171,6 +171,16 @@ public class BattlePlayerController : MonoBehaviour
         groundFilter.SetLayerMask(groundLayer);
         groundFilter.useTriggers = false;
 
+        // 身体不带摩擦力：跳起来按着方向键贴墙或贴平台侧面时，不会被摩擦力挂住。
+        if (bodyCollider.sharedMaterial == null)
+        {
+            bodyCollider.sharedMaterial = new PhysicsMaterial2D("PlayerNoFriction")
+            {
+                friction = 0f,
+                bounciness = 0f
+            };
+        }
+
         if (spellVisual != null)
             spellVisual.gameObject.SetActive(false);
     }

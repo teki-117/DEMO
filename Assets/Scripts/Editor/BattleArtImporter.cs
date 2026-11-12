@@ -82,8 +82,9 @@ public static class BattleArtImporter
         // 主角：WarriorMan，每格 80×64，行号从 0 开始数
         new Clip { group = "Hero", name = "Idle",   sheet = HeroSheet, row = 0,  fps = 10, loop = true },
         new Clip { group = "Hero", name = "Run",    sheet = HeroSheet, row = 3,  fps = 12, loop = true },
-        new Clip { group = "Hero", name = "Jump",   sheet = HeroSheet, row = 19, fps = 14 },
-        new Clip { group = "Hero", name = "Fall",   sheet = HeroSheet, row = 20, fps = 10, loop = true },
+        // 第 19 行是整段跳跃：前 3 帧起跳上升，后 5 帧下落。第 20 行是攀爬，不用。
+        new Clip { group = "Hero", name = "Jump",   sheet = HeroSheet, row = 19, from = 0, count = 3, fps = 14 },
+        new Clip { group = "Hero", name = "Fall",   sheet = HeroSheet, row = 19, from = 3, count = 5, fps = 10, loop = true },
         new Clip { group = "Hero", name = "Attack", sheet = HeroSheet, row = 5,  fps = 18 },
         new Clip { group = "Hero", name = "Dash",   sheet = HeroSheet, row = 16, fps = 30 },
         new Clip { group = "Hero", name = "Cast",   sheet = HeroSheet, row = 13, fps = 20 },

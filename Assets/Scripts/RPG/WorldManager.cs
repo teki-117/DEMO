@@ -19,7 +19,15 @@ public class WorldManager : MonoBehaviour
 
     [Header("地点解锁")]
     [Tooltip("新游戏时锁住的地点，要由剧情里的 location_unlock 解锁。")]
-    [SerializeField] private string[] lockedAtStart = { Constants.LOCATION_RPG };
+    [SerializeField] private string[] lockedAtStart = { Constants.LOCATION_RPG, Constants.LOCATION_SCHOOL };
+
+    [Header("学校章节")]
+    [Tooltip("每次点学校按顺序播放下一章（剧情文件名，不含 .xlsx）。全部播完后学校没有新剧情。")]
+    [SerializeField] private string[] schoolChapters = { "3", "4" };
+
+    [Header("家")]
+    [Tooltip("点地图上的家进入的场景。出来时推进一个时段。")]
+    [SerializeField] private string homeScene = Constants.LIVE2D_GAME_SCENE;
 
     [Header("通关后剧情")]
     [Tooltip("第一次完成神社关卡后播放的剧情文件名（不含 .xlsx）。留空则直接回地图。")]
@@ -27,8 +35,13 @@ public class WorldManager : MonoBehaviour
 
     private readonly HashSet<string> unlockedLocations = new HashSet<string>();
     private bool afterBattleStoryPlayed;
+    private int nextSchoolChapter;
 
     public string CurrentLocationId => currentLocationId;
+
+    // 学校还有没播过的章节。
+    public bool HasSchoolChapter =>
+        schoolChapters != null && nextSchoolChapter < schoolChapters.Length;
 
     private void Awake()
     {
@@ -49,6 +62,7 @@ public class WorldManager : MonoBehaviour
         hasPendingAction = false;
         unlockedLocations.Clear();
         afterBattleStoryPlayed = false;
+        nextSchoolChapter = 0;
     }
 
     // ---------- 存档：把各 Manager 的数据收齐 / 分发回去 ----------
@@ -60,7 +74,8 @@ public class WorldManager : MonoBehaviour
             locationId = currentLocationId,
             hasPendingAction = hasPendingAction,
             unlockedLocations = new List<string>(unlockedLocations),
-            afterBattleStoryPlayed = afterBattleStoryPlayed
+            afterBattleStoryPlayed = afterBattleStoryPlayed,
+            nextSchoolChapter = nextSchoolChapter
         };
 
         if (GameTimeManager.Instance != null)
@@ -111,6 +126,7 @@ public class WorldManager : MonoBehaviour
         currentLocationId = string.IsNullOrEmpty(data.locationId) ? Constants.LOCATION_MAP : data.locationId;
         hasPendingAction = data.hasPendingAction;
         afterBattleStoryPlayed = data.afterBattleStoryPlayed;
+        nextSchoolChapter = Mathf.Max(0, data.nextSchoolChapter);
 
         unlockedLocations.Clear();
         if (data.unlockedLocations != null)
@@ -165,8 +181,7 @@ public class WorldManager : MonoBehaviour
         switch (locationId)
         {
             case Constants.LOCATION_SCHOOL:
-                EnterSchool();
-                break;
+                return EnterSchool();
 
             case Constants.LOCATION_RPG:
                 EnterBattle();
@@ -178,8 +193,7 @@ public class WorldManager : MonoBehaviour
                 break;
 
             case Constants.LOCATION_HOME:
-                currentLocationId = locationId;
-                Debug.Log($"当前地点：{currentLocationId}，地点内容待接入。");
+                EnterHome();
                 break;
         }
 
@@ -192,24 +206,68 @@ public class WorldManager : MonoBehaviour
         currentLocationId = Constants.LOCATION_MAP;
     }
 
-    private void EnterSchool()
+    // 学校：播放下一章。章节播完（剧情结束回地图）时才算这一章看过。
+    // 没有新章节时返回 false，地图会提示。
+    private bool EnterSchool()
     {
+        if (hasPendingAction)
+            return true;
+
+        if (!HasSchoolChapter)
+            return false;
+
         var gm = GameManager.Instance;
 
         if (gm == null)
         {
             Debug.LogError("找不到 GameManager，请从原来的游戏入口启动。");
-            return;
+            return true;
         }
 
         currentLocationId = Constants.LOCATION_SCHOOL;
 
-        gm.PrepareStory(Constants.DEFAULT_STORY_FILE);
+        gm.PrepareStory(schoolChapters[nextSchoolChapter].Trim());
         gm.storyReturnScene = Constants.MAP_SCENE;
         hasPendingAction = true;
 
         SceneManager.LoadScene(Constants.GAME_SCENE);
+        return true;
     }
+
+    // 家：进入小场景，出门时由 MuSceneController 调 LeaveHome 结算时间。
+    private void EnterHome()
+    {
+        if (hasPendingAction)
+            return;
+
+        if (!Application.CanStreamedLevelBeLoaded(homeScene))
+        {
+            Debug.LogError($"找不到场景 {homeScene}，请检查构建场景列表。");
+            return;
+        }
+
+        currentLocationId = Constants.LOCATION_HOME;
+        hasPendingAction = true;
+
+        SceneManager.LoadScene(homeScene);
+    }
+
+    // 从家出门：推进一个时段，回地图。
+    public bool LeaveHome()
+    {
+        if (currentLocationId != Constants.LOCATION_HOME)
+            return false;
+
+        CompleteCurrentAction();
+        currentLocationId = Constants.LOCATION_MAP;
+
+        if (GameManager.Instance != null)
+            GameManager.Instance.currentScene = Constants.MAP_SCENE;
+
+        SceneManager.LoadScene(Constants.MAP_SCENE);
+        return true;
+    }
+
     public void CompleteCurrentAction()
     {
         // 没有待结算行动时，直接返回。
@@ -226,6 +284,10 @@ public class WorldManager : MonoBehaviour
 
         // 先标记为已结算，避免同一次行动重复结算。
         hasPendingAction = false;
+
+        // 学校的一章完整播完，下次点学校进入下一章。
+        if (currentLocationId == Constants.LOCATION_SCHOOL)
+            nextSchoolChapter++;
 
         // 向任务系统报告一次完整的地点行动。
         if (QuestManager.Instance != null)

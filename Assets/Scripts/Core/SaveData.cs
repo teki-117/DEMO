@@ -44,6 +44,7 @@ public class RpgSaveData
     public bool hasPendingAction;
     public List<string> unlockedLocations = new List<string>();
     public bool afterBattleStoryPlayed;
+    public int nextSchoolChapter;   // 学校下一章在列表里的位置
 
     // 任务
     public List<QuestState> quests = new List<QuestState>();

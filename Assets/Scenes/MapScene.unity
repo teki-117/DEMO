@@ -3180,6 +3180,7 @@ MonoBehaviour:
   currentLocationId: Map
   lockedAtStart:
   - RPG
+  - School
   afterBattleStoryFile: 2-1
 --- !u!4 &918779128
 Transform:

@@ -38,8 +38,13 @@ public class InputManager : MonoBehaviour
             // 可以添加错误提示（比如用对话框提示玩家）
             return;
         }
-        GameManager.Instance.playerName = playerName;
-        SceneManager.LoadScene(Constants.MAP_SCENE);
+        GameManager gm = GameManager.Instance;
+        gm.playerName = playerName;
+
+        // 新游戏先强制播剧情 1，播完回地图。开场剧情不推进时间。
+        gm.PrepareStory(Constants.DEFAULT_STORY_FILE);
+        gm.storyReturnScene = Constants.MAP_SCENE;
+        SceneManager.LoadScene(Constants.GAME_SCENE);
     }
     bool IsInvalidName(string name)
     {

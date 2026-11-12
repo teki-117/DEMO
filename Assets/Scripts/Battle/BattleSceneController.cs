@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -78,8 +80,41 @@ public class BattleSceneController : MonoBehaviour
     [SerializeField] private Slider bossHpBar;
     [SerializeField] private TMP_Text bossNameText;
 
+    [Header("Boss 血条效果（掉块 + 闪光）")]
+    [Tooltip("掉的那一截先停多久再往下掉（真实秒）。")]
+    [Min(0f)]
+    [SerializeField] private float chunkHoldTime = 0.1f;
+    [Tooltip("掉块下落、压扁、淡出的时长（真实秒）。")]
+    [Min(0.05f)]
+    [SerializeField] private float chunkFallTime = 0.8f;
+    [Tooltip("掉块往下掉多远，按血条高度的倍数。")]
+    [Min(0f)]
+    [SerializeField] private float chunkFallDistance = 4f;
+    [Tooltip("掉块最后压扁到多少（高度比例）。")]
+    [Range(0.05f, 1f)]
+    [SerializeField] private float chunkEndScaleY = 0.6f;
+    [SerializeField] private Color chunkColor = Color.white;
+    [Tooltip("血条末端的发光颜色（外圈的柔光）。")]
+    [SerializeField] private Color flashColor = new Color(1f, 0.2f, 0.12f, 0.9f);
+    [Tooltip("发光中心的亮条颜色。")]
+    [SerializeField] private Color flashCoreColor = new Color(1f, 0.92f, 0.9f, 1f);
+    [Tooltip("柔光大小，按血条高度的倍数（宽, 高）。")]
+    [SerializeField] private Vector2 flashGlowSize = new Vector2(1.4f, 2.4f);
+    [Tooltip("中心亮条大小，按血条高度的倍数（宽, 高）。")]
+    [SerializeField] private Vector2 flashCoreSize = new Vector2(0.35f, 1.05f);
+    [Min(0.05f)]
+    [SerializeField] private float flashTime = 0.3f;
+
     private bool bossFightStarted;
     private bool bossDefeated;
+
+    // Boss 血条效果的运行时数据。掉块和闪光用完放回池里重复使用。
+    private readonly Queue<Image> chunkPool = new Queue<Image>();
+    private readonly Queue<Image> flashPool = new Queue<Image>();
+    private static Sprite glowSprite;      // 运行时生成的柔边椭圆，用来做发光
+    private RectTransform bossBarArea;     // Slider 的 Fill Area，掉块和闪光都放在这里
+    private float bossBarShown = 1f;       // 上一次显示的血量比例
+    private float bossHudHideAt = -1f;     // Boss 死后等最后一块掉完再隐藏血条
 
     private BattlePlayerController playerController;
 
@@ -433,6 +468,7 @@ public class BattleSceneController : MonoBehaviour
     private void Update()
     {
         UpdateFeedback();
+        UpdateBossBarEffects();
 
         // 结算画面显示时游戏暂停，只等待确认键。
         if (isShowingResult)
@@ -669,11 +705,8 @@ public class BattleSceneController : MonoBehaviour
                 StartBossFight();
         }
 
-        if (bossFightStarted && bossHpBar != null)
-        {
-            bossHpBar.SetValueWithoutNotify(
-                boss.MaxHP > 0 ? (float)boss.CurrentHP / boss.MaxHP : 0f);
-        }
+        if (bossFightStarted)
+            SetBossBarValue(boss.MaxHP > 0 ? (float)boss.CurrentHP / boss.MaxHP : 0f);
     }
 
     private void StartBossFight()
@@ -692,6 +725,8 @@ public class BattleSceneController : MonoBehaviour
         if (bossNameText != null)
             bossNameText.text = boss.BossName;
 
+        BuildBossBarEffects();
+
         Debug.Log("进入 Boss 房，门已锁上。", this);
     }
 
@@ -705,10 +740,181 @@ public class BattleSceneController : MonoBehaviour
         earnedMoney += defeatedBoss.MoneyReward;
         earnedExp += defeatedBoss.ExpReward;
 
-        if (bossHudRoot != null)
-            bossHudRoot.SetActive(false);
+        // 最后一刀的掉块落完再隐藏血条。
+        SetBossBarValue(0f);
+        bossHudHideAt = Time.unscaledTime + chunkHoldTime + chunkFallTime;
 
         Debug.Log("Boss 已击败，到出口的门前按 E 离开。", this);
+    }
+
+    // ---------- Boss 血条效果（掉块 + 闪光） ----------
+    // 做法：受伤时红条直接跳到新血量；掉的那一截生成一块白色方块，
+    // 贴在红条右端，停一下后往下掉、压扁、淡出；红条末端闪一下红光。
+
+    private void BuildBossBarEffects()
+    {
+        if (bossHpBar == null || bossHpBar.fillRect == null)
+            return;
+
+        bossBarArea = bossHpBar.fillRect.parent as RectTransform;
+        bossHpBar.SetValueWithoutNotify(1f);
+        bossBarShown = 1f;
+    }
+
+    private void SetBossBarValue(float value)
+    {
+        if (bossHpBar == null)
+            return;
+
+        value = Mathf.Clamp01(value);
+        float old = bossBarShown;
+
+        bossHpBar.SetValueWithoutNotify(value);
+        bossBarShown = value;
+
+        if (bossBarArea != null && value < old - 0.0001f)
+        {
+            SpawnHpChunk(old, value);
+            SpawnHpFlash(value);
+        }
+    }
+
+    private void SpawnHpChunk(float oldRatio, float newRatio)
+    {
+        Rect area = bossBarArea.rect;
+        Image img = TakeBarImage(chunkPool, "HpChunk", chunkColor);
+        RectTransform rt = img.rectTransform;
+
+        // 宽 = 整条宽度 × 掉的比例，高和血条一样；左端贴在红条右端。
+        rt.anchorMin = new Vector2(0f, 0.5f);
+        rt.anchorMax = new Vector2(0f, 0.5f);
+        rt.pivot = new Vector2(0f, 0.5f);
+        rt.sizeDelta = new Vector2(area.width * (oldRatio - newRatio), area.height);
+        rt.anchoredPosition = new Vector2(area.width * newRatio, 0f);
+        rt.localScale = Vector3.one;
+        rt.SetAsLastSibling();
+
+        // 停一下，然后加速往下掉、压扁、淡出。用真实时间，命中停顿时也照常播。
+        Sequence s = DOTween.Sequence().SetUpdate(true).SetTarget(rt);
+        s.AppendInterval(chunkHoldTime);
+        s.Append(rt.DOAnchorPosY(-area.height * chunkFallDistance, chunkFallTime).SetEase(Ease.InCubic));
+        s.Join(rt.DOScaleY(chunkEndScaleY, chunkFallTime).SetEase(Ease.InQuad));
+        s.Join(img.DOFade(0f, chunkFallTime).SetEase(Ease.InQuad));
+        s.OnComplete(() => ReturnBarImage(chunkPool, img));
+        s.OnKill(() => ReturnBarImage(chunkPool, img));
+    }
+
+    // 红条右端：外面一圈柔和的红光，中间一条亮白的芯，一起淡出。
+    private void SpawnHpFlash(float newRatio)
+    {
+        float h = bossBarArea.rect.height;
+        float x = bossBarArea.rect.width * newRatio;
+
+        SpawnGlow(x, h * flashGlowSize, flashColor);
+        SpawnGlow(x, h * flashCoreSize, flashCoreColor);
+    }
+
+    private void SpawnGlow(float x, Vector2 size, Color color)
+    {
+        Image img = TakeBarImage(flashPool, "HpFlash", color);
+        img.sprite = GetGlowSprite();
+        RectTransform rt = img.rectTransform;
+
+        rt.anchorMin = new Vector2(0f, 0.5f);
+        rt.anchorMax = new Vector2(0f, 0.5f);
+        rt.pivot = new Vector2(0.5f, 0.5f);
+        rt.sizeDelta = size;
+        rt.anchoredPosition = new Vector2(x, 0f);
+        rt.localScale = Vector3.one;
+        rt.SetAsLastSibling();
+
+        img.DOFade(0f, flashTime)
+            .SetEase(Ease.InQuad)
+            .SetUpdate(true)
+            .SetTarget(rt)
+            .OnComplete(() => ReturnBarImage(flashPool, img))
+            .OnKill(() => ReturnBarImage(flashPool, img));
+    }
+
+    // 白色柔边椭圆：中心不透明，往外平滑变透明。颜色由 Image.color 决定。
+    private static Sprite GetGlowSprite()
+    {
+        if (glowSprite != null)
+            return glowSprite;
+
+        const int size = 64;
+        var tex = new Texture2D(size, size, TextureFormat.RGBA32, false)
+        {
+            wrapMode = TextureWrapMode.Clamp,
+            filterMode = FilterMode.Bilinear,
+            name = "HpGlow"
+        };
+
+        var pixels = new Color32[size * size];
+        float r = (size - 1) * 0.5f;
+
+        for (int y = 0; y < size; y++)
+        {
+            for (int x = 0; x < size; x++)
+            {
+                float dx = (x - r) / r;
+                float dy = (y - r) / r;
+                float d = Mathf.Sqrt(dx * dx + dy * dy);
+                float a = Mathf.Clamp01(1f - d);
+                a = a * a * (3f - 2f * a);   // 平滑过渡
+                pixels[y * size + x] = new Color32(255, 255, 255, (byte)(a * 255f));
+            }
+        }
+
+        tex.SetPixels32(pixels);
+        tex.Apply(false, true);
+
+        glowSprite = Sprite.Create(tex, new Rect(0, 0, size, size), new Vector2(0.5f, 0.5f), 100f);
+        glowSprite.name = "HpGlow";
+        return glowSprite;
+    }
+
+    // 池里有就拿，没有就新建一块白色 Image。
+    private Image TakeBarImage(Queue<Image> pool, string objectName, Color color)
+    {
+        Image img = null;
+
+        while (img == null && pool.Count > 0)
+            img = pool.Dequeue();
+
+        if (img == null)
+        {
+            var go = new GameObject(objectName, typeof(RectTransform), typeof(Image));
+            go.transform.SetParent(bossBarArea, false);
+            img = go.GetComponent<Image>();
+            img.raycastTarget = false;
+        }
+
+        img.color = color;
+        img.gameObject.SetActive(true);
+        return img;
+    }
+
+    private static void ReturnBarImage(Queue<Image> pool, Image img)
+    {
+        if (img == null || !img.gameObject.activeSelf)
+            return;
+
+        img.gameObject.SetActive(false);
+        img.rectTransform.localScale = Vector3.one;
+        pool.Enqueue(img);
+    }
+
+    // 只负责 Boss 死后延迟隐藏血条。
+    private void UpdateBossBarEffects()
+    {
+        if (bossHudHideAt >= 0f && Time.unscaledTime >= bossHudHideAt)
+        {
+            bossHudHideAt = -1f;
+
+            if (bossHudRoot != null)
+                bossHudRoot.SetActive(false);
+        }
     }
 
     // ---------- HUD ----------

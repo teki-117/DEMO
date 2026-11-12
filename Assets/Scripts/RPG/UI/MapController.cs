@@ -68,7 +68,8 @@ public class MapController : MonoBehaviour
 
         if (!WorldManager.Instance.EnterLocation(locationId))
         {
-            ShowHint("这里现在还不能去。");
+            bool lockedNow = WorldManager.Instance.IsLocationLocked(locationId);
+            ShowHint(lockedNow ? "这里现在还不能去。" : "现在没什么事。");
             return;
         }
 

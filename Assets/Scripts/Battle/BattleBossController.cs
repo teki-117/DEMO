@@ -29,6 +29,8 @@ public class BattleBossController : MonoBehaviour, IBattleDamageable
     [Header("场景引用")]
     [SerializeField] private BattlePlayerController player;
     [SerializeField] private LayerMask groundLayer;
+    [Tooltip("Boss 可以直接穿过的障碍物（平台等）。地板、墙和门不要放进来。")]
+    [SerializeField] private Collider2D[] passThroughObstacles;
 
     [Header("基础")]
     [SerializeField] private string bossName = "神社守护者";
@@ -168,6 +170,16 @@ public class BattleBossController : MonoBehaviour, IBattleDamageable
             playerCollider = player.GetComponent<Collider2D>();
         else
             Debug.LogError("请给 BattleBossController 配置 Player。", this);
+
+        // 这些障碍物不挡 Boss：物理上互相穿过，冲撞和落地判定也跳过它们。
+        if (passThroughObstacles != null)
+        {
+            foreach (Collider2D obstacle in passThroughObstacles)
+            {
+                if (obstacle != null)
+                    Physics2D.IgnoreCollision(bodyCollider, obstacle, true);
+            }
+        }
 
         HideVisual(beamVisual);
         HideVisual(shockwaveVisual);
@@ -356,13 +368,25 @@ public class BattleBossController : MonoBehaviour, IBattleDamageable
         // 撞到墙或门、或者冲够时间就停下。
         Bounds bounds = bodyCollider.bounds;
 
-        RaycastHit2D wall = Physics2D.Raycast(
+        int hitCount = Physics2D.Raycast(
             bounds.center,
             Vector2.right * facing,
-            bounds.extents.x + 0.2f,
-            groundLayer);
+            groundFilter,
+            groundHits,
+            bounds.extents.x + 0.2f);
 
-        if (wall.collider != null || Time.time >= stateEndTime)
+        bool hitWall = false;
+
+        for (int i = 0; i < hitCount; i++)
+        {
+            if (!IsPassThrough(groundHits[i].collider))
+            {
+                hitWall = true;
+                break;
+            }
+        }
+
+        if (hitWall || Time.time >= stateEndTime)
             EnterRecover();
     }
 
@@ -571,11 +595,17 @@ public class BattleBossController : MonoBehaviour, IBattleDamageable
 
         for (int i = 0; i < hitCount; i++)
         {
-            if (groundHits[i].normal.y > 0.5f)
+            if (groundHits[i].normal.y > 0.5f && !IsPassThrough(groundHits[i].collider))
                 return true;
         }
 
         return false;
+    }
+
+    private bool IsPassThrough(Collider2D other)
+    {
+        return passThroughObstacles != null &&
+               System.Array.IndexOf(passThroughObstacles, other) >= 0;
     }
 
     private void SetHorizontalSpeed(float speed)

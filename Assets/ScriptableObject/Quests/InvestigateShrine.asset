@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3a607afd92a5574793e8b8a50b79371, type: 3}
+  m_Name: InvestigateShrine
+  m_EditorClassIdentifier: Assembly-CSharp::QuestData
+  questId: investigate_shrine
+  questName: "\u53BB\u795E\u793E\u8C03\u67E5"
+  description: "\u542C\u8BF4\u795E\u793E\u90A3\u8FB9\u4E0D\u592A\u5E73\u3002\u53BB\u795E\u793E\u6253\u5012\u6DF1\u5904\u7684\u4E1C\u897F\uFF0C\u4ECE\u51FA\u53E3\u79BB\u5F00\u3002"
+  targetLocationId: RPG
+  requiredCount: 1
+  rewardCharacterId: sakura
+  rewardAffection: 0
+  rewardMoney: 50
+  rewardItems: []
