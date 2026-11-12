@@ -78,3 +78,6 @@ Assets/Resources/fonts/NotoSansJP-Regular.asset
 # Unity crash-recovery scenes
 /[Aa]ssets/_Recovery/
 /[Aa]ssets/_Recovery.meta
+
+# Claude 的项目说明，只留在本地
+CLAUDE.md
